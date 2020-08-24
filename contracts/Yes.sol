@@ -13,9 +13,9 @@
 
 pragma solidity 0.5.12;
 
-// Wethn
+// Yes
 
-contract Weth {
+contract Yes {
 
     string private _name;
     string private _symbol;

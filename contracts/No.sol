@@ -13,9 +13,9 @@
 
 pragma solidity 0.5.12;
 
-// Mkr
+// No
 
-contract Mkr {
+contract No {
 
     string private _name;
     string private _symbol;
