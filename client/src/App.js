@@ -73,6 +73,41 @@ class App extends Component {
         daiContract: daiInstance,
       });
 
+      const { bpoolContract } = this.state;
+      const { noContract } = this.state;
+      const { yesContract } = this.state;
+      const { daiContract } = this.state;
+ 
+
+      // @ mint YES, NO and Dai and send to LP1
+      await yesContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
+      await noContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
+      await daiContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
+
+      // @ mint Dai and send to Trader1
+      await daiContract.methods.mint(accounts[2], web3.utils.toWei('5000')).send({ from: accounts[0] });
+
+
+
+
+
+
+      var LP1YesBalance = await yesContract.methods.balanceOf(accounts[1]).call();
+      LP1YesBalance = web3.utils.fromWei(LP1YesBalance)
+      console.log("LP1 Yes balance: ", LP1YesBalance)
+      var LP1NoBalance = await noContract.methods.balanceOf(accounts[1]).call();
+      LP1NoBalance = web3.utils.fromWei(LP1NoBalance)
+      console.log("LP1 No balance: ", LP1NoBalance)
+      var LP1DaiBalance = await daiContract.methods.balanceOf(accounts[1]).call();
+      LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
+      console.log("LP1 Dai balance: ", LP1DaiBalance)
+      var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+      Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance)
+      console.log("Trader1 Dai balance: ", Trader1DaiBalance)
+
+
+
+
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
