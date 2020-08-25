@@ -21,6 +21,7 @@ class App extends Component {
     yesContract: null,
     noContract: null,
     daiContract: null,
+    bpoolAddress: null,
   };
 
   componentDidMount = async () => {
@@ -87,12 +88,9 @@ class App extends Component {
       // @ mint Dai and send to Trader1
       await daiContract.methods.mint(accounts[2], web3.utils.toWei('5000')).send({ from: accounts[0] });
 
-      // create a new balancer pool, bind tokens, set swap fee and set public
+      // create a new balancer pool and save address to state, bind tokens, set swap fee and set public
       const tx = await bfactoryContract.methods.newBPool().send({from: accounts[0], gas: 6000000 });
-      console.log("bpool address: ", tx.events.LOG_NEW_POOL.address);
-
-
-
+      this.setState({ bpoolAddress: tx.events.LOG_NEW_POOL.address })
 
 
 
@@ -108,6 +106,8 @@ class App extends Component {
       var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
       Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance)
       console.log("Trader1 Dai balance: ", Trader1DaiBalance)
+      console.log("bpool address: ", this.state.bpoolAddress);
+
 
 
 
