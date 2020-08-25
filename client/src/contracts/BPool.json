@@ -62061,12 +62061,12 @@
         }
       },
       "links": {},
-      "address": "0xC66a91bDFD6Dee09396B3E0B2552B5f0C9CF4348",
-      "transactionHash": "0xec5f62ece2635b65515b5588e3ed5de2f9b05466314cf44f8d9dda299410719b"
+      "address": "0xEF44ae9E25A6Fd6CDCAC2A9248498ACf11ED4bd0",
+      "transactionHash": "0x78ffcbbed6e499f18390f2caa6303212b35de236ba71313a318398ae3151a1e9"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-08-25T19:55:05.778Z",
+  "updatedAt": "2020-08-25T23:45:37.802Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

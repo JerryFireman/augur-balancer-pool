@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import BPoolContract from "./contracts/BPool.json"
+import BFactoryContract from "./contracts/BFactory.json"
 import YesContract from "./contracts/Yes.json";
 import NoContract from "./contracts/No.json";
 import DaiContract from "./contracts/Dai.json";
+import BPoolContract from "./contracts/BPool.json"
 import getWeb3 from "./getWeb3";
 import "./App.css";
 
@@ -16,8 +17,7 @@ class App extends Component {
   state = {
     web3: null,
     accounts: null,
-    bpoolContract: null,
-    bpoolAddress: null,
+    bfactoryContract: null,
     yesContract: null,
     noContract: null,
     daiContract: null,
@@ -31,11 +31,11 @@ class App extends Component {
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
 
-      // Get the BPool contract instance.
+      // Get the BFactory contract instance.
       const networkId = await web3.eth.net.getId();
-      const deployedNetwork = BPoolContract.networks[networkId];
-      const bpoolInstance = new web3.eth.Contract(
-        BPoolContract.abi,
+      const deployedNetwork = BFactoryContract.networks[networkId];
+      const bfactoryInstance = new web3.eth.Contract(
+        BFactoryContract.abi,
         deployedNetwork && deployedNetwork.address,
       );
 
@@ -67,13 +67,13 @@ class App extends Component {
       this.setState({
         web3,
         accounts,
-        bpoolContract: bpoolInstance,
+        bfactoryContract: bfactoryInstance,
         yesContract: yesInstance,
         noContract: noInstance,
         daiContract: daiInstance,
       });
 
-      const { bpoolContract } = this.state;
+      const { bfactoryContract } = this.state;
       const { noContract } = this.state;
       const { yesContract } = this.state;
       const { daiContract } = this.state;
@@ -86,6 +86,10 @@ class App extends Component {
 
       // @ mint Dai and send to Trader1
       await daiContract.methods.mint(accounts[2], web3.utils.toWei('5000')).send({ from: accounts[0] });
+
+      // create a new balancer pool, bind tokens, set swap fee and set public
+      const tx = await bfactoryContract.methods.newBPool().send({from: accounts[0], gas: 6000000 });
+      console.log("bpool address: ", tx.events.LOG_NEW_POOL.address);
 
 
 

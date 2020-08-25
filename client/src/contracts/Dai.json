@@ -14888,12 +14888,12 @@
         }
       },
       "links": {},
-      "address": "0x3f79d22C4F0036128Ef9DDe81d60772bd24869a8",
-      "transactionHash": "0x5d5cb54f2c72fc5a6b618ffdfc81f04e330f4470c233e652c72ac97eec758a3b"
+      "address": "0x308BD662aD9c29F711ec8970288097B252E711eA",
+      "transactionHash": "0xce43cb2277614e9b82b7701cc423c337700c2b86603ae97c0b4a3f2f7ab036ff"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-08-25T19:55:05.847Z",
+  "updatedAt": "2020-08-25T23:45:37.875Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
