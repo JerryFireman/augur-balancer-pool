@@ -3,7 +3,6 @@ import BFactoryContract from "./contracts/BFactory.json"
 import YesContract from "./contracts/Yes.json";
 import NoContract from "./contracts/No.json";
 import DaiContract from "./contracts/Dai.json";
-import BPoolContract from "./contracts/BPool.json"
 import getWeb3 from "./getWeb3";
 import "./App.css";
 const { abi } = require('./contracts/BPool.json');
@@ -94,13 +93,11 @@ class App extends Component {
       const tx = await bfactoryContract.methods.newBPool().send({from: accounts[1], gas: 6000000 });
       var bpoolAddress = tx.events.LOG_NEW_POOL.returnValues[1]
       this.setState({ bpoolAddress: bpoolAddress })
-      console.log("yesContract.options.address: ", yesContract.options.address);
-      console.log("web3.utils.toWei('5000'): ", web3.utils.toWei('5000'))
       var pool = new web3.eth.Contract(abi, this.state.bpoolAddress);
       await yesContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
-      var tx2 = await yesContract.methods.allowance(accounts[1], this.state.bpoolAddress).call( {from: accounts[1] });
       await pool.methods.bind(yesContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('18.75')).send( {from: accounts[1], gas: 6000000 });
-      console.log("tx2: ", tx2);
+      await noContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
+      await pool.methods.bind(noContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('6.25')).send( {from: accounts[1], gas: 6000000 });
 
 
 
@@ -116,9 +113,17 @@ class App extends Component {
       LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
       console.log("LP1 Dai balance: ", LP1DaiBalance)
       var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
-      Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance)
-      console.log("Trader1 Dai balance: ", Trader1DaiBalance)
-      console.log("bpool address: ", this.state.bpoolAddress);
+      Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
+      console.log("Trader1 Dai balance: ", Trader1DaiBalance);
+      var numberOfTokens = await pool.methods.getNumTokens().call();
+      console.log("NumberOfTokens: ", numberOfTokens);
+      var poolYesBalance = await pool.methods.getBalance(yesContract.options.address).call();
+      poolYesBalance = web3.utils.fromWei(poolYesBalance);
+      console.log("poolYesBalance: ", poolYesBalance);
+      var poolNoBalance = await pool.methods.getBalance(noContract.options.address).call();
+      poolNoBalance = web3.utils.fromWei(poolNoBalance);
+      console.log("poolNoBalance: ", poolNoBalance);
+
 
 
 
