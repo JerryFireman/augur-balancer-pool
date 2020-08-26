@@ -91,14 +91,17 @@ class App extends Component {
       await daiContract.methods.mint(accounts[2], web3.utils.toWei('5000')).send({ from: accounts[0] });
 
       // create a new balancer pool and save address to state, bind tokens, set swap fee and set public
-      const tx = await bfactoryContract.methods.newBPool().send({from: accounts[0], gas: 6000000 });
+      const tx = await bfactoryContract.methods.newBPool().send({from: accounts[1], gas: 6000000 });
       var bpoolAddress = tx.events.LOG_NEW_POOL.returnValues[1]
       this.setState({ bpoolAddress: bpoolAddress })
+      console.log("yesContract.options.address: ", yesContract.options.address);
+      console.log("web3.utils.toWei('5000'): ", web3.utils.toWei('5000'))
       var pool = new web3.eth.Contract(abi, this.state.bpoolAddress);
-      const tx2 = await pool.methods.isPublicSwap().call();
-
-      console.log("tx: ", tx);
+      await yesContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
+      var tx2 = await yesContract.methods.allowance(accounts[1], this.state.bpoolAddress).call( {from: accounts[1] });
+      await pool.methods.bind(yesContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('18.75')).send( {from: accounts[1], gas: 6000000 });
       console.log("tx2: ", tx2);
+
 
 
 
