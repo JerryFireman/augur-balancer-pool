@@ -6,6 +6,8 @@ import DaiContract from "./contracts/Dai.json";
 import BPoolContract from "./contracts/BPool.json"
 import getWeb3 from "./getWeb3";
 import "./App.css";
+const { abi } = require('./contracts/BPool.json');
+
 
 //App controls the user interface
 class App extends Component {
@@ -90,7 +92,14 @@ class App extends Component {
 
       // create a new balancer pool and save address to state, bind tokens, set swap fee and set public
       const tx = await bfactoryContract.methods.newBPool().send({from: accounts[0], gas: 6000000 });
-      this.setState({ bpoolAddress: tx.events.LOG_NEW_POOL.address })
+      var bpoolAddress = tx.events.LOG_NEW_POOL.returnValues[1]
+      this.setState({ bpoolAddress: bpoolAddress })
+      var pool = new web3.eth.Contract(abi, this.state.bpoolAddress);
+      const tx2 = await pool.methods.isPublicSwap().call();
+
+      console.log("tx: ", tx);
+      console.log("tx2: ", tx2);
+
 
 
 
