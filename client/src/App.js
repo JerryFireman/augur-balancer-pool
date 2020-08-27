@@ -180,11 +180,20 @@ class App extends Component {
     const { pool } = this.state;
     const { web3 } = this.state;
     const { fromToken } = this.state;
+    const { toToken } = this.state;
+    const { fromAmount } = this.state;
+    const { toAmount } = this.state;
+
 
     try {
+      var fromTokenBalance = await pool.methods.getBalance(fromToken).call();
+      fromTokenBalance = web3.utils.fromWei(fromTokenBalance);
+      console.log("fromTokenBalance", fromTokenBalance);
+
       var fromTokenWeight = await pool.methods.getNormalizedWeight(fromToken).call();
       fromTokenWeight = web3.utils.fromWei(fromTokenWeight);
       console.log("fromTokenWeight", fromTokenWeight);
+
 
 
 
