@@ -22,7 +22,12 @@ class App extends Component {
     yesContract: null,
     noContract: null,
     daiContract: null,
+    pool: null,
     bpoolAddress: null,
+    fromToken: "",
+    toToken: "",
+    fromAmount: "",
+    toAmount: "",
   };
 
   componentDidMount = async () => {
@@ -92,8 +97,9 @@ class App extends Component {
       // create a new balancer pool and save address to state, bind tokens and set public
       const tx = await bfactoryContract.methods.newBPool().send({from: accounts[1], gas: 6000000 });
       var bpoolAddress = tx.events.LOG_NEW_POOL.returnValues[1]
-      this.setState({ bpoolAddress: bpoolAddress })
+      this.setState({ bpoolAddress: bpoolAddress });
       var pool = new web3.eth.Contract(abi, this.state.bpoolAddress);
+      this.setState( {pool: pool} );
       await yesContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
       await pool.methods.bind(yesContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('18.75')).send( {from: accounts[1], gas: 6000000 });
       await noContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
@@ -149,6 +155,10 @@ class App extends Component {
       var isPublicSwap = await pool.methods.isPublicSwap().call();
       console.log("isPublicSwap: ", isPublicSwap)
 
+      this.setState({fromToken: yesContract.options.address})
+      console.log("this.state.fromToken", this.state.fromToken);      
+      await this.calcToGivenFrom();
+
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -164,6 +174,29 @@ class App extends Component {
     this.setState({ [e.target.name]: e.target.value });
     console.log(e.target.name, ": ", e.target.value);
   }
+
+  // Calculates number of "to" tokens given number of "from" tokens
+  calcToGivenFrom = async () => {
+    const { pool } = this.state;
+    const { web3 } = this.state;
+    const { fromToken } = this.state;
+
+    try {
+      var fromTokenWeight = await pool.methods.getNormalizedWeight(fromToken).call();
+      fromTokenWeight = web3.utils.fromWei(fromTokenWeight);
+      console.log("fromTokenWeight", fromTokenWeight);
+
+
+
+    } catch (error) {
+      alert(
+        `Attempt to create new smart pool failed. Check console for details.`,
+      );
+      console.error(error);
+    }
+  };
+  
+  
 
 
   render() {
