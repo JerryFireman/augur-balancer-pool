@@ -155,9 +155,23 @@ class App extends Component {
       var isPublicSwap = await pool.methods.isPublicSwap().call();
       console.log("isPublicSwap: ", isPublicSwap)
 
+      // Test calcToGivenFrom
       this.setState({fromToken: yesContract.options.address})
-      console.log("this.state.fromToken", this.state.fromToken);      
+      console.log("this.state.fromToken", this.state.fromToken);  
+      this.setState({toToken: daiContract.options.address})
+      console.log("this.state.toToken", this.state.toToken);  
+      this.setState({ fromAmount: 50 })
+      console.log("fromAmount: ", this.state.fromAmount)
       await this.calcToGivenFrom();
+
+      // Test calcFromGivenTo
+      this.setState({fromToken: daiContract.options.address})
+      console.log("this.state.fromToken", this.state.fromToken);  
+      this.setState({toToken: yesContract.options.address})
+      console.log("this.state.toToken", this.state.toToken);  
+      this.setState({ toAmount: 50 })
+      console.log("toAmount: ", this.state.toAmount)
+      await this.calcFromGivenTo();
 
 
     } catch (error) {
@@ -182,8 +196,6 @@ class App extends Component {
     const { fromToken } = this.state;
     const { toToken } = this.state;
     const { fromAmount } = this.state;
-    const { toAmount } = this.state;
-
 
     try {
       var fromTokenBalance = await pool.methods.getBalance(fromToken).call();
@@ -194,8 +206,76 @@ class App extends Component {
       fromTokenWeight = web3.utils.fromWei(fromTokenWeight);
       console.log("fromTokenWeight", fromTokenWeight);
 
+      var toTokenBalance = await pool.methods.getBalance(toToken).call();
+      toTokenBalance = web3.utils.fromWei(toTokenBalance);
+      console.log("toTokenBalance", toTokenBalance);
 
+      var toTokenWeight = await pool.methods.getNormalizedWeight(toToken).call();
+      toTokenWeight = web3.utils.fromWei(toTokenWeight);
+      console.log("toTokenWeight", toTokenWeight);
 
+      console.log("fromTokenBalance", fromTokenBalance);
+      var intermediate1 = fromTokenBalance / ( Number(fromTokenBalance) + Number(fromAmount) )
+      var intermediate2 =  intermediate1 ** (fromTokenWeight / toTokenWeight)
+      var toAmount = toTokenBalance * ( 1 -  intermediate2  );
+      toAmount = toAmount.toFixed(2)
+      this.setState( { toAmount: toAmount } );
+
+      console.log("fromTokenBalance", fromTokenBalance);
+      console.log("(fromTokenBalance + fromAmount ): ", (Number(fromTokenBalance) + Number(fromAmount) ))
+      console.log("fromAmount: ", fromAmount);
+      console.log("intermediate1: ", intermediate1);
+      console.log("intermediate2: ", intermediate2);
+      console.log("toAmount: ", toAmount);
+
+      return toAmount ;
+    } catch (error) {
+      alert(
+        `Attempt to create new smart pool failed. Check console for details.`,
+      );
+      console.error(error);
+    }
+  };
+
+  // Calculates number of "from" tokens given number of "to" tokens
+  calcFromGivenTo = async () => {
+    const { pool } = this.state;
+    const { web3 } = this.state;
+    const { fromToken } = this.state;
+    const { toToken } = this.state;
+    const { toAmount } = this.state;
+
+    try {
+      var fromTokenBalance = await pool.methods.getBalance(fromToken).call();
+      fromTokenBalance = web3.utils.fromWei(fromTokenBalance);
+      console.log("fromTokenBalance", fromTokenBalance);
+
+      var fromTokenWeight = await pool.methods.getNormalizedWeight(fromToken).call();
+      fromTokenWeight = web3.utils.fromWei(fromTokenWeight);
+      console.log("fromTokenWeight", fromTokenWeight);
+
+      var toTokenBalance = await pool.methods.getBalance(toToken).call();
+      toTokenBalance = web3.utils.fromWei(toTokenBalance);
+      console.log("toTokenBalance", toTokenBalance);
+
+      var toTokenWeight = await pool.methods.getNormalizedWeight(toToken).call();
+      toTokenWeight = web3.utils.fromWei(toTokenWeight);
+      console.log("toTokenWeight", toTokenWeight);
+
+      var intermediate1 = toTokenBalance / ( Number(toTokenBalance) + Number(toAmount) )
+      var intermediate2 =  intermediate1 ** (toTokenWeight / fromTokenWeight)
+      var fromAmount = -toTokenBalance * ( intermediate2 - 1  );
+      fromAmount = fromAmount.toFixed(2)
+      this.setState( { toAmount: toAmount } );
+
+      console.log("toTokenBalance", toTokenBalance);
+      console.log("(toTokenBalance + toAmount ): ", (Number(fromTokenBalance) + Number(fromAmount) ))
+      console.log("toAmount: ", toAmount);
+      console.log("intermediate1: ", intermediate1);
+      console.log("intermediate2: ", intermediate2);
+      console.log("fromAmount: ", fromAmount);
+
+      return fromAmount ;
 
     } catch (error) {
       alert(
@@ -204,11 +284,10 @@ class App extends Component {
       console.error(error);
     }
   };
-  
-  
 
-
-  render() {
+  // need swapEAI and swapEAO, approval, save balances to state
+  
+    render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }

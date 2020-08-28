@@ -62401,10 +62401,179 @@
       "links": {},
       "address": "0xC8f6b612f67d7A0d7c719dfEd347b2777d96A397",
       "transactionHash": "0xf6b8c37806fcf1f064616e7389b807c84c430d653f8fbdbe1bb2a1f72c1c1022"
+    },
+    "1598628894303": {
+      "events": {
+        "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amt",
+              "type": "uint256"
+            }
+          ],
+          "name": "Approval",
+          "type": "event"
+        },
+        "0x25fce1fe01d9b241fda40b2152ddd6f4ba063fcfb3c2c81dddf84ee20d3f341f": {
+          "anonymous": true,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes4",
+              "name": "sig",
+              "type": "bytes4"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "caller",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "name": "LOG_CALL",
+          "type": "event"
+        },
+        "0xe74c91552b64c2e2e7bd255639e004e693bd3e1d01cc33e65610b86afcc1ffed": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "caller",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "tokenOut",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "tokenAmountOut",
+              "type": "uint256"
+            }
+          ],
+          "name": "LOG_EXIT",
+          "type": "event"
+        },
+        "0x63982df10efd8dfaaaa0fcc7f50b2d93b7cba26ccc48adee2873220d485dc39a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "caller",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "tokenAmountIn",
+              "type": "uint256"
+            }
+          ],
+          "name": "LOG_JOIN",
+          "type": "event"
+        },
+        "0x908fb5ee8f16c6bc9bc3690973819f32a4d4b10188134543c88706e0e1d43378": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "caller",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "tokenOut",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "tokenAmountIn",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "tokenAmountOut",
+              "type": "uint256"
+            }
+          ],
+          "name": "LOG_SWAP",
+          "type": "event"
+        },
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amt",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xec17acA331eCC261090A86F2629Ae2DBc26f7edf",
+      "transactionHash": "0x58bfffab127bfba1bef63d561409a8e88331471f57468973303ea7c90f802016"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-08-27T19:11:03.793Z",
+  "updatedAt": "2020-08-28T19:27:25.431Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
