@@ -173,6 +173,9 @@ class App extends Component {
       console.log("toAmount: ", this.state.toAmount)
       await this.calcFromGivenTo();
 
+      //Test swapExactAmountIn
+      await this.swapExactAmountIn();
+
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -285,7 +288,47 @@ class App extends Component {
     }
   };
 
-  // need swapEAI and swapEAO, approval, save balances to state
+  
+
+
+// Swap with the number of from tokens fixed
+  swapExactAmountIn = async () => {
+    const { pool } = this.state;
+    const { web3 } = this.state;
+    const { fromToken } = this.state;
+    const { toToken } = this.state;
+    const { noContract } = this.state;
+    const { yesContract } = this.state;
+    const { daiContract } = this.state;
+    const { accounts } = this.state;
+    var { fromAmount } = this.state;
+
+    fromAmount = web3.utils.toWei(this.state.fromAmount.toString());
+    console.log("fromAmount: ", fromAmount)    
+
+    try {
+      //approve fromAmount of fromToken for spending by Trader1
+      if (fromToken === noContract.options.address) {
+        await noContract.methods.approve(pool.options.address, fromAmount).send({from: accounts[2], gas: 6000000 });
+        var noAllowance = await noContract.methods.allowance(accounts[2], pool.options.address).call();
+        console.log("noAllowance: ", noAllowance);
+      } else if (fromToken === yesContract.options.address) {
+        await yesContract.methods.approve(pool.options.address, fromAmount).send({from: accounts[2], gas: 6000000 });
+        var yesAllowance = await yesContract.methods.allowance(accounts[2], pool.options.address).call();
+        console.log("yesAllowance: ", yesAllowance);
+      } else if (fromToken === daiContract.options.address) {
+        await daiContract.methods.approve(pool.options.address, fromAmount).send({from: accounts[2], gas: 6000000 });
+        var daiAllowance = await daiContract.methods.allowance(accounts[2], pool.options.address).call();
+        console.log("daiAllowance: ", daiAllowance);
+      }
+
+    } catch (error) {
+      alert(
+        `Attempt to create new smart pool failed. Check console for details.`,
+      );
+      console.error(error);
+    }
+  }; 
   
     render() {
     if (!this.state.web3) {
@@ -297,6 +340,6 @@ class App extends Component {
       </div>
     );
   };
-}
+};
 
 export default App;
