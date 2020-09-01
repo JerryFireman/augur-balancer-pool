@@ -167,7 +167,7 @@ class App extends Component {
       var isPublicSwap = await pool.methods.isPublicSwap().call();
       console.log("isPublicSwap: ", isPublicSwap)
 
-      console.log("LP1 balances after creation of pool")
+      console.log("LP1 and Trader 1 balances after creation of pool")
 
       LP1YesBalance = await yesContract.methods.balanceOf(accounts[1]).call();
       LP1YesBalance = web3.utils.fromWei(LP1YesBalance)
@@ -181,35 +181,19 @@ class App extends Component {
       LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
       console.log("LP1 Dai balance: ", LP1DaiBalance)
 
-      var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+      Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
       Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
       console.log("Trader1 Dai balance: ", Trader1DaiBalance);
 
       // Test calcToGivenFrom and swapExactAmountIn
-      console.log("Trader1 swaps 100 dai for yes tokens");
+      console.log("Let's see how many yes tokens we can get for 100 dai ...");
       this.setState({fromToken: daiContract.options.address});
-      console.log("this.state.fromToken", this.state.fromToken);  
       this.setState({toToken: yesContract.options.address});
-      console.log("this.state.toToken", this.state.toToken);  
       this.setState({ fromAmount: 100 });
       console.log("fromAmount: ", this.state.fromAmount);
-      console.log("Calculating number of yes tokens returned");
       await this.calcToGivenFrom();
-      console.log("Looks good so let's swapj");
+      console.log("Looks good so let's swap ...");
       await this.swapExactAmountIn();
-
-
-      // Test calcFromGivenTo
-      this.setState({fromToken: daiContract.options.address})
-      console.log("this.state.fromToken", this.state.fromToken);  
-      this.setState({toToken: yesContract.options.address})
-      console.log("this.state.toToken", this.state.toToken);  
-      this.setState({ toAmount: 50 })
-      console.log("toAmount: ", this.state.toAmount)
-      await this.calcFromGivenTo();
-
-      await this.swapExactAmountIn();
-
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -237,32 +221,20 @@ class App extends Component {
     try {
       var fromTokenBalance = await pool.methods.getBalance(fromToken).call();
       fromTokenBalance = web3.utils.fromWei(fromTokenBalance);
-      console.log("fromTokenBalance", fromTokenBalance);
 
       var fromTokenWeight = await pool.methods.getNormalizedWeight(fromToken).call();
       fromTokenWeight = web3.utils.fromWei(fromTokenWeight);
-      console.log("fromTokenWeight", fromTokenWeight);
 
       var toTokenBalance = await pool.methods.getBalance(toToken).call();
       toTokenBalance = web3.utils.fromWei(toTokenBalance);
-      console.log("toTokenBalance", toTokenBalance);
 
       var toTokenWeight = await pool.methods.getNormalizedWeight(toToken).call();
       toTokenWeight = web3.utils.fromWei(toTokenWeight);
-      console.log("toTokenWeight", toTokenWeight);
-
-      console.log("fromTokenBalance", fromTokenBalance);
       var intermediate1 = fromTokenBalance / ( Number(fromTokenBalance) + Number(fromAmount) )
       var intermediate2 =  intermediate1 ** (fromTokenWeight / toTokenWeight)
       var toAmount = toTokenBalance * ( 1 -  intermediate2  );
       toAmount = toAmount.toFixed(2)
       this.setState( { toAmount: toAmount } );
-
-      console.log("fromTokenBalance", fromTokenBalance);
-      console.log("(fromTokenBalance + fromAmount ): ", (Number(fromTokenBalance) + Number(fromAmount) ))
-      console.log("fromAmount: ", fromAmount);
-      console.log("intermediate1: ", intermediate1);
-      console.log("intermediate2: ", intermediate2);
       console.log("toAmount: ", toAmount);
 
       return toAmount ;
@@ -340,13 +312,10 @@ class App extends Component {
 
 
     fromAmount = web3.utils.toWei(this.state.fromAmount.toString());
-    console.log("fromAmount: ", fromAmount); 
     toAmount = 0
     toAmount = web3.utils.toWei(toAmount.toString());
-    console.log("toAmount: ", toAmount); 
     var maxPrice = 2 * (this.state.toAmount / this.state.fromAmount);
     maxPrice = web3.utils.toWei(maxPrice.toString())
-    console.log("maxPrice: ", maxPrice); 
 
     try {
       //approve fromAmount of fromToken for spending by Trader1
@@ -360,11 +329,17 @@ class App extends Component {
         console.log("yesAllowance: ", yesAllowance);
       } else if (fromToken === daiContract.options.address) {
         await daiContract.methods.approve(pool.options.address, fromAmount).send({from: accounts[2], gas: 6000000 });
-        var daiAllowance = await daiContract.methods.allowance(accounts[2], pool.options.address).call();
-        console.log("daiAllowance: ", daiAllowance);
-      }
-      var testObject = await pool.methods.swapExactAmountIn(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[2], gas: 6000000 })
-      console.log("testObject: ", testObject)
+      } var tx = await pool.methods.swapExactAmountIn(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[2], gas: 6000000 });
+        console.log("Successful transaction: ", tx.status)
+        console.log("Checking balances after transaction ...")
+        var Trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
+        Trader1YesBalance = web3.utils.fromWei(Trader1YesBalance)
+        console.log("Trader1YesBalance: ", Trader1YesBalance)
+        var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+        Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
+        console.log("Trader1 Dai balance: ", Trader1DaiBalance);
+  
+
 
     } catch (error) {
       alert(
