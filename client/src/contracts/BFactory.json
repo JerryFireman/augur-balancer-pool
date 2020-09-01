@@ -6026,12 +6026,12 @@
         }
       },
       "links": {},
-      "address": "0x639855D1d346d328F0a6bF8887C374aBC28E89a3",
-      "transactionHash": "0x2a6ed790e811ece16bddc7ebec63889684fdf41150e01feb6df5d4a532d5f4f9"
+      "address": "0xd2298ce74e2558FBD1956045eC7fa99408f01B23",
+      "transactionHash": "0xcb563d5fd65d41b44f91b29c5c01742386f344b46ae037e4ac59131500bb721c"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-01T15:49:13.587Z",
+  "updatedAt": "2020-09-01T18:16:24.655Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

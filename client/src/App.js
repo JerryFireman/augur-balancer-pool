@@ -246,57 +246,6 @@ class App extends Component {
     }
   };
 
-  // Calculates number of "from" tokens given number of "to" tokens
-  calcFromGivenTo = async () => {
-    const { pool } = this.state;
-    const { web3 } = this.state;
-    const { fromToken } = this.state;
-    const { toToken } = this.state;
-    const { toAmount } = this.state;
-
-    try {
-      var fromTokenBalance = await pool.methods.getBalance(fromToken).call();
-      fromTokenBalance = web3.utils.fromWei(fromTokenBalance);
-      console.log("fromTokenBalance", fromTokenBalance);
-
-      var fromTokenWeight = await pool.methods.getNormalizedWeight(fromToken).call();
-      fromTokenWeight = web3.utils.fromWei(fromTokenWeight);
-      console.log("fromTokenWeight", fromTokenWeight);
-
-      var toTokenBalance = await pool.methods.getBalance(toToken).call();
-      toTokenBalance = web3.utils.fromWei(toTokenBalance);
-      console.log("toTokenBalance", toTokenBalance);
-
-      var toTokenWeight = await pool.methods.getNormalizedWeight(toToken).call();
-      toTokenWeight = web3.utils.fromWei(toTokenWeight);
-      console.log("toTokenWeight", toTokenWeight);
-
-      var intermediate1 = toTokenBalance / ( Number(toTokenBalance) + Number(toAmount) )
-      var intermediate2 =  intermediate1 ** (toTokenWeight / fromTokenWeight)
-      var fromAmount = -toTokenBalance * ( intermediate2 - 1  );
-      fromAmount = fromAmount.toFixed(2)
-      this.setState( { toAmount: toAmount } );
-
-      console.log("toTokenBalance", toTokenBalance);
-      console.log("(toTokenBalance + toAmount ): ", (Number(fromTokenBalance) + Number(fromAmount) ))
-      console.log("toAmount: ", toAmount);
-      console.log("intermediate1: ", intermediate1);
-      console.log("intermediate2: ", intermediate2);
-      console.log("fromAmount: ", fromAmount);
-
-      return fromAmount ;
-
-    } catch (error) {
-      alert(
-        `Attempt to create new smart pool failed. Check console for details.`,
-      );
-      console.error(error);
-    }
-  };
-
-  
-
-
 // Swap with the number of from tokens fixed
   swapExactAmountIn = async () => {
     const { pool } = this.state;
