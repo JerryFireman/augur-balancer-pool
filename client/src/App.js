@@ -186,14 +186,16 @@ class App extends Component {
       console.log("Trader1 Dai balance: ", Trader1DaiBalance);
 
       // Test calcToGivenFrom and swapExactAmountIn
-      console.log("Trader1 swaps 100 dai for yes")
-      this.setState({fromToken: yesContract.options.address})
+      console.log("Trader1 swaps 100 dai for yes tokens");
+      this.setState({fromToken: daiContract.options.address});
       console.log("this.state.fromToken", this.state.fromToken);  
-      this.setState({toToken: daiContract.options.address})
+      this.setState({toToken: yesContract.options.address});
       console.log("this.state.toToken", this.state.toToken);  
-      this.setState({ fromAmount: 100 })
-      console.log("fromAmount: ", this.state.fromAmount)
+      this.setState({ fromAmount: 100 });
+      console.log("fromAmount: ", this.state.fromAmount);
+      console.log("Calculating number of yes tokens returned");
       await this.calcToGivenFrom();
+      console.log("Looks good so let's swapj");
       await this.swapExactAmountIn();
 
 
@@ -206,7 +208,6 @@ class App extends Component {
       console.log("toAmount: ", this.state.toAmount)
       await this.calcFromGivenTo();
 
-      //Test swapExactAmountIn
       await this.swapExactAmountIn();
 
 
@@ -338,12 +339,12 @@ class App extends Component {
     var { toAmount } = this.state;
 
 
-    console.log("Running swapExactAmountIn")
     fromAmount = web3.utils.toWei(this.state.fromAmount.toString());
     console.log("fromAmount: ", fromAmount); 
-    toAmount = web3.utils.toWei(this.state.toAmount.toString());
+    toAmount = 0
+    toAmount = web3.utils.toWei(toAmount.toString());
     console.log("toAmount: ", toAmount); 
-    var maxPrice = this.state.toAmount / this.state.fromAmount;
+    var maxPrice = 2 * (this.state.toAmount / this.state.fromAmount);
     maxPrice = web3.utils.toWei(maxPrice.toString())
     console.log("maxPrice: ", maxPrice); 
 
@@ -362,6 +363,8 @@ class App extends Component {
         var daiAllowance = await daiContract.methods.allowance(accounts[2], pool.options.address).call();
         console.log("daiAllowance: ", daiAllowance);
       }
+      var testObject = await pool.methods.swapExactAmountIn(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[2], gas: 6000000 })
+      console.log("testObject: ", testObject)
 
     } catch (error) {
       alert(
