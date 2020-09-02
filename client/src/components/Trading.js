@@ -64,15 +64,14 @@ export default function Trading(props) {
                 <form className={classes.root} noValidate autoComplete="off">
                     <InputBase
                         className={classes.margin}
+                        name="fromAmount"
+                        value={props.fromAmount}
+                        onChange={props.handleChange}
                         defaultValue="0"
                         inputProps={{ 'aria-label': 'naked' }}
                     />
                     <br/><br/>
-                    <InputBase
-                        className={classes.margin}
-                        defaultValue="0"
-                        inputProps={{ 'aria-label': 'naked' }}
-                    /> 
+
                 </form>
             </Box>
           </Paper>
@@ -82,18 +81,21 @@ export default function Trading(props) {
             <Box fontWeight="fontWeightBold" textAlign="left">    
                 <form className={classes.root} noValidate autoComplete="off">
                 <Select
-                   disableUnderline
+                    disableUnderline
+                    defaultValue="DAI"
+                    name="fromToken"
+                    value={props.fromToken}
+                    onChange={props.handleChange}
                     inputProps={{
-                    name: "age",
-                    id: "age-simple"
+                        name: "fromToken",
+                        id: "fromToken"
                     }}
                 >
                     <MenuItem value="">
-                    <em>None</em>
                     </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={props.yesContractAddress}>YES TRUMP</MenuItem>
+                    <MenuItem value={props.noContractAddress}>NO TRUMP</MenuItem>
+                    <MenuItem value={props.daiContractAddress}>DAI</MenuItem>
                 </Select>
                </form>
             </Box>

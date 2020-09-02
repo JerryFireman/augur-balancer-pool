@@ -30,6 +30,9 @@ class App extends Component {
     toToken: "",
     fromAmount: "",
     toAmount: "",
+    yesContractAddress: "",
+    noContractAddress: "",
+    daiContractAddress: "",
   };
 
   componentDidMount = async () => {
@@ -92,6 +95,13 @@ class App extends Component {
       await yesContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
       await noContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
       await daiContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
+      
+      this.setState ({ 
+        yesContractAddress: yesContract.options.address,
+        noContractAddress: noContract.options.address,
+        daiContractAddress: daiContract.options.address,
+
+       });    
 
       // @ mint Dai and send to Trader1
       await daiContract.methods.mint(accounts[2], web3.utils.toWei('5000')).send({ from: accounts[0] });
@@ -392,7 +402,14 @@ swapExactAmountOut = async () => {
     }
     return (
       <div className="App">
-      <Trading />
+      <Trading 
+        handleChange={this.handleChange}
+        fromAmount={this.state.fromAmount}
+        fromToken={this.state.fromToken}
+        yesContractAddress={this.state.yesContractAddress}
+        noContractAddress={this.state.noContractAddress}
+        daiContractAddress={this.state.daiContractAddress}
+      />
       </div>
     );
   };
