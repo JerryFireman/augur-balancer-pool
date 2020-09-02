@@ -4,15 +4,11 @@ import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import 'fontsource-roboto';
-import Input from '@material-ui/core/Input';
-
-import TextField from '@material-ui/core/TextField'
 import InputBase from '@material-ui/core/InputBase';
-
-import StyledButton from './StyledButton';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Select from "@material-ui/core/Select";
+import Typography from '@material-ui/core/Typography'
+import StyledButton from './StyledButton';
 
 const tokens = [
     {
@@ -62,6 +58,9 @@ export default function Trading(props) {
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box fontWeight="fontWeightBold" textAlign="left">    
                 <form className={classes.root} noValidate autoComplete="off">
+                <Typography variant="body2" color="black" align="left" padding="20px">
+                        From
+                    </Typography>
                     <InputBase
                         className={classes.margin}
                         name="fromAmount"
@@ -80,6 +79,9 @@ export default function Trading(props) {
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box fontWeight="fontWeightBold" textAlign="left">    
                 <form className={classes.root} noValidate autoComplete="off">
+                    <Typography variant="body2" color="black" align="left" padding="20px">
+                        Balance
+                    </Typography>
                 <Select
                     disableUnderline
                     defaultValue="DAI"
