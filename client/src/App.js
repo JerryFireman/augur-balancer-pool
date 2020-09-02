@@ -107,18 +107,11 @@ class App extends Component {
       LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
       console.log("LP1 Dai balance: ", LP1DaiBalance)
 
-      var Trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
-      Trader1YesBalance = web3.utils.fromWei(Trader1YesBalance)
-      console.log("Trader1YesBalance: ", Trader1YesBalance)
-
-      var Trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
-      Trader1NoBalance = web3.utils.fromWei(Trader1NoBalance)
-      console.log("Trader1NoBalance: ", Trader1NoBalance)
-
       var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
       Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
+      Trader1DaiBalance = Number(Trader1DaiBalance);
+      Trader1DaiBalance = Trader1DaiBalance.toFixed(2);
       console.log("Trader1 Dai balance: ", Trader1DaiBalance);
-
 
       // create a new balancer pool and save address to state, bind tokens and set public
       const tx = await bfactoryContract.methods.newBPool().send({from: accounts[1], gas: 6000000 });
@@ -136,9 +129,6 @@ class App extends Component {
 
       // print back end parameters to console.log
       console.log("Parameters of Augur prediction market pool on Balancer")
-
-      var numberOfTokens = await pool.methods.getNumTokens().call();
-      console.log("NumberOfTokens: ", numberOfTokens);
 
       var poolYesBalance = await pool.methods.getBalance(yesContract.options.address).call();
       poolYesBalance = web3.utils.fromWei(poolYesBalance);
@@ -164,26 +154,17 @@ class App extends Component {
       poolDaiNormWeight = web3.utils.fromWei(poolDaiNormWeight);
       console.log("poolDaiNormWeight: ", poolDaiNormWeight);
 
-      var isPublicSwap = await pool.methods.isPublicSwap().call();
-      console.log("isPublicSwap: ", isPublicSwap)
-
-      console.log("LP1 and Trader 1 balances after creation of pool")
-
       LP1YesBalance = await yesContract.methods.balanceOf(accounts[1]).call();
       LP1YesBalance = web3.utils.fromWei(LP1YesBalance)
-      console.log("LP1 Yes balance: ", LP1YesBalance)
 
       LP1NoBalance = await noContract.methods.balanceOf(accounts[1]).call();
       LP1NoBalance = web3.utils.fromWei(LP1NoBalance)
-      console.log("LP1 No balance: ", LP1NoBalance)
 
       LP1DaiBalance = await daiContract.methods.balanceOf(accounts[1]).call();
       LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
-      console.log("LP1 Dai balance: ", LP1DaiBalance)
 
       Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
       Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
-      console.log("Trader1 Dai balance: ", Trader1DaiBalance);
 
       // Test calcToGivenFrom and swapExactAmountIn
       console.log("Let's see how many yes tokens we can get for 100 dai ...");
@@ -194,6 +175,15 @@ class App extends Component {
       await this.calcToGivenFrom();
       console.log("Looks good so let's swap ...");
       await this.swapExactAmountIn();
+
+      // Test calcFromGivenTo and swapExactAmountOut
+      console.log("Now let's see how many dai we will need to get 50 no tokens ...");
+      this.setState({fromToken: daiContract.options.address});
+      this.setState({toToken: noContract.options.address});
+      this.setState({ toAmount: 50 });
+      await this.calcFromGivenTo();
+      console.log("OK let her rip ...");
+      await this.swapExactAmountOut();
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -210,7 +200,7 @@ class App extends Component {
     console.log(e.target.name, ": ", e.target.value);
   }
 
-  // Calculates number of "to" tokens given number of "from" tokens
+  // Calculates number of "to" tokens received for a given number of "from" tokens
   calcToGivenFrom = async () => {
     const { pool } = this.state;
     const { web3 } = this.state;
@@ -245,6 +235,44 @@ class App extends Component {
       console.error(error);
     }
   };
+
+  // Calculates number of "from" tokens received for a given number of "to" tokens
+  calcFromGivenTo = async () => {
+    const { pool } = this.state;
+    const { web3 } = this.state;
+    const { fromToken } = this.state;
+    const { toToken } = this.state;
+    const { toAmount } = this.state;
+
+    try {
+      var fromTokenBalance = await pool.methods.getBalance(fromToken).call();
+      fromTokenBalance = web3.utils.fromWei(fromTokenBalance);
+
+      var fromTokenWeight = await pool.methods.getNormalizedWeight(fromToken).call();
+      fromTokenWeight = web3.utils.fromWei(fromTokenWeight);
+
+      var toTokenBalance = await pool.methods.getBalance(toToken).call();
+      toTokenBalance = web3.utils.fromWei(toTokenBalance);
+
+      var toTokenWeight = await pool.methods.getNormalizedWeight(toToken).call();
+      toTokenWeight = web3.utils.fromWei(toTokenWeight);
+
+      var intermediate1 = toTokenBalance / ( Number(toTokenBalance) + Number(toAmount) )
+      var intermediate2 =  intermediate1 ** (toTokenWeight / fromTokenWeight)
+      var fromAmount = fromTokenBalance * ( intermediate2 - 1 );
+      fromAmount = - fromAmount.toFixed(2)
+      this.setState( { fromAmount: fromAmount } );
+      console.log("fromAmount: ", fromAmount);
+
+      return toAmount ;
+    } catch (error) {
+      alert(
+        `Attempt to create new smart pool failed. Check console for details.`,
+      );
+      console.error(error);
+    }
+  };
+
 
 // Swap with the number of from tokens fixed
   swapExactAmountIn = async () => {
@@ -283,14 +311,16 @@ class App extends Component {
         console.log("Checking balances after transaction ...")
         var Trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
         Trader1YesBalance = web3.utils.fromWei(Trader1YesBalance)
+        Trader1YesBalance = Number(Trader1YesBalance);
+        Trader1YesBalance = Trader1YesBalance.toFixed(2);
         console.log("Trader1YesBalance: ", Trader1YesBalance)
         var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
         Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
+        Trader1DaiBalance = Number(Trader1DaiBalance);
+        Trader1DaiBalance = Trader1DaiBalance.toFixed(2);
         console.log("Trader1 Dai balance: ", Trader1DaiBalance);
-  
 
-
-    } catch (error) {
+      } catch (error) {
       alert(
         `Attempt to create new smart pool failed. Check console for details.`,
       );
@@ -298,7 +328,63 @@ class App extends Component {
     }
   }; 
   
-    render() {
+// Swap with the number of from tokens fixed
+swapExactAmountOut = async () => {
+  const { pool } = this.state;
+  const { web3 } = this.state;
+  const { fromToken } = this.state;
+  const { toToken } = this.state;
+  const { noContract } = this.state;
+  const { yesContract } = this.state;
+  const { daiContract } = this.state;
+  const { accounts } = this.state;
+  var { fromAmount } = this.state;
+  var { toAmount } = this.state;
+
+
+  toAmount = web3.utils.toWei(this.state.toAmount.toString());
+  fromAmount = 2 * fromAmount
+  fromAmount = web3.utils.toWei(toAmount.toString());
+  var maxPrice = 2 * (this.state.fromAmount / this.state.toAmount);
+  maxPrice = web3.utils.toWei(maxPrice.toString())
+
+  try {
+    //approve fromAmount of fromToken for spending by Trader1
+    if (fromToken === noContract.options.address) {
+      await noContract.methods.approve(pool.options.address, fromAmount).send({from: accounts[2], gas: 6000000 });
+      var noAllowance = await noContract.methods.allowance(accounts[2], pool.options.address).call();
+      console.log("noAllowance: ", noAllowance);
+    } else if (fromToken === yesContract.options.address) {
+      await yesContract.methods.approve(pool.options.address, fromAmount).send({from: accounts[2], gas: 6000000 });
+      var yesAllowance = await yesContract.methods.allowance(accounts[2], pool.options.address).call();
+      console.log("yesAllowance: ", yesAllowance);
+    } else if (fromToken === daiContract.options.address) {
+      await daiContract.methods.approve(pool.options.address, fromAmount).send({from: accounts[2], gas: 6000000 });
+    } var tx = await pool.methods.swapExactAmountOut(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[2], gas: 6000000 });
+      console.log("Successful transaction: ", tx.status)
+      console.log("Checking balances after transaction ...")
+      var Trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
+      Trader1NoBalance = web3.utils.fromWei(Trader1NoBalance)
+      console.log("Trader1 No Balance: ", Trader1NoBalance)
+      var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+      Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
+      Trader1DaiBalance = Number(Trader1DaiBalance);
+      Trader1DaiBalance = Trader1DaiBalance.toFixed(2);
+      console.log("Trader1 Dai balance: ", Trader1DaiBalance);
+
+
+
+  } catch (error) {
+    alert(
+      `Attempt to create new smart pool failed. Check console for details.`,
+    );
+    console.error(error);
+  }
+}; 
+
+
+
+  render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }

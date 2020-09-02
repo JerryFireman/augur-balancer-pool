@@ -1685,12 +1685,12 @@
     "1598972080152": {
       "events": {},
       "links": {},
-      "address": "0xA7f143524eece39B3EB76F8D8BCfe50a5F2BEcC4",
-      "transactionHash": "0xcb075176d2b412bb545cf80042e0a9e46cf2ca09aa6f2713a705a729874c8722"
+      "address": "0xb94B5d06651f852815191C091BEC906C0abc355b",
+      "transactionHash": "0x9c39cd30dea7383eb2c36b8ef15b9010f2697dbd97d6958dfe09013f2688f55d"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-01T18:16:24.926Z",
+  "updatedAt": "2020-09-01T19:42:50.645Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

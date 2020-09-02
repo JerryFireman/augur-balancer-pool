@@ -13691,12 +13691,12 @@
         }
       },
       "links": {},
-      "address": "0x801015727ba9ef7c4438D0Ae53001204ad2e86FD",
-      "transactionHash": "0x56761f97dc2dfaf49ebca032160e2cbd6679f51e69e909e1c5202e1c22a4b4ce"
+      "address": "0x60c68250259Ecfb3C7Ac80123e9924a998ded1B3",
+      "transactionHash": "0xfaf5e3194eb814d4074ede8d75e10c531a72cee47691e084aadebd1d6b86ebf0"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-01T18:16:24.766Z",
+  "updatedAt": "2020-09-01T19:42:50.582Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
