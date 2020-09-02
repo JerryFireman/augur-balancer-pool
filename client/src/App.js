@@ -5,6 +5,8 @@ import NoContract from "./contracts/No.json";
 import DaiContract from "./contracts/Dai.json";
 import getWeb3 from "./getWeb3";
 import "./App.css";
+import Trading from './components/Trading.js';
+
 const { abi } = require('./contracts/BPool.json');
 
 
@@ -390,7 +392,7 @@ swapExactAmountOut = async () => {
     }
     return (
       <div className="App">
-        Hello World
+      <Trading />
       </div>
     );
   };
