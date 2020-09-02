@@ -58,7 +58,7 @@ export default function Trading(props) {
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box fontWeight="fontWeightBold" textAlign="left">    
                 <form className={classes.root} noValidate autoComplete="off">
-                <Typography variant="body2" color="black" align="left" padding="20px">
+                <Typography variant="body2" color="black" align="left" >
                         From
                     </Typography>
                     <InputBase
@@ -67,8 +67,11 @@ export default function Trading(props) {
                         value={props.fromAmount}
                         onChange={props.handleChange}
                         defaultValue="0"
-                        inputProps={{ 'aria-label': 'naked' }}
-                    />
+                        inputProps={
+                            { 'aria-label': 'naked' }
+                        }
+                        inputProps={{ style: { fontSize: 24 } }}
+                   />
                     <br/><br/>
 
                 </form>
@@ -88,10 +91,7 @@ export default function Trading(props) {
                     name="fromToken"
                     value={props.fromToken}
                     onChange={props.handleChange}
-                    inputProps={{
-                        name: "fromToken",
-                        id: "fromToken"
-                    }}
+                    MenuProps={{ style: { fontSize: 40 } }}
                 >
                     <MenuItem value="">
                     </MenuItem>
