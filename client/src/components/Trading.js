@@ -4,13 +4,15 @@ import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import 'fontsource-roboto';
+import Input from '@material-ui/core/Input';
+
 import TextField from '@material-ui/core/TextField'
 import InputBase from '@material-ui/core/InputBase';
 
 import StyledButton from './StyledButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import { ValidatorForm, TextValidator, SelectValidator} from 'react-material-ui-form-validator';
+import Select from "@material-ui/core/Select";
 
 const tokens = [
     {
@@ -70,7 +72,7 @@ export default function Trading(props) {
                         className={classes.margin}
                         defaultValue="0"
                         inputProps={{ 'aria-label': 'naked' }}
-                    />
+                    /> 
                 </form>
             </Box>
           </Paper>
@@ -79,18 +81,21 @@ export default function Trading(props) {
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box fontWeight="fontWeightBold" textAlign="left">    
                 <form className={classes.root} noValidate autoComplete="off">
-                <InputBase
-                        className={classes.margin}
-                        defaultValue="0"
-                        inputProps={{ 'aria-label': 'naked' }}
-                    />
-                    <br/><br/>
-                    <InputBase
-                        className={classes.margin}
-                        defaultValue="0"
-                        inputProps={{ 'aria-label': 'naked' }}
-                    />
-                 </form>
+                <Select
+                   disableUnderline
+                    inputProps={{
+                    name: "age",
+                    id: "age-simple"
+                    }}
+                >
+                    <MenuItem value="">
+                    <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                </Select>
+               </form>
             </Box>
           </Paper>
         </Grid>
