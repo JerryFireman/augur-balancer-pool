@@ -53,9 +53,9 @@ export default function Trading(props) {
                         onChange={props.handleChange}
                         inputProps={{ style: { fontSize: 24 } }}
                    />
-                    <br/><br/>
+                    <br/><br/><br/>
                     <Typography variant="body2" color="textPrimary" align="left" >
-                        To (estimated)
+                        To
                     </Typography>
                     <InputBase
                         className={classes.margin}
@@ -64,7 +64,7 @@ export default function Trading(props) {
                         onChange={props.handleChange}
                         inputProps={{ style: { fontSize: 24 } }}
                    />
-                    <br/><br/>
+                   <br/><br/>
                 </form>
             </Box>
           </Paper>
@@ -91,7 +91,7 @@ export default function Trading(props) {
                   <MenuItem value={props.noContractAddress}>NO TRUMP</MenuItem>
                   <MenuItem value={props.daiContractAddress}>DAI</MenuItem>
               </Select>
-                <br/><br/>
+                <br/><br/><br/>
               <Typography variant="body2" color="textPrimary" align="left" padding="20px">
                     Balance
                 </Typography>

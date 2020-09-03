@@ -203,7 +203,8 @@ class App extends Component {
 
     // Set starting parameters
     this.setState( {
-      fromAmount: 100,
+      fromAmount: 0,
+      toAmount: 0,
       fromToken: this.state.daiContractAddress,
       toToken: this.state.yesContractAddress,
     });
@@ -222,7 +223,10 @@ class App extends Component {
   handleChange = async (e) => {
     this.setState({ [e.target.name]: e.target.value });
     console.log(e.target.name, ": ", e.target.value);
-  }
+    if (e.target.name === "fromAmount") {
+      await this.calcToGivenFrom();      
+    }
+  };
 
   // Calculates number of "to" tokens received for a given number of "from" tokens
   calcToGivenFrom = async () => {
