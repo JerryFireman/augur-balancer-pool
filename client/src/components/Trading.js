@@ -72,10 +72,10 @@ export default function Trading(props) {
         <Grid item xs={2}>
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box fontWeight="fontWeightBold" textAlign="left">    
-                <form className={classes.root} noValidate autoComplete="off">
-                    <Typography variant="body2" color="textPrimary" align="left" padding="20px">
-                        Balance
-                    </Typography>
+              <form className={classes.root} noValidate autoComplete="off">
+                <Typography variant="body2" color="textPrimary" align="left" padding="20px">
+                    Balance
+                </Typography>
                 <Select
                     disableUnderline
                     name="fromToken"
@@ -85,13 +85,32 @@ export default function Trading(props) {
                       fontSize: 24
                     }}
                 >
-                    <MenuItem value="">
-                    </MenuItem>
-                    <MenuItem value={props.yesContractAddress}>YES TRUMP</MenuItem>
-                    <MenuItem value={props.noContractAddress}>NO TRUMP</MenuItem>
-                    <MenuItem value={props.daiContractAddress}>DAI</MenuItem>
-                </Select>
-               </form>
+                  <MenuItem value="">
+                  </MenuItem>
+                  <MenuItem value={props.yesContractAddress}>YES TRUMP</MenuItem>
+                  <MenuItem value={props.noContractAddress}>NO TRUMP</MenuItem>
+                  <MenuItem value={props.daiContractAddress}>DAI</MenuItem>
+              </Select>
+                <br/><br/>
+              <Typography variant="body2" color="textPrimary" align="left" padding="20px">
+                    Balance
+                </Typography>
+                <Select
+                    disableUnderline
+                    name="toToken"
+                    value={props.toToken}
+                    onChange={props.handleChange}
+                    style={{
+                      fontSize: 24
+                    }}
+                >
+                  <MenuItem value="">
+                  </MenuItem>
+                  <MenuItem value={props.yesContractAddress}>YES TRUMP</MenuItem>
+                  <MenuItem value={props.noContractAddress}>NO TRUMP</MenuItem>
+                  <MenuItem value={props.daiContractAddress}>DAI</MenuItem>
+              </Select>
+              </form>
             </Box>
           </Paper>
         </Grid>
