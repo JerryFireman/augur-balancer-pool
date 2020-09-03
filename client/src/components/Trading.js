@@ -22,9 +22,6 @@ import Typography from '@material-ui/core/Typography'
     margin: theme.spacing(0),
     minWidth: 120,
   },
-  resize:{
-    fontSize:50
-  },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
@@ -46,7 +43,7 @@ export default function Trading(props) {
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box fontWeight="fontWeightBold" textAlign="left">    
                 <form className={classes.root} noValidate autoComplete="off">
-                <Typography variant="body2" color="textPrimary" align="left" >
+                    <Typography variant="body2" color="textPrimary" align="left" >
                         From
                     </Typography>
                     <InputBase
@@ -57,7 +54,17 @@ export default function Trading(props) {
                         inputProps={{ style: { fontSize: 24 } }}
                    />
                     <br/><br/>
-
+                    <Typography variant="body2" color="textPrimary" align="left" >
+                        To (estimated)
+                    </Typography>
+                    <InputBase
+                        className={classes.margin}
+                        name="toAmount"
+                        value={props.toAmount}
+                        onChange={props.handleChange}
+                        inputProps={{ style: { fontSize: 24 } }}
+                   />
+                    <br/><br/>
                 </form>
             </Box>
           </Paper>

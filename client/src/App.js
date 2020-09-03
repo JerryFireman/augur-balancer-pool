@@ -418,6 +418,8 @@ swapExactAmountOut = async () => {
         handleChange={this.handleChange}
         fromAmount={this.state.fromAmount}
         fromToken={this.state.fromToken}
+        toAmount={this.state.toAmount}
+        toToken={this.state.toToken}
         yesContractAddress={this.state.yesContractAddress}
         noContractAddress={this.state.noContractAddress}
         daiContractAddress={this.state.daiContractAddress}
