@@ -50,6 +50,7 @@ export default function Trading(props) {
                         className={classes.margin}
                         name="fromAmount"
                         value={props.fromAmount}
+                        type="number" 
                         onChange={props.handleChange}
                         inputProps={{ style: { fontSize: 24 } }}
                    />
@@ -61,6 +62,7 @@ export default function Trading(props) {
                         className={classes.margin}
                         name="toAmount"
                         value={props.toAmount}
+                        type="number" 
                         onChange={props.handleChange}
                         inputProps={{ style: { fontSize: 24 } }}
                    />
