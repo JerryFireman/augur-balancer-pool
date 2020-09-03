@@ -8,22 +8,7 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from "@material-ui/core/Select";
 import Typography from '@material-ui/core/Typography'
-import StyledButton from './StyledButton';
 
-const tokens = [
-    {
-      value: 'YES',
-      label: 'YES',
-    },
-    {
-      value: 'NO',
-      label: 'NO',
-    },
-    {
-      value: 'DAI',
-      label: 'DAI',
-    },
-  ];
   const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -36,6 +21,9 @@ const tokens = [
   formControl: {
     margin: theme.spacing(0),
     minWidth: 120,
+  },
+  resize:{
+    fontSize:50
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -58,7 +46,7 @@ export default function Trading(props) {
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box fontWeight="fontWeightBold" textAlign="left">    
                 <form className={classes.root} noValidate autoComplete="off">
-                <Typography variant="body2" color="black" align="left" >
+                <Typography variant="body2" color="textPrimary" align="left" >
                         From
                     </Typography>
                     <InputBase
@@ -66,10 +54,6 @@ export default function Trading(props) {
                         name="fromAmount"
                         value={props.fromAmount}
                         onChange={props.handleChange}
-                        defaultValue="0"
-                        inputProps={
-                            { 'aria-label': 'naked' }
-                        }
                         inputProps={{ style: { fontSize: 24 } }}
                    />
                     <br/><br/>
@@ -82,16 +66,17 @@ export default function Trading(props) {
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box fontWeight="fontWeightBold" textAlign="left">    
                 <form className={classes.root} noValidate autoComplete="off">
-                    <Typography variant="body2" color="black" align="left" padding="20px">
+                    <Typography variant="body2" color="textPrimary" align="left" padding="20px">
                         Balance
                     </Typography>
                 <Select
                     disableUnderline
-                    defaultValue="DAI"
                     name="fromToken"
                     value={props.fromToken}
                     onChange={props.handleChange}
-                    MenuProps={{ style: { fontSize: 40 } }}
+                    style={{
+                      fontSize: 24
+                    }}
                 >
                     <MenuItem value="">
                     </MenuItem>
