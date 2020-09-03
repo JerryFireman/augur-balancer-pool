@@ -95,12 +95,12 @@ class App extends Component {
       await yesContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
       await noContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
       await daiContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
+
       
       this.setState ({ 
         yesContractAddress: yesContract.options.address,
         noContractAddress: noContract.options.address,
         daiContractAddress: daiContract.options.address,
-
        });    
 
       // @ mint Dai and send to Trader1
@@ -178,6 +178,8 @@ class App extends Component {
       Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
       Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
 
+
+/* Commenting out section that tests quoting and trading
       // Test calcToGivenFrom and swapExactAmountIn
       console.log("Let's see how many yes tokens we can get for 100 dai ...");
       this.setState({fromToken: daiContract.options.address});
@@ -197,6 +199,15 @@ class App extends Component {
       console.log("OK let her rip ...");
       await this.swapExactAmountOut();
 
+*/
+
+    // Set starting parameters
+    this.setState( {
+      fromAmount: 100,
+      fromToken: this.state.daiContractAddress,
+      toToken: this.state.yesContractAddress,
+    });
+
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -204,7 +215,8 @@ class App extends Component {
       );
       console.error(error);
     }
-  };
+};
+
 
   // This function updates state in response to user input
   handleChange = async (e) => {

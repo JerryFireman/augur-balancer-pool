@@ -6116,12 +6116,12 @@
         }
       },
       "links": {},
-      "address": "0x6CD5231E91b24d177733C12cDaA374505529a7a4",
-      "transactionHash": "0x9f5be125ddbfd562e8348efee3c82521c15435846103f0676975993b9ed04f54"
+      "address": "0x4aD963A9Cf08e18F1f0F857165F119dEba890656",
+      "transactionHash": "0x8307ab4f9f2ccf3a1441a4174a57dd72356dc9e30543ee592e81acd2f541906a"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-03T18:47:53.389Z",
+  "updatedAt": "2020-09-03T19:30:57.283Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
