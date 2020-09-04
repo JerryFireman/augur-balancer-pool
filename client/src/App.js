@@ -230,6 +230,9 @@ class App extends Component {
     if (e.target.name === "toAmount" && this.state.fromToken && this.state.toToken) {
       await this.calcFromGivenTo();      
     }
+    if (e.target.name === "fromToken" || e.target.name === "toToken") {
+      this.setState({ fromAmount: 0, toAmount: 0 });      
+    }
   };
 
   // Calculates number of "to" tokens received for a given number of "from" tokens
