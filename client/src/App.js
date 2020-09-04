@@ -33,6 +33,7 @@ class App extends Component {
     yesContractAddress: "",
     noContractAddress: "",
     daiContractAddress: "",
+    fromExact: true,
   };
 
   componentDidMount = async () => {
@@ -265,7 +266,7 @@ class App extends Component {
       var toAmount = Number(toTokenBalance) * ( 1 -  intermediate2  );
       toAmount = toAmount.toFixed(2)      
       console.log("toAmount: ", toAmount);
-      this.setState( { toAmount: toAmount } );
+      this.setState( { toAmount: toAmount, fromExact: true } );
 
       return toAmount ;
     } catch (error) {
@@ -297,16 +298,16 @@ class App extends Component {
       var toTokenWeight = await pool.methods.getNormalizedWeight(toToken).call();
       toTokenWeight = web3.utils.fromWei(toTokenWeight);
 
-      var intermediate1 = Number(toTokenBalance) / ( Number(toTokenBalance) + Number(this.state.toAmount) );
-      console.log("Number(toTokenBalance) + Number(this.state.toAmount): ", Number(toTokenBalance) + Number(this.state.toAmount))
+      var intermediate1 = Number(toTokenBalance) / ( Number(toTokenBalance) - Number(this.state.toAmount) );
+      console.log("Number(toTokenBalance) + Number(this.state.toAmount): ", Number(toTokenBalance) - Number(this.state.toAmount))
       console.log("intermediate1: ", intermediate1);
       var intermediate2 =  intermediate1 ** (toTokenWeight / fromTokenWeight);
       var exponent = toTokenWeight / fromTokenWeight
       console.log("exponent: ", exponent);
       console.log("intermediate2: ", intermediate2);
       var fromAmount = fromTokenBalance * ( intermediate2 - 1 );
-      fromAmount = - fromAmount.toFixed(2);
-      this.setState( { fromAmount: fromAmount } );
+      fromAmount =  fromAmount.toFixed(2);
+      this.setState( { fromAmount: fromAmount, fromExact: false } );
       console.log("fromAmount: ", fromAmount);
 
     } catch (error) {
@@ -315,6 +316,16 @@ class App extends Component {
       );
       console.error(error);
     }
+  };
+
+  // This function determines whether to swapExactAmountIn or swapExactAmountOut
+  swapBranch = async () => {
+    console.log("swapBranch started")
+    if (this.state.fromExact) {
+      await this.swapExactAmountIn();
+    } else {
+      await this.swapExactAmountOut();
+    };
   };
 
 
@@ -358,6 +369,11 @@ class App extends Component {
         Trader1YesBalance = Number(Trader1YesBalance);
         Trader1YesBalance = Trader1YesBalance.toFixed(2);
         console.log("Trader1YesBalance: ", Trader1YesBalance)
+        var Trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
+        Trader1NoBalance = web3.utils.fromWei(Trader1NoBalance)
+        Trader1NoBalance = Number(Trader1NoBalance);
+        Trader1NoBalance = Trader1NoBalance.toFixed(2);
+        console.log("Trader1NoBalance: ", Trader1NoBalance)
         var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
         Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
         Trader1DaiBalance = Number(Trader1DaiBalance);
@@ -436,6 +452,7 @@ swapExactAmountOut = async () => {
       <div className="App">
       <Trading 
         handleChange={this.handleChange}
+        swapBranch={this.swapBranch}
         fromAmount={this.state.fromAmount}
         fromToken={this.state.fromToken}
         toAmount={this.state.toAmount}

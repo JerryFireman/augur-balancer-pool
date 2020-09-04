@@ -8,6 +8,7 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from "@material-ui/core/Select";
 import Typography from '@material-ui/core/Typography'
+import StyledButton from './StyledButton';
 
   const useStyles = makeStyles(theme => ({
   root: {
@@ -41,7 +42,7 @@ export default function Trading(props) {
         </Grid>
         <Grid item xs={2}>
           <Paper className={classes.paper} square={true} elevation={0}>
-            <Box fontWeight="fontWeightBold" textAlign="left">    
+            <Box textAlign="left">    
                 <form className={classes.root} noValidate autoComplete="off">
                     <Typography variant="body2" color="textPrimary" align="left" >
                         From
@@ -73,7 +74,7 @@ export default function Trading(props) {
         </Grid>
         <Grid item xs={2}>
           <Paper className={classes.paper} square={true} elevation={0}>
-            <Box fontWeight="fontWeightBold" textAlign="left">    
+            <Box textAlign="right">    
               <form className={classes.root} noValidate autoComplete="off">
                 <Typography variant="body2" color="textPrimary" align="left" padding="20px">
                     Balance
@@ -118,7 +119,30 @@ export default function Trading(props) {
         </Grid>
         <Grid item xs={4}>
           <Paper className={classes.paper} square={true} elevation={0}>
-            <Box fontWeight="fontWeightBold" textAlign="left">    
+            <Box textAlign="left">    
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
+      <Grid container spacing={0} >
+        <Grid item xs={4}>
+          <Paper className={classes.paper} square={true} elevation={0}>
+            <Box textAlign="left">    
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper} square={true} elevation={0}>
+            <Box textAlign="center">    
+                <form className={classes.root} noValidate autoComplete="off">
+                  <StyledButton variant="contained" onClick={props.swapBranch}>Swap</StyledButton>                
+                </form>
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper} square={true} elevation={0}>
+            <Box  textAlign="left">    
             </Box>
           </Paper>
         </Grid>

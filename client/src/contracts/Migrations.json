@@ -1703,12 +1703,12 @@
     "1599243120175": {
       "events": {},
       "links": {},
-      "address": "0xB59a8D8c48d37BA7e1ca620086858e2f0EA72173",
-      "transactionHash": "0xe353aaf7d120e7c3dbe1ceed09fec64a5c39c0f47b408105e51dc57cce4095f2"
+      "address": "0x8CF1303d3F7B671eC8ED2c07575e102dE240EaBB",
+      "transactionHash": "0x45a93f83c3092910268333e2a49825ce2bb17c911dbfb2379a6aeec10957ef02"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-04T18:12:29.841Z",
+  "updatedAt": "2020-09-04T22:39:40.679Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
