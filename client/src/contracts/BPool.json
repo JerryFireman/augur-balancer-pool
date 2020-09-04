@@ -63244,12 +63244,12 @@
         }
       },
       "links": {},
-      "address": "0x5231489d6670b01f3057061dd818c7a29756CA5e",
-      "transactionHash": "0x528291b54c08fc80c3dc874a63225931a6deae3f60701ace019d8f122a4ad3a9"
+      "address": "0xB3e20093a3B59A9Aa8d098dD76aF35fB80b5c08C",
+      "transactionHash": "0x6d3ade4a086bc4a25ac9981f8434195e25ee2b56d422a6b90b7e143080f37168"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-03T19:54:07.976Z",
+  "updatedAt": "2020-09-04T00:09:02.064Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

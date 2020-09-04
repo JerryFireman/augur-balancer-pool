@@ -221,10 +221,14 @@ class App extends Component {
 
   // This function updates state in response to user input
   handleChange = async (e) => {
+    e.persist();
     this.setState({ [e.target.name]: e.target.value });
     console.log(e.target.name, ": ", e.target.value);
     if (e.target.name === "fromAmount") {
       await this.calcToGivenFrom();      
+    }
+    if (e.target.name === "toAmount") {
+      await this.calcFromGivenTo();      
     }
   };
 
@@ -234,7 +238,6 @@ class App extends Component {
     const { web3 } = this.state;
     const { fromToken } = this.state;
     const { toToken } = this.state;
-    const { fromAmount } = this.state;
 
     try {
       var fromTokenBalance = await pool.methods.getBalance(fromToken).call();
@@ -276,11 +279,11 @@ class App extends Component {
     const { web3 } = this.state;
     const { fromToken } = this.state;
     const { toToken } = this.state;
-    const { toAmount } = this.state;
 
     try {
       var fromTokenBalance = await pool.methods.getBalance(fromToken).call();
-      fromTokenBalance = web3.utils.fromWei(fromTokenBalance);
+      fromTokenBalance = Number(web3.utils.fromWei(fromTokenBalance));
+      console.log("fromTokenBalance: ", fromTokenBalance)
 
       var fromTokenWeight = await pool.methods.getNormalizedWeight(fromToken).call();
       fromTokenWeight = web3.utils.fromWei(fromTokenWeight);
@@ -291,14 +294,13 @@ class App extends Component {
       var toTokenWeight = await pool.methods.getNormalizedWeight(toToken).call();
       toTokenWeight = web3.utils.fromWei(toTokenWeight);
 
-      var intermediate1 = toTokenBalance / ( Number(toTokenBalance) + Number(toAmount) )
+      var intermediate1 = Number(toTokenBalance) / ( Number(toTokenBalance) + Number(this.state.toAmount) )
       var intermediate2 =  intermediate1 ** (toTokenWeight / fromTokenWeight)
       var fromAmount = fromTokenBalance * ( intermediate2 - 1 );
       fromAmount = - fromAmount.toFixed(2)
       this.setState( { fromAmount: fromAmount } );
       console.log("fromAmount: ", fromAmount);
 
-      return toAmount ;
     } catch (error) {
       alert(
         `Attempt to create new smart pool failed. Check console for details.`,
