@@ -294,10 +294,15 @@ class App extends Component {
       var toTokenWeight = await pool.methods.getNormalizedWeight(toToken).call();
       toTokenWeight = web3.utils.fromWei(toTokenWeight);
 
-      var intermediate1 = Number(toTokenBalance) / ( Number(toTokenBalance) + Number(this.state.toAmount) )
-      var intermediate2 =  intermediate1 ** (toTokenWeight / fromTokenWeight)
+      var intermediate1 = Number(toTokenBalance) / ( Number(toTokenBalance) + Number(this.state.toAmount) );
+      console.log("Number(toTokenBalance) + Number(this.state.toAmount): ", Number(toTokenBalance) + Number(this.state.toAmount))
+      console.log("intermediate1: ", intermediate1);
+      var intermediate2 =  intermediate1 ** (toTokenWeight / fromTokenWeight);
+      var exponent = toTokenWeight / fromTokenWeight
+      console.log("exponent: ", exponent);
+      console.log("intermediate2: ", intermediate2);
       var fromAmount = fromTokenBalance * ( intermediate2 - 1 );
-      fromAmount = - fromAmount.toFixed(2)
+      fromAmount = - fromAmount.toFixed(2);
       this.setState( { fromAmount: fromAmount } );
       console.log("fromAmount: ", fromAmount);
 
