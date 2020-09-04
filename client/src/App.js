@@ -224,10 +224,10 @@ class App extends Component {
     e.persist();
     this.setState({ [e.target.name]: e.target.value });
     console.log(e.target.name, ": ", e.target.value);
-    if (e.target.name === "fromAmount") {
+    if (e.target.name === "fromAmount" && this.state.fromToken && this.state.toToken ) {
       await this.calcToGivenFrom();      
     }
-    if (e.target.name === "toAmount") {
+    if (e.target.name === "toAmount" && this.state.fromToken && this.state.toToken) {
       await this.calcFromGivenTo();      
     }
   };
