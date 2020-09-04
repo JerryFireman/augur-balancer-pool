@@ -15344,12 +15344,12 @@
         }
       },
       "links": {},
-      "address": "0x802A682f14167A7D024E507622d9f736e88Dd673",
-      "transactionHash": "0x0f18e65c6ce24508502980ffca5c2168fe92fc28f066474dba2d180409ad7e61"
+      "address": "0x992599CfBD38d06385084a8b615Aa5a1B4307cb0",
+      "transactionHash": "0xd747afc96df60eb02dff2f123a649a97d9cb0140a60e4f68820cfe3cd52acb60"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-04T22:39:40.661Z",
+  "updatedAt": "2020-09-04T22:43:27.230Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

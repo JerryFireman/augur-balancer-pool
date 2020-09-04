@@ -423,9 +423,16 @@ swapExactAmountOut = async () => {
     } var tx = await pool.methods.swapExactAmountOut(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[2], gas: 6000000 });
       console.log("Successful transaction: ", tx.status)
       console.log("Checking balances after transaction ...")
+      var Trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
+      Trader1YesBalance = web3.utils.fromWei(Trader1YesBalance)
+      Trader1YesBalance = Number(Trader1YesBalance);
+      Trader1YesBalance = Trader1YesBalance.toFixed(2);
+      console.log("Trader1YesBalance: ", Trader1YesBalance)
       var Trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
       Trader1NoBalance = web3.utils.fromWei(Trader1NoBalance)
-      console.log("Trader1 No Balance: ", Trader1NoBalance)
+      Trader1NoBalance = Number(Trader1NoBalance);
+      Trader1NoBalance = Trader1NoBalance.toFixed(2);
+      console.log("Trader1NoBalance: ", Trader1NoBalance)
       var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
       Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
       Trader1DaiBalance = Number(Trader1DaiBalance);
