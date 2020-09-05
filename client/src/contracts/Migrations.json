@@ -1709,12 +1709,12 @@
     "1599329893170": {
       "events": {},
       "links": {},
-      "address": "0xE167FA87853460522a1D2cfA85d1ABB9D2168867",
-      "transactionHash": "0xb447c8fe12ca99bed37784cc292fdf173e31aa64a0f0b5d7ea9da54bfda9c066"
+      "address": "0xBcC6cB3dcF1226AbCc1FE1435BB4D764E213C31D",
+      "transactionHash": "0xe44e6272d7514316d438b2621d675b7857daff9963ad720e26184fca6fef30db"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-05T20:23:27.181Z",
+  "updatedAt": "2020-09-05T21:20:21.618Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

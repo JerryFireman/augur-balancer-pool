@@ -6206,12 +6206,12 @@
         }
       },
       "links": {},
-      "address": "0x0fB358B5b931846dD0B2f78d0d546fdbFD6eac18",
-      "transactionHash": "0x77f12fbbad8c29173e69ee544c3ff23f778956fbd09676a5e427ceb710d727a5"
+      "address": "0x59EF55107C7F5022353277684C7894F66a7E042d",
+      "transactionHash": "0x8f36a4e5801c8187056f0b2f91ed45f0f8297d2ab45cf62654c098c5acbfec2c"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-05T20:23:27.010Z",
+  "updatedAt": "2020-09-05T21:20:21.011Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

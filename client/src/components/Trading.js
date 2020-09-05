@@ -94,25 +94,29 @@ export default function Trading(props) {
                   <MenuItem value={props.noContractAddress}>NO TRUMP</MenuItem>
                   <MenuItem value={props.daiContractAddress}>DAI</MenuItem>
               </Select>
-                <br/><br/><br/>
+              <br/><br/><br/>
               <Typography variant="body2" color="textPrimary" align="right" padding="20px">
-                    Balance: {props.toBalance}
+                Balance: {props.toBalance}
                 </Typography>
-                <Select
-                    disableUnderline
-                    name="toToken"
-                    value={props.toToken}
-                    onChange={props.handleChange}
-                    style={{
-                      fontSize: 24
-                    }}
-                >
-                  <MenuItem value="">
-                  </MenuItem>
-                  <MenuItem value={props.yesContractAddress}>YES TRUMP</MenuItem>
-                  <MenuItem value={props.noContractAddress}>NO TRUMP</MenuItem>
-                  <MenuItem value={props.daiContractAddress}>DAI</MenuItem>
-              </Select>
+              <Select
+                disableUnderline
+                name="toToken"
+                value={props.toToken}
+                onChange={props.handleChange}
+                style={{
+                  fontSize: 24
+                }}
+              >
+                <MenuItem value="">
+                </MenuItem>
+                <MenuItem value={props.yesContractAddress}>YES TRUMP</MenuItem>
+                <MenuItem value={props.noContractAddress}>NO TRUMP</MenuItem>
+                <MenuItem value={props.daiContractAddress}>DAI</MenuItem>
+            </Select>
+              <br/>
+              <Typography variant="body2" color="textPrimary" align="right" padding="20px">
+              Price per share: {props.pricePerShare}
+              </Typography>
               </form>
             </Box>
           </Paper>

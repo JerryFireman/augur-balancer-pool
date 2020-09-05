@@ -36,6 +36,9 @@ class App extends Component {
     fromExact: true,
     fromBalance: 0,
     toBalance: 0,
+    pricePerShare: 0,
+    maxProfit: 0,
+    priceImpact: 0,
   };
 
   componentDidMount = async () => {
@@ -284,6 +287,7 @@ class App extends Component {
       toAmount = toAmount.toFixed(2)      
       console.log("toAmount: ", toAmount);
       this.setState( { toAmount: toAmount, fromExact: true } );
+      await this.calcPriceProfitSlippage();
 
       return toAmount ;
     } catch (error) {
@@ -326,6 +330,7 @@ class App extends Component {
       fromAmount =  fromAmount.toFixed(2);
       this.setState( { fromAmount: fromAmount, fromExact: false } );
       console.log("fromAmount: ", fromAmount);
+      await this.calcPriceProfitSlippage();
 
     } catch (error) {
       alert(
@@ -469,7 +474,8 @@ swapExactAmountOut = async () => {
     }
   }; 
   
-  // This function updates trader balances
+  // This function updates trader balances initially and after sale
+  // Also resets price per share, max profit and price impact to 0
   updateBalances = async () => {
     const { web3 } = this.state;
     const { fromToken } = this.state;
@@ -528,7 +534,35 @@ swapExactAmountOut = async () => {
       console.log("trader1DaiBalance for form: ", trader1DaiBalance)
       this.setState({ toBalance: trader1DaiBalance})
     }
+    this.setState({ 
+      pricePerShare: 0,
+    });
+
   };
+
+  // This function calculates miscellaneous small numbers after quote
+  calcPriceProfitSlippage = async () => {
+    const { web3 } = this.state;
+    const { fromToken } = this.state;
+    const { toToken } = this.state;
+    const { fromAmount } = this.state;
+    const { toAmount } = this.state;
+    const { yesContractAddress } = this.state;
+    const { noContractAddress } = this.state;
+    const { daiContractAddress } = this.state;
+
+
+    if (fromToken === daiContractAddress && (toToken === yesContractAddress || toToken === noContractAddress )) {
+      var pricePerShare = toAmount / fromAmount;
+      pricePerShare = pricePerShare.toFixed(2);
+      console.log("pricePerShare: ", pricePerShare)
+      this.setState({ 
+        pricePerShare: pricePerShare,
+      });
+    }
+  };
+
+
 
   render() {
     if (!this.state.web3) {
@@ -548,6 +582,7 @@ swapExactAmountOut = async () => {
         yesContractAddress={this.state.yesContractAddress}
         noContractAddress={this.state.noContractAddress}
         daiContractAddress={this.state.daiContractAddress}
+        pricePerShare={this.state.pricePerShare}
       />
       </div>
     );
