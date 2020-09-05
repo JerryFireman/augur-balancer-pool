@@ -34,6 +34,8 @@ class App extends Component {
     noContractAddress: "",
     daiContractAddress: "",
     fromExact: true,
+    fromBalance: 0,
+    toBalance: 0,
   };
 
   componentDidMount = async () => {
@@ -120,11 +122,22 @@ class App extends Component {
       LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
       console.log("LP1 Dai balance: ", LP1DaiBalance)
 
-      var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
-      Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
-      Trader1DaiBalance = Number(Trader1DaiBalance);
-      Trader1DaiBalance = Trader1DaiBalance.toFixed(2);
-      console.log("Trader1 Dai balance: ", Trader1DaiBalance);
+      var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+      trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
+      trader1DaiBalance = Number(trader1DaiBalance);
+      trader1DaiBalance = trader1DaiBalance.toFixed(2);
+      var zero = 0;
+      zero = zero.toFixed(2);
+      var trader1YesBalance = zero;
+      var trader1NoBalance = zero;
+      console.log("Trader1 Dai balance: ", trader1DaiBalance);
+      console.log("Trader1 Yes balance: ", trader1YesBalance);
+      console.log("Trader1 No balance: ", trader1NoBalance);
+
+
+
+      this.setState({ trader1YesBalance: trader1YesBalance, trader1NoBalance: trader1NoBalance, trader1DaiBalance: trader1DaiBalance });
+
 
       // create a new balancer pool and save address to state, bind tokens and set public
       const tx = await bfactoryContract.methods.newBPool().send({from: accounts[1], gas: 6000000 });
@@ -176,8 +189,9 @@ class App extends Component {
       LP1DaiBalance = await daiContract.methods.balanceOf(accounts[1]).call();
       LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
 
-      Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
-      Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
+      trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+      trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
+
 
 
 /* Commenting out section that tests quoting and trading
@@ -209,6 +223,9 @@ class App extends Component {
       fromToken: this.state.daiContractAddress,
       toToken: this.state.yesContractAddress,
     });
+
+    await this.updateBalances();
+
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -364,21 +381,24 @@ class App extends Component {
       } var tx = await pool.methods.swapExactAmountIn(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[2], gas: 6000000 });
         console.log("Successful transaction: ", tx.status)
         console.log("Checking balances after transaction ...")
-        var Trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
-        Trader1YesBalance = web3.utils.fromWei(Trader1YesBalance)
-        Trader1YesBalance = Number(Trader1YesBalance);
-        Trader1YesBalance = Trader1YesBalance.toFixed(2);
-        console.log("Trader1YesBalance: ", Trader1YesBalance)
-        var Trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
-        Trader1NoBalance = web3.utils.fromWei(Trader1NoBalance)
-        Trader1NoBalance = Number(Trader1NoBalance);
-        Trader1NoBalance = Trader1NoBalance.toFixed(2);
-        console.log("Trader1NoBalance: ", Trader1NoBalance)
-        var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
-        Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
-        Trader1DaiBalance = Number(Trader1DaiBalance);
-        Trader1DaiBalance = Trader1DaiBalance.toFixed(2);
-        console.log("Trader1 Dai balance: ", Trader1DaiBalance);
+        var trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
+        trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
+        trader1YesBalance = Number(trader1YesBalance);
+        trader1YesBalance = trader1YesBalance.toFixed(2);
+        console.log("trader1YesBalance: ", trader1YesBalance)
+        var trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
+        trader1NoBalance = web3.utils.fromWei(trader1NoBalance)
+        trader1NoBalance = Number(trader1NoBalance);
+        trader1NoBalance = trader1NoBalance.toFixed(2);
+        console.log("trader1NoBalance: ", trader1NoBalance)
+        var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+        trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
+        trader1DaiBalance = Number(trader1DaiBalance);
+        trader1DaiBalance = trader1DaiBalance.toFixed(2);
+        console.log("Trader1 Dai balance: ", trader1DaiBalance);
+        this.setState({ trader1YesBalance: trader1YesBalance, trader1NoBalance: trader1NoBalance, trader1DaiBalance: trader1DaiBalance });
+        await this.updateBalances();
+        this.setState({ fromAmount: 0, toAmount: 0 })
 
       } catch (error) {
       alert(
@@ -423,33 +443,92 @@ swapExactAmountOut = async () => {
     } var tx = await pool.methods.swapExactAmountOut(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[2], gas: 6000000 });
       console.log("Successful transaction: ", tx.status)
       console.log("Checking balances after transaction ...")
-      var Trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
-      Trader1YesBalance = web3.utils.fromWei(Trader1YesBalance)
-      Trader1YesBalance = Number(Trader1YesBalance);
-      Trader1YesBalance = Trader1YesBalance.toFixed(2);
-      console.log("Trader1YesBalance: ", Trader1YesBalance)
-      var Trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
-      Trader1NoBalance = web3.utils.fromWei(Trader1NoBalance)
-      Trader1NoBalance = Number(Trader1NoBalance);
-      Trader1NoBalance = Trader1NoBalance.toFixed(2);
-      console.log("Trader1NoBalance: ", Trader1NoBalance)
-      var Trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
-      Trader1DaiBalance = web3.utils.fromWei(Trader1DaiBalance);
-      Trader1DaiBalance = Number(Trader1DaiBalance);
-      Trader1DaiBalance = Trader1DaiBalance.toFixed(2);
-      console.log("Trader1 Dai balance: ", Trader1DaiBalance);
+      var trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
+      trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
+      trader1YesBalance = Number(trader1YesBalance);
+      trader1YesBalance = trader1YesBalance.toFixed(2);
+      console.log("trader1YesBalance: ", trader1YesBalance)
+      var trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
+      trader1NoBalance = web3.utils.fromWei(trader1NoBalance)
+      trader1NoBalance = Number(trader1NoBalance);
+      trader1NoBalance = trader1NoBalance.toFixed(2);
+      console.log("trader1NoBalance: ", trader1NoBalance)
+      var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+      trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
+      trader1DaiBalance = Number(trader1DaiBalance);
+      trader1DaiBalance = trader1DaiBalance.toFixed(2);
+      console.log("Trader1 Dai balance: ", trader1DaiBalance);
+      this.setState({ trader1YesBalance: trader1YesBalance, trader1NoBalance: trader1NoBalance, trader1DaiBalance: trader1DaiBalance });
+      await this.updateBalances();
+      this.setState({ fromAmount: 0, toAmount: 0 })
+    } catch (error) {
+      alert(
+        `Attempt to create new smart pool failed. Check console for details.`,
+      );
+      console.error(error);
+    }
+  }; 
+  
+  // This function updates trader balances
+  updateBalances = async () => {
+    const { web3 } = this.state;
+    const { fromToken } = this.state;
+    const { toToken } = this.state;
+    const { noContract } = this.state;
+    const { yesContract } = this.state;
+    const { daiContract } = this.state;
+    const { noContractAddress } = this.state;
+    const { yesContractAddress } = this.state;
+    const { daiContractAddress } = this.state;
+    const { accounts } = this.state;
 
-
-
-  } catch (error) {
-    alert(
-      `Attempt to create new smart pool failed. Check console for details.`,
-    );
-    console.error(error);
-  }
-}; 
-
-
+    if (fromToken === yesContractAddress) {
+      var trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
+      trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
+      trader1YesBalance = Number(trader1YesBalance);
+      trader1YesBalance = trader1YesBalance.toFixed(2);
+      this.setState({ fromBalance: trader1YesBalance});
+    }
+    if (fromToken === noContractAddress) {
+      var trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
+      trader1NoBalance = web3.utils.fromWei(trader1NoBalance)
+      trader1NoBalance = Number(trader1NoBalance);
+      trader1NoBalance = trader1NoBalance.toFixed(2);
+      this.setState({ fromBalance: trader1NoBalance});
+    }
+    if (fromToken === daiContractAddress) {
+      console.log("hit fromToken === daiContractAddress")
+      var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+      trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance)
+      trader1DaiBalance = Number(trader1DaiBalance);
+      trader1DaiBalance = trader1DaiBalance.toFixed(2);
+      console.log("trader1DaiBalance for form: ", trader1DaiBalance)
+      this.setState({ fromBalance: trader1DaiBalance})
+    }
+    if (toToken === yesContractAddress) {
+      var trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
+      trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
+      trader1YesBalance = Number(trader1YesBalance);
+      trader1YesBalance = trader1YesBalance.toFixed(2);
+      this.setState({ toBalance: trader1YesBalance});
+    }
+    if (toToken === noContractAddress) {
+      var trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
+      trader1NoBalance = web3.utils.fromWei(trader1NoBalance)
+      trader1NoBalance = Number(trader1NoBalance);
+      trader1NoBalance = trader1NoBalance.toFixed(2);
+      this.setState({ toBalance: trader1NoBalance});
+    }
+    if (toToken === daiContractAddress) {
+      console.log("hit fromToken === daiContractAddress")
+      var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+      trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance)
+      trader1DaiBalance = Number(trader1DaiBalance);
+      trader1DaiBalance = trader1DaiBalance.toFixed(2);
+      console.log("trader1DaiBalance for form: ", trader1DaiBalance)
+      this.setState({ toBalance: trader1DaiBalance})
+    }
+  };
 
   render() {
     if (!this.state.web3) {
@@ -464,6 +543,8 @@ swapExactAmountOut = async () => {
         fromToken={this.state.fromToken}
         toAmount={this.state.toAmount}
         toToken={this.state.toToken}
+        fromBalance={this.state.fromBalance}  
+        toBalance={this.state.toBalance}        
         yesContractAddress={this.state.yesContractAddress}
         noContractAddress={this.state.noContractAddress}
         daiContractAddress={this.state.daiContractAddress}

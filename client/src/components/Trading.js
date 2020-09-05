@@ -76,8 +76,8 @@ export default function Trading(props) {
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box textAlign="right">    
               <form className={classes.root} noValidate autoComplete="off">
-                <Typography variant="body2" color="textPrimary" align="left" padding="20px">
-                    Balance
+                <Typography variant="body2" color="textPrimary" align="right" padding="20px">
+                    Balance: {props.fromBalance}
                 </Typography>
                 <Select
                     disableUnderline
@@ -95,8 +95,8 @@ export default function Trading(props) {
                   <MenuItem value={props.daiContractAddress}>DAI</MenuItem>
               </Select>
                 <br/><br/><br/>
-              <Typography variant="body2" color="textPrimary" align="left" padding="20px">
-                    Balance
+              <Typography variant="body2" color="textPrimary" align="right" padding="20px">
+                    Balance: {props.toBalance}
                 </Typography>
                 <Select
                     disableUnderline
