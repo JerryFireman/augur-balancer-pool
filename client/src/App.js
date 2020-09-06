@@ -258,7 +258,7 @@ class App extends Component {
       await this.calcFromGivenTo();      
       await this.calcPriceProfitSlippage()     
     }
-    if (e.target.name === "toToken" || e.target.name == "fromToken") {
+    if (e.target.name === "toToken" || e.target.name === "fromToken") {
       console.log("about to update balances")
       this.updateBalances();
       this.setState({ fromAmount: 0, toAmount: 0 });      
@@ -497,8 +497,6 @@ swapExactAmountOut = async () => {
     const { daiContractAddress } = this.state;
     const { accounts } = this.state;
 
-    console.log("updateBalances toToken: ", toToken);
-
     if (fromToken === yesContractAddress) {
       var trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
       trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
@@ -521,14 +519,14 @@ swapExactAmountOut = async () => {
       this.setState({ fromBalance: trader1DaiBalance})
     }
     if (toToken === yesContractAddress) {
-      var trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
+      trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
       trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
       trader1YesBalance = Number(trader1YesBalance);
       trader1YesBalance = trader1YesBalance.toFixed(2);
       this.setState({ toBalance: trader1YesBalance});
     }
     if (toToken === noContractAddress) {
-      var trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
+      trader1NoBalance = await noContract.methods.balanceOf(accounts[2]).call();
       trader1NoBalance = web3.utils.fromWei(trader1NoBalance)
       trader1NoBalance = Number(trader1NoBalance);
       trader1NoBalance = trader1NoBalance.toFixed(2);
@@ -536,7 +534,7 @@ swapExactAmountOut = async () => {
     }
     if (toToken === daiContractAddress) {
       console.log("hit fromToken === daiContractAddress")
-      var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+      trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
       trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance)
       trader1DaiBalance = Number(trader1DaiBalance);
       trader1DaiBalance = trader1DaiBalance.toFixed(2);
@@ -551,32 +549,34 @@ swapExactAmountOut = async () => {
 
   // This function calculates miscellaneous small numbers after quote
   calcPriceProfitSlippage = async () => {
-    const { web3 } = this.state;
     const { fromToken } = this.state;
     const { toToken } = this.state;
     const { fromAmount } = this.state;
     const { toAmount } = this.state;
-    const { yesContractAddress } = this.state;
-    const { noContractAddress } = this.state;
     const { daiContractAddress } = this.state;
 
     console.log("hit calcPriceProfitSlippage");
 
-    if (fromToken === daiContractAddress && (toToken === yesContractAddress || toToken === noContractAddress )) {
+  // setting price per share
+    if (fromToken === daiContractAddress ) {
       var pricePerShare = fromAmount / toAmount;
       pricePerShare = pricePerShare.toFixed(2);
       console.log("pricePerShare: ", pricePerShare)
       this.setState({ 
         pricePerShare: pricePerShare,
       });
-    }
-    if (toToken === daiContractAddress && (fromToken === yesContractAddress || toToken === noContractAddress )) {
-      var pricePerShare = toAmount / fromAmount;
+    } else if (toToken === daiContractAddress ) {
+      pricePerShare = toAmount / fromAmount;
       pricePerShare = pricePerShare.toFixed(2);
       console.log("pricePerShare: ", pricePerShare)
       this.setState({ 
         pricePerShare: pricePerShare,
       });
+    } else {
+      this.setState({ 
+        pricePerShare: 0,
+      });
+
     }
 
 

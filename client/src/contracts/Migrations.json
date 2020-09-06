@@ -1727,12 +1727,12 @@
     "1599392082483": {
       "events": {},
       "links": {},
-      "address": "0xF2F16C8Da93B96ef6d5Ee16F0885F6A1A1474979",
-      "transactionHash": "0x049c9500e852b8c435c26fef2c2cdf5c86b9b2e2e81676a7c4d5c2b7669feebe"
+      "address": "0xf67E7D0D6544Fed0090924f4aF87e9D59A0fdA73",
+      "transactionHash": "0xb8baa60a975a2ee52cacf08068911022c773ce3ef889a9ac8ce5c89a438e9b07"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-06T11:40:43.711Z",
+  "updatedAt": "2020-09-06T12:52:24.668Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
