@@ -120,6 +120,9 @@ export default function Trading(props) {
               <Typography variant="body2" color="textPrimary" align="right" padding="20px">
               Max profit: {props.maxProfit}
               </Typography>
+              <Typography variant="body2" color="textPrimary" align="right" padding="20px">
+              Price impact: {props.priceImpact}%
+              </Typography>
 
               </form>
             </Box>

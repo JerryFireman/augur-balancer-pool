@@ -553,37 +553,61 @@ swapExactAmountOut = async () => {
     const { toToken } = this.state;
     const { fromAmount } = this.state;
     const { toAmount } = this.state;
-    const { daiContractAddress } = this.state;
     const { yesContractAddress } = this.state;
     const { noContractAddress } = this.state;
+    const { daiContractAddress } = this.state;
+    const { pool } = this.state
+    const { web3 } = this.state
 
-
-    console.log("hit calcPriceProfitSlippage");
-
-  // setting price per share and max profit
-    if (toToken === yesContractAddress || toToken === noContractAddress ) {
+    if ( ( toToken === yesContractAddress || toToken === noContractAddress )  && fromToken === daiContractAddress) {
+      var spotPrice = await pool.methods.getSpotPrice(fromToken, toToken).call();
+      spotPrice = web3.utils.fromWei(spotPrice)
+      spotPrice = Number(spotPrice);
+      spotPrice = spotPrice.toFixed(4)
+      console.log("spotPrice", spotPrice);
       var pricePerShare = fromAmount / toAmount;
-      pricePerShare = pricePerShare.toFixed(2);
+      pricePerShare = pricePerShare.toFixed(4);
       var maxProfit = 1 - pricePerShare;
+      var priceImpact = (pricePerShare - spotPrice) * 100
+      pricePerShare = Number(pricePerShare);
+      pricePerShare = pricePerShare.toFixed(2);
+      maxProfit = maxProfit.toFixed(2);
+      priceImpact = priceImpact.toFixed(2);
       console.log("pricePerShare: ", pricePerShare)
       console.log("maxProfit: ", maxProfit)
+      console.log("priceImpact: ", priceImpact)  
       this.setState({ 
         pricePerShare: pricePerShare,
         maxProfit: maxProfit,
+        priceImpact: priceImpact,
       });
-    } else if (fromToken === yesContractAddress || fromToken === noContractAddress ) {
+
+    } else if  ((fromToken === yesContractAddress || fromToken === noContractAddress ) && toToken === daiContractAddress ) {
+      spotPrice = await pool.methods.getSpotPrice(fromToken, toToken).call();
+      spotPrice = web3.utils.fromWei(spotPrice)
+      spotPrice = Number(spotPrice);
+      spotPrice = spotPrice.toFixed(4);
+      spotPrice = 1 / spotPrice;
+      console.log("spotPrice", spotPrice);
       pricePerShare = toAmount / fromAmount;
+      pricePerShare = pricePerShare.toFixed(4);
+      priceImpact = (spotPrice - pricePerShare) * 100
+      pricePerShare = Number(pricePerShare);
       pricePerShare = pricePerShare.toFixed(2);
+      priceImpact = priceImpact.toFixed(2);
       console.log("pricePerShare: ", pricePerShare)
+      console.log("priceImpact: ", priceImpact)  
       this.setState({ 
         pricePerShare: pricePerShare,
         maxProfit: 0,
+        priceImpact: priceImpact,
       });
     } else {
       this.setState({ 
         pricePerShare: 0,
+        maxProfit: 0,
+        priceImpact: 0,
       });
-
     }
 
 
@@ -611,6 +635,7 @@ swapExactAmountOut = async () => {
         daiContractAddress={this.state.daiContractAddress}
         pricePerShare={this.state.pricePerShare}
         maxProfit={this.state.maxProfit}
+        priceImpact={this.state.priceImpact}
       />
       </div>
     );
