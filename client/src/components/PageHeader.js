@@ -40,7 +40,7 @@ export default function PageHeader(props) {
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box  textAlign="center">
               <div>
-                <img src={'https://i.etsystatic.com/10378440/d/il/0ce234/2261824722/il_75x75.2261824722_q5a3.jpg?version=0'} alt="catnip" />
+                <img src={'https://i.etsystatic.com/10378440/d/il/0ce234/2261824722/il_75x75.2261824722_q5a3.jpg?version=0'} alt="catnip"  />
               </div> 
             </Box>
           </Paper>
@@ -48,8 +48,7 @@ export default function PageHeader(props) {
         <Grid item xs={4}>
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box textAlign="left"> 
-                <br/><br/>  
-                <Typography variant="h5" color="textPrimary" align="left" fontWeight="fontWeightBold" >
+                <Typography variant="h4" color="textPrimary" align="left" fontWeight="fontWeightBold" >
                   simple, liquid, real-world markets
                 </Typography>
             </Box>
