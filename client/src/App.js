@@ -609,9 +609,21 @@ swapExactAmountOut = async () => {
         priceImpact: 0,
       });
     }
-
-
   };
+
+  // This function repeats the latest quote
+  repeatQuote = async () => {
+    const { fromExact } = this.state;
+    if (fromExact === true) {
+      await this.calcToGivenFrom();      
+      await this.calcPriceProfitSlippage();     
+    } else {
+      await this.calcFromGivenTo();      
+      await this.calcPriceProfitSlippage();     
+    }
+  };
+
+
 
 
 
@@ -624,6 +636,7 @@ swapExactAmountOut = async () => {
       <Trading 
         handleChange={this.handleChange}
         swapBranch={this.swapBranch}
+        repeatQuote={this.repeatQuote}
         fromAmount={this.state.fromAmount}
         fromToken={this.state.fromToken}
         toAmount={this.state.toAmount}

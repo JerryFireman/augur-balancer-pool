@@ -9,6 +9,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from "@material-ui/core/Select";
 import Typography from '@material-ui/core/Typography'
 import StyledButton from './StyledButton';
+import RepeatIcon from '@material-ui/icons/Repeat';
+
+import { IconButton } from '@material-ui/core';
 
   const useStyles = makeStyles(theme => ({
   root: {
@@ -33,6 +36,61 @@ export default function Trading(props) {
 
   return (
     <div className={classes.root}>
+    <Grid container spacing={0} >
+        <Grid item xs={2}>
+          <Paper className={classes.paper} square={true} elevation={0}>
+            <Box textAlign="left">   
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item xs={2}>
+          <Paper className={classes.paper} square={true} elevation={0}>
+            <Box  textAlign="center">
+              <div>
+                <img src={'https://i.etsystatic.com/10378440/d/il/0ce234/2261824722/il_75x75.2261824722_q5a3.jpg?version=0'} alt="catnip" />
+              </div> 
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper} square={true} elevation={0}>
+            <Box textAlign="left">   
+            <Typography variant="h5" color="textPrimary" align="left" fontWeight="fontWeightBold" >
+                  simple, liquid, real-world markets
+              </Typography>
+              <Typography variant="h6" color="textPrimary"  align="left" fontWeight="fontWeightBold" >
+                  Will Trump win the 2020 U.S. presidential election?
+              </Typography>
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper} square={true} elevation={0}>
+            <Box fontWeight="fontWeightBold" textAlign="left">   
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
+      <Grid container spacing={0} >
+        <Grid item xs={4}>
+          <Paper className={classes.paper} square={true} elevation={0}>
+            <Box fontWeight="fontWeightBold" textAlign="left">   
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper} square={true} elevation={0}>
+            <Box fontWeight="fontWeightBold" textAlign="left">   
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper} square={true} elevation={0}>
+            <Box fontWeight="fontWeightBold" textAlign="left">   
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
       <Grid container spacing={0} >
         <Grid item xs={4}>
           <Paper className={classes.paper} square={true} elevation={0}>
@@ -115,15 +173,17 @@ export default function Trading(props) {
             </Select>
               <br/>
               <Typography variant="body2" color="textPrimary" align="right" padding="20px">
-              Price per share: {props.pricePerShare}
+              Price per share: ${props.pricePerShare}
               </Typography>
               <Typography variant="body2" color="textPrimary" align="right" padding="20px">
-              Max profit: {props.maxProfit}
+              Max profit: ${props.maxProfit}
               </Typography>
               <Typography variant="body2" color="textPrimary" align="right" padding="20px">
               Price impact: {props.priceImpact}%
               </Typography>
-
+              <IconButton onClick={props.repeatQuote}>
+                <RepeatIcon/>
+              </IconButton>
               </form>
             </Box>
           </Paper>
