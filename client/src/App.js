@@ -251,12 +251,14 @@ class App extends Component {
 
 
     if (e.target.name === "fromAmount" && this.state.fromToken && this.state.toToken ) {
-      await this.calcToGivenFrom();      
+      await this.calcToGivenFrom();
+      await this.calcPriceProfitSlippage()     
     }
     if (e.target.name === "toAmount" && this.state.fromToken && this.state.toToken) {
       await this.calcFromGivenTo();      
+      await this.calcPriceProfitSlippage()     
     }
-    if (e.target.name === "toToken" ) {
+    if (e.target.name === "toToken" || e.target.name == "fromToken") {
       console.log("about to update balances")
       this.updateBalances();
       this.setState({ fromAmount: 0, toAmount: 0 });      
@@ -558,6 +560,8 @@ swapExactAmountOut = async () => {
     const { noContractAddress } = this.state;
     const { daiContractAddress } = this.state;
 
+    console.log("hit calcPriceProfitSlippage");
+
     if (fromToken === daiContractAddress && (toToken === yesContractAddress || toToken === noContractAddress )) {
       var pricePerShare = fromAmount / toAmount;
       pricePerShare = pricePerShare.toFixed(2);
@@ -566,6 +570,16 @@ swapExactAmountOut = async () => {
         pricePerShare: pricePerShare,
       });
     }
+    if (toToken === daiContractAddress && (fromToken === yesContractAddress || toToken === noContractAddress )) {
+      var pricePerShare = toAmount / fromAmount;
+      pricePerShare = pricePerShare.toFixed(2);
+      console.log("pricePerShare: ", pricePerShare)
+      this.setState({ 
+        pricePerShare: pricePerShare,
+      });
+    }
+
+
   };
 
 
