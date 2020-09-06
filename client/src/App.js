@@ -243,15 +243,22 @@ class App extends Component {
   // This function updates state in response to user input
   handleChange = async (e) => {
     e.persist();
-    this.setState({ [e.target.name]: e.target.value });
-    console.log(e.target.name, ": ", e.target.value);
+    console.log("handleChange working", e.target.name, ": ", e.target.value);
+    await this.setState({ [e.target.name]: e.target.value });
+    console.log("this.state.toToken: ", this.state.toToken)
+    console.log("this.state.noContractAddress: ", this.state.noContractAddress)
+    console.log("this.state.yesContractAddress: ", this.state.yesContractAddress)
+
+
     if (e.target.name === "fromAmount" && this.state.fromToken && this.state.toToken ) {
       await this.calcToGivenFrom();      
     }
     if (e.target.name === "toAmount" && this.state.fromToken && this.state.toToken) {
       await this.calcFromGivenTo();      
     }
-    if (e.target.name === "fromToken" || e.target.name === "toToken") {
+    if (e.target.name === "toToken" ) {
+      console.log("about to update balances")
+      this.updateBalances();
       this.setState({ fromAmount: 0, toAmount: 0 });      
     }
   };
@@ -488,6 +495,8 @@ swapExactAmountOut = async () => {
     const { daiContractAddress } = this.state;
     const { accounts } = this.state;
 
+    console.log("updateBalances toToken: ", toToken);
+
     if (fromToken === yesContractAddress) {
       var trader1YesBalance = await yesContract.methods.balanceOf(accounts[2]).call();
       trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
@@ -503,12 +512,10 @@ swapExactAmountOut = async () => {
       this.setState({ fromBalance: trader1NoBalance});
     }
     if (fromToken === daiContractAddress) {
-      console.log("hit fromToken === daiContractAddress")
       var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
       trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance)
       trader1DaiBalance = Number(trader1DaiBalance);
       trader1DaiBalance = trader1DaiBalance.toFixed(2);
-      console.log("trader1DaiBalance for form: ", trader1DaiBalance)
       this.setState({ fromBalance: trader1DaiBalance})
     }
     if (toToken === yesContractAddress) {
@@ -551,9 +558,8 @@ swapExactAmountOut = async () => {
     const { noContractAddress } = this.state;
     const { daiContractAddress } = this.state;
 
-
     if (fromToken === daiContractAddress && (toToken === yesContractAddress || toToken === noContractAddress )) {
-      var pricePerShare = toAmount / fromAmount;
+      var pricePerShare = fromAmount / toAmount;
       pricePerShare = pricePerShare.toFixed(2);
       console.log("pricePerShare: ", pricePerShare)
       this.setState({ 
