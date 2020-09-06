@@ -6,6 +6,11 @@ import DaiContract from "./contracts/Dai.json";
 import getWeb3 from "./getWeb3";
 import "./App.css";
 import Trading from './components/Trading.js';
+import PageHeader from './components/PageHeader.js';
+import MarketHeader from './components/MarketHeader.js';
+import Swap from './components/Swap.js';
+
+
 
 const { abi } = require('./contracts/BPool.json');
 
@@ -633,6 +638,8 @@ swapExactAmountOut = async () => {
     }
     return (
       <div className="App">
+      <PageHeader/>
+      <MarketHeader/>
       <Trading 
         handleChange={this.handleChange}
         swapBranch={this.swapBranch}
@@ -650,6 +657,7 @@ swapExactAmountOut = async () => {
         maxProfit={this.state.maxProfit}
         priceImpact={this.state.priceImpact}
       />
+      <Swap/>
       </div>
     );
   };
