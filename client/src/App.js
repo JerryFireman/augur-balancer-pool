@@ -554,18 +554,24 @@ swapExactAmountOut = async () => {
     const { fromAmount } = this.state;
     const { toAmount } = this.state;
     const { daiContractAddress } = this.state;
+    const { yesContractAddress } = this.state;
+    const { noContractAddress } = this.state;
+
 
     console.log("hit calcPriceProfitSlippage");
 
-  // setting price per share
-    if (fromToken === daiContractAddress ) {
+  // setting price per share and max profit
+    if (toToken === yesContractAddress || toToken === noContractAddress ) {
       var pricePerShare = fromAmount / toAmount;
       pricePerShare = pricePerShare.toFixed(2);
+      var maxProfit = 1 - pricePerShare;
       console.log("pricePerShare: ", pricePerShare)
+      console.log("maxProfit: ", maxProfit)
       this.setState({ 
         pricePerShare: pricePerShare,
+        maxProfit: maxProfit,
       });
-    } else if (toToken === daiContractAddress ) {
+    } else if (fromToken === yesContractAddress || fromToken === noContractAddress ) {
       pricePerShare = toAmount / fromAmount;
       pricePerShare = pricePerShare.toFixed(2);
       console.log("pricePerShare: ", pricePerShare)
