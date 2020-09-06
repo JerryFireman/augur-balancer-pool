@@ -117,6 +117,10 @@ export default function Trading(props) {
               <Typography variant="body2" color="textPrimary" align="right" padding="20px">
               Price per share: {props.pricePerShare}
               </Typography>
+              <Typography variant="body2" color="textPrimary" align="right" padding="20px">
+              Max profit: {props.maxProfit}
+              </Typography>
+
               </form>
             </Box>
           </Paper>

@@ -261,7 +261,7 @@ class App extends Component {
     if (e.target.name === "toToken" || e.target.name === "fromToken") {
       console.log("about to update balances")
       this.updateBalances();
-      this.setState({ fromAmount: 0, toAmount: 0 });      
+      this.setState({ fromAmount: 0, toAmount: 0, pricePerShare: 0, maxProfit: 0 });      
     }
   };
 
@@ -577,6 +577,7 @@ swapExactAmountOut = async () => {
       console.log("pricePerShare: ", pricePerShare)
       this.setState({ 
         pricePerShare: pricePerShare,
+        maxProfit: 0,
       });
     } else {
       this.setState({ 
@@ -609,6 +610,7 @@ swapExactAmountOut = async () => {
         noContractAddress={this.state.noContractAddress}
         daiContractAddress={this.state.daiContractAddress}
         pricePerShare={this.state.pricePerShare}
+        maxProfit={this.state.maxProfit}
       />
       </div>
     );
