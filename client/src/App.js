@@ -258,7 +258,7 @@ class App extends Component {
       return toAmount ;
     } catch (error) {
       alert(
-        `Attempt to create new smart pool failed. Check console for details.`,
+        `Calculate number of to tokens received failed. Check console for details.`,
       );
       console.error(error);
     }
@@ -300,7 +300,7 @@ class App extends Component {
 
     } catch (error) {
       alert(
-        `Attempt to create new smart pool failed. Check console for details.`,
+        `Calculate number of from tokens paid failed. Check console for details.`,
       );
       console.error(error);
     }
@@ -373,7 +373,7 @@ class App extends Component {
 
       } catch (error) {
       alert(
-        `Attempt to create new smart pool failed. Check console for details.`,
+        `Swap with from tokens fixed failed. Check console for details.`,
       );
       console.error(error);
     }
@@ -391,7 +391,6 @@ swapExactAmountOut = async () => {
   const { accounts } = this.state;
   var { fromAmount } = this.state;
   var { toAmount } = this.state;
-
 
   toAmount = web3.utils.toWei(this.state.toAmount.toString());
   fromAmount = 2 * fromAmount
@@ -434,7 +433,7 @@ swapExactAmountOut = async () => {
       this.setState({ fromAmount: 0, toAmount: 0 })
     } catch (error) {
       alert(
-        `Attempt to create new smart pool failed. Check console for details.`,
+        `Swap with number of from tokens fixed failed. Check console for details.`,
       );
       console.error(error);
     }
@@ -501,10 +500,9 @@ swapExactAmountOut = async () => {
     this.setState({ 
       pricePerShare: 0,
     });
-
   };
 
-  // This function calculates miscellaneous small numbers after quote
+  // This function calculates miscellaneous numbers after quote
   calcPriceProfitSlippage = async () => {
     const { fromToken } = this.state;
     const { toToken } = this.state;
@@ -578,7 +576,6 @@ swapExactAmountOut = async () => {
       <MarketHeader/>
       <Trading 
         handleChange={this.handleChange}
-        repeatQuote={this.repeatQuote}
         fromAmount={this.state.fromAmount}
         fromToken={this.state.fromToken}
         toAmount={this.state.toAmount}
