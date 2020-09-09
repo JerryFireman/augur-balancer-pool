@@ -38,9 +38,9 @@ export default function PageHeader(props) {
         </Grid>
         <Grid item xs={2}>
           <Paper className={classes.paper} square={true} elevation={0}>
-            <Box  textAlign="center">
+            <Box  textAlign="right">
               <div>
-                <img src={'https://cdn.discordapp.com/attachments/744571125484224643/752307707708440606/catnip1.png'} alt="catnip" width="200" height="225"  />
+                <img src={'https://cdn.discordapp.com/attachments/744571125484224643/752307707708440606/catnip1.png'} alt="catnip" width="100" height="125" />
               </div> 
             </Box>
           </Paper>
