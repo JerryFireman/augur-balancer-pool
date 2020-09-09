@@ -616,22 +616,6 @@ swapExactAmountOut = async () => {
     }
   };
 
-  // This function repeats the latest quote
-  repeatQuote = async () => {
-    const { fromExact } = this.state;
-    if (fromExact === true) {
-      await this.calcToGivenFrom();      
-      await this.calcPriceProfitSlippage();     
-    } else {
-      await this.calcFromGivenTo();      
-      await this.calcPriceProfitSlippage();     
-    }
-  };
-
-
-
-
-
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;

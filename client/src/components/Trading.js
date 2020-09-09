@@ -8,7 +8,6 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from "@material-ui/core/Select";
 import Typography from '@material-ui/core/Typography'
-import RepeatIcon from '@material-ui/icons/Repeat';
 
 import { IconButton } from '@material-ui/core';
 
@@ -125,9 +124,6 @@ export default function Trading(props) {
               <Typography variant="body2" color="textPrimary" align="right" padding="20px">
               Price impact: {props.priceImpact}%
               </Typography>
-              <IconButton onClick={props.repeatQuote}>
-                <RepeatIcon/>
-              </IconButton>
               </form>
             </Box>
           </Paper>
