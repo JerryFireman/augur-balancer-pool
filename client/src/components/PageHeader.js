@@ -40,7 +40,7 @@ export default function PageHeader(props) {
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box  textAlign="center">
               <div>
-                <img src={'https://i.etsystatic.com/10378440/d/il/0ce234/2261824722/il_75x75.2261824722_q5a3.jpg?version=0'} alt="catnip"  />
+                <img src={'https://cdn.discordapp.com/attachments/744571125484224643/752307707708440606/catnip1.png'} alt="catnip" width="200" height="225"  />
               </div> 
             </Box>
           </Paper>

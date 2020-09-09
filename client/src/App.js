@@ -266,7 +266,7 @@ class App extends Component {
     if (e.target.name === "toToken" || e.target.name === "fromToken") {
       console.log("about to update balances")
       this.updateBalances();
-      this.setState({ fromAmount: 0, toAmount: 0, pricePerShare: 0, maxProfit: 0 });      
+      this.setState({ fromAmount: 0, toAmount: 0, pricePerShare: 0, maxProfit: 0, priceImpact: 0 });      
     }
   };
 

@@ -14090,12 +14090,69 @@
         }
       },
       "links": {},
-      "address": "0x479b53F3ADf180D441c27f2704d3A71441A1f046",
-      "transactionHash": "0xe546ea8f97f41b29738b599a5a0ea8ab7c4c8c44eb28fb79896462abf056abad"
+      "address": "0x0a43866230dd842B0ED433DcdbD756413C3f0a38",
+      "transactionHash": "0x6167253d28269d4ba7f9735bfe0b086fbf551a8609eda6527f4b1245abd6ee5c"
+    },
+    "1599662088112": {
+      "events": {
+        "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amt",
+              "type": "uint256"
+            }
+          ],
+          "name": "Approval",
+          "type": "event"
+        },
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amt",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x0c6b35b0c9DB616548163EE7d8f95da8Fd1334a6",
+      "transactionHash": "0x30503ac1b9daeed0bc68bbb488d23e8b35d1f77a48d2809efb672167ffbb5c4e"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-06T23:06:32.186Z",
+  "updatedAt": "2020-09-09T14:40:29.321Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
