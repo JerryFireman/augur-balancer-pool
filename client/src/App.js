@@ -9,11 +9,7 @@ import Trading from './components/Trading.js';
 import PageHeader from './components/PageHeader.js';
 import MarketHeader from './components/MarketHeader.js';
 import Swap from './components/Swap.js';
-
-
-
 const { abi } = require('./contracts/BPool.json');
-
 
 //App controls the user interface
 class App extends Component {
@@ -101,13 +97,11 @@ class App extends Component {
       const { yesContract } = this.state;
       const { daiContract } = this.state;
  
-
       // @ mint YES, NO and Dai and send to LP1
       await yesContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
       await noContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
       await daiContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
 
-      
       this.setState ({ 
         yesContractAddress: yesContract.options.address,
         noContractAddress: noContract.options.address,
@@ -121,15 +115,9 @@ class App extends Component {
       var LP1YesBalance = await yesContract.methods.balanceOf(accounts[1]).call();
       LP1YesBalance = web3.utils.fromWei(LP1YesBalance)
       console.log("LP1 Yes balance: ", LP1YesBalance)
-
       var LP1NoBalance = await noContract.methods.balanceOf(accounts[1]).call();
       LP1NoBalance = web3.utils.fromWei(LP1NoBalance)
       console.log("LP1 No balance: ", LP1NoBalance)
-
-      var LP1DaiBalance = await daiContract.methods.balanceOf(accounts[1]).call();
-      LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
-      console.log("LP1 Dai balance: ", LP1DaiBalance)
-
       var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
       trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
       trader1DaiBalance = Number(trader1DaiBalance);
@@ -139,13 +127,7 @@ class App extends Component {
       var trader1YesBalance = zero;
       var trader1NoBalance = zero;
       console.log("Trader1 Dai balance: ", trader1DaiBalance);
-      console.log("Trader1 Yes balance: ", trader1YesBalance);
-      console.log("Trader1 No balance: ", trader1NoBalance);
-
-
-
       this.setState({ trader1YesBalance: trader1YesBalance, trader1NoBalance: trader1NoBalance, trader1DaiBalance: trader1DaiBalance });
-
 
       // create a new balancer pool and save address to state, bind tokens and set public
       const tx = await bfactoryContract.methods.newBPool().send({from: accounts[1], gas: 6000000 });
@@ -194,35 +176,11 @@ class App extends Component {
       LP1NoBalance = await noContract.methods.balanceOf(accounts[1]).call();
       LP1NoBalance = web3.utils.fromWei(LP1NoBalance)
 
-      LP1DaiBalance = await daiContract.methods.balanceOf(accounts[1]).call();
+      var LP1DaiBalance = await daiContract.methods.balanceOf(accounts[1]).call();
       LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
 
       trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
       trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
-
-
-
-/* Commenting out section that tests quoting and trading
-      // Test calcToGivenFrom and swapExactAmountIn
-      console.log("Let's see how many yes tokens we can get for 100 dai ...");
-      this.setState({fromToken: daiContract.options.address});
-      this.setState({toToken: yesContract.options.address});
-      this.setState({ fromAmount: 100 });
-      console.log("fromAmount: ", this.state.fromAmount);
-      await this.calcToGivenFrom();
-      console.log("Looks good so let's swap ...");
-      await this.swapExactAmountIn();
-
-      // Test calcFromGivenTo and swapExactAmountOut
-      console.log("Now let's see how many dai we will need to get 50 no tokens ...");
-      this.setState({fromToken: daiContract.options.address});
-      this.setState({toToken: noContract.options.address});
-      this.setState({ toAmount: 50 });
-      await this.calcFromGivenTo();
-      console.log("OK let her rip ...");
-      await this.swapExactAmountOut();
-
-*/
 
     // Set starting parameters
     this.setState( {
@@ -231,10 +189,7 @@ class App extends Component {
       fromToken: this.state.daiContractAddress,
       toToken: this.state.yesContractAddress,
     });
-
     await this.updateBalances();
-
-
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -244,7 +199,6 @@ class App extends Component {
     }
 };
 
-
   // This function updates state in response to user input
   handleChange = async (e) => {
     e.persist();
@@ -253,7 +207,6 @@ class App extends Component {
     console.log("this.state.toToken: ", this.state.toToken)
     console.log("this.state.noContractAddress: ", this.state.noContractAddress)
     console.log("this.state.yesContractAddress: ", this.state.yesContractAddress)
-
 
     if (e.target.name === "fromAmount" && this.state.fromToken && this.state.toToken ) {
       await this.calcToGivenFrom();
@@ -293,7 +246,6 @@ class App extends Component {
       console.log("fromTokenBalance + fromAmount: ", Number(fromTokenBalance) + Number(this.state.fromAmount) )
 
       var intermediate1 = Number(fromTokenBalance) / ( Number(fromTokenBalance) + Number(this.state.fromAmount) ) 
-      console.log ("intermediate1: ", intermediate1)
       console.log ("fromTokenWeight / toTokenWeight: ", fromTokenWeight / toTokenWeight)
       var intermediate2 =  intermediate1 ** (fromTokenWeight / toTokenWeight)
       console.log ("intermediate2: ", intermediate2)
