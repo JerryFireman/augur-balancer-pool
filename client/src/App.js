@@ -317,7 +317,7 @@ class App extends Component {
   };
 
 
-// Swap with the number of from tokens fixed
+// Swap with the number of "from" tokens fixed
   swapExactAmountIn = async () => {
     const { pool } = this.state;
     const { web3 } = this.state;
@@ -331,11 +331,11 @@ class App extends Component {
     var { toAmount } = this.state;
 
 
-    fromAmount = web3.utils.toWei(this.state.fromAmount.toString());
-    toAmount = 0
-    toAmount = web3.utils.toWei(toAmount.toString());
     var maxPrice = 2 * (this.state.toAmount / this.state.fromAmount);
-    maxPrice = web3.utils.toWei(maxPrice.toString())
+    toAmount = 0
+    fromAmount = web3.utils.toWei(this.state.fromAmount.toString());
+    toAmount = web3.utils.toWei(toAmount.toString());
+    maxPrice = web3.utils.toWei(maxPrice.toString())  
 
     try {
       //approve fromAmount of fromToken for spending by Trader1
@@ -369,7 +369,6 @@ class App extends Component {
         console.log("Trader1 Dai balance: ", trader1DaiBalance);
         this.setState({ trader1YesBalance: trader1YesBalance, trader1NoBalance: trader1NoBalance, trader1DaiBalance: trader1DaiBalance });
         await this.updateBalances();
-        this.setState({ fromAmount: 0, toAmount: 0 })
 
       } catch (error) {
       alert(
@@ -379,7 +378,7 @@ class App extends Component {
     }
   }; 
   
-// Swap with the number of from tokens fixed
+// Swap with the number of "to"" tokens fixed
 swapExactAmountOut = async () => {
   const { pool } = this.state;
   const { web3 } = this.state;
@@ -392,11 +391,11 @@ swapExactAmountOut = async () => {
   var { fromAmount } = this.state;
   var { toAmount } = this.state;
 
-  toAmount = web3.utils.toWei(this.state.toAmount.toString());
   fromAmount = 2 * fromAmount
-  fromAmount = web3.utils.toWei(toAmount.toString());
   var maxPrice = 2 * (this.state.fromAmount / this.state.toAmount);
   maxPrice = web3.utils.toWei(maxPrice.toString())
+  toAmount = web3.utils.toWei(toAmount.toString());
+  fromAmount = web3.utils.toWei(fromAmount.toString());
 
   try {
     //approve fromAmount of fromToken for spending by Trader1
@@ -430,7 +429,6 @@ swapExactAmountOut = async () => {
       console.log("Trader1 Dai balance: ", trader1DaiBalance);
       this.setState({ trader1YesBalance: trader1YesBalance, trader1NoBalance: trader1NoBalance, trader1DaiBalance: trader1DaiBalance });
       await this.updateBalances();
-      this.setState({ fromAmount: 0, toAmount: 0 })
     } catch (error) {
       alert(
         `Swap with number of from tokens fixed failed. Check console for details.`,
@@ -497,9 +495,7 @@ swapExactAmountOut = async () => {
       console.log("trader1DaiBalance for form: ", trader1DaiBalance)
       this.setState({ toBalance: trader1DaiBalance})
     }
-    this.setState({ 
-      pricePerShare: 0,
-    });
+    this.setState({ fromAmount: 0, toAmount: 0, pricePerShare: 0, maxProfit: 0, priceImpact: 0})
   };
 
   // This function calculates miscellaneous numbers after quote

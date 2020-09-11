@@ -68,15 +68,15 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"constant\":true,\"inputs\":[],\"name\":\"lastCompletedMigration\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"completed\",\"type\":\"uint256\"}],\"name\":\"setCompleted\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"new_address\",\"type\":\"address\"}],\"name\":\"upgrade\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/jerryfireman/Projects/Augur-Balancer-market/augur-balancer-pool/contracts/Migrations.sol\":\"Migrations\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":100},\"remappings\":[]},\"sources\":{\"/Users/jerryfireman/Projects/Augur-Balancer-market/augur-balancer-pool/contracts/Migrations.sol\":{\"keccak256\":\"0xb6c370bc0c084980f4552743eae425917c9498f93366203586054e076130a621\",\"urls\":[\"bzz-raw://f0f03f56176f27951cd1eeebce7bbd248dafcf1da6221d007c9746dd0f7c4684\",\"dweb:/ipfs/QmdE2XgVRzMk7HZ5P7d3v1B8deiuw7KCCvnK75m94gA4wc\"]}},\"version\":1}",
-  "bytecode": "0x608060405234801561001057600080fd5b5060008054600160a060020a031916331790556101b9806100326000396000f3fe608060405234801561001057600080fd5b506004361061004f5760e060020a60003504630900f01081146100545780638da5cb5b1461007c578063fbdbad3c146100a0578063fdacd576146100ba575b600080fd5b61007a6004803603602081101561006a57600080fd5b5035600160a060020a03166100d7565b005b610084610157565b60408051600160a060020a039092168252519081900360200190f35b6100a8610166565b60408051918252519081900360200190f35b61007a600480360360208110156100d057600080fd5b503561016c565b600054600160a060020a031633141561015457600081905080600160a060020a031663fdacd5766001546040518263ffffffff1660e060020a02815260040180828152602001915050600060405180830381600087803b15801561013a57600080fd5b505af115801561014e573d6000803e3d6000fd5b50505050505b50565b600054600160a060020a031681565b60015481565b600054600160a060020a03163314156101545760015556fea265627a7a72315820c5e48437ce43bbc290b140abd6c4846ee19d7f36974bbb3d5f1b1af2e0ac1d0b64736f6c634300050c0032",
-  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061004f5760e060020a60003504630900f01081146100545780638da5cb5b1461007c578063fbdbad3c146100a0578063fdacd576146100ba575b600080fd5b61007a6004803603602081101561006a57600080fd5b5035600160a060020a03166100d7565b005b610084610157565b60408051600160a060020a039092168252519081900360200190f35b6100a8610166565b60408051918252519081900360200190f35b61007a600480360360208110156100d057600080fd5b503561016c565b600054600160a060020a031633141561015457600081905080600160a060020a031663fdacd5766001546040518263ffffffff1660e060020a02815260040180828152602001915050600060405180830381600087803b15801561013a57600080fd5b505af115801561014e573d6000803e3d6000fd5b50505050505b50565b600054600160a060020a031681565b60015481565b600054600160a060020a03163314156101545760015556fea265627a7a72315820c5e48437ce43bbc290b140abd6c4846ee19d7f36974bbb3d5f1b1af2e0ac1d0b64736f6c634300050c0032",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"constant\":true,\"inputs\":[],\"name\":\"lastCompletedMigration\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"completed\",\"type\":\"uint256\"}],\"name\":\"setCompleted\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"new_address\",\"type\":\"address\"}],\"name\":\"upgrade\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/jerryfireman/Projects/augur-balancer-pool/contracts/Migrations.sol\":\"Migrations\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":100},\"remappings\":[]},\"sources\":{\"/Users/jerryfireman/Projects/augur-balancer-pool/contracts/Migrations.sol\":{\"keccak256\":\"0xb6c370bc0c084980f4552743eae425917c9498f93366203586054e076130a621\",\"urls\":[\"bzz-raw://f0f03f56176f27951cd1eeebce7bbd248dafcf1da6221d007c9746dd0f7c4684\",\"dweb:/ipfs/QmdE2XgVRzMk7HZ5P7d3v1B8deiuw7KCCvnK75m94gA4wc\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060008054600160a060020a031916331790556101b9806100326000396000f3fe608060405234801561001057600080fd5b506004361061004f5760e060020a60003504630900f01081146100545780638da5cb5b1461007c578063fbdbad3c146100a0578063fdacd576146100ba575b600080fd5b61007a6004803603602081101561006a57600080fd5b5035600160a060020a03166100d7565b005b610084610157565b60408051600160a060020a039092168252519081900360200190f35b6100a8610166565b60408051918252519081900360200190f35b61007a600480360360208110156100d057600080fd5b503561016c565b600054600160a060020a031633141561015457600081905080600160a060020a031663fdacd5766001546040518263ffffffff1660e060020a02815260040180828152602001915050600060405180830381600087803b15801561013a57600080fd5b505af115801561014e573d6000803e3d6000fd5b50505050505b50565b600054600160a060020a031681565b60015481565b600054600160a060020a03163314156101545760015556fea265627a7a7231582029a7e3c9cb30118197eb1b50592d773527125501cf26f2b480e0986b629e68cd64736f6c634300050c0032",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061004f5760e060020a60003504630900f01081146100545780638da5cb5b1461007c578063fbdbad3c146100a0578063fdacd576146100ba575b600080fd5b61007a6004803603602081101561006a57600080fd5b5035600160a060020a03166100d7565b005b610084610157565b60408051600160a060020a039092168252519081900360200190f35b6100a8610166565b60408051918252519081900360200190f35b61007a600480360360208110156100d057600080fd5b503561016c565b600054600160a060020a031633141561015457600081905080600160a060020a031663fdacd5766001546040518263ffffffff1660e060020a02815260040180828152602001915050600060405180830381600087803b15801561013a57600080fd5b505af115801561014e573d6000803e3d6000fd5b50505050505b50565b600054600160a060020a031681565b60015481565b600054600160a060020a03163314156101545760015556fea265627a7a7231582029a7e3c9cb30118197eb1b50592d773527125501cf26f2b480e0986b629e68cd64736f6c634300050c0032",
   "sourceMap": "25:518:8:-;;;118:56;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;149:5:8;:18;;-1:-1:-1;;;;;;149:18:8;157:10;149:18;;;25:518;;;;;;",
   "deployedSourceMap": "25:518:8:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;25:518:8;;;;;;-1:-1:-1;;;25:518:8;;;;;;;;;;;;;;;;;;;;;;;;;;;366:175;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;366:175:8;-1:-1:-1;;;;;366:175:8;;:::i;:::-;;51:20;;;:::i;:::-;;;;-1:-1:-1;;;;;51:20:8;;;;;;;;;;;;;;77:34;;;:::i;:::-;;;;;;;;;;;;;;;;251:109;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;251:109:8;;:::i;366:175::-;230:5;;-1:-1:-1;;;;;230:5:8;216:10;:19;212:26;;;434:19;467:11;434:45;;489:8;-1:-1:-1;;;;;489:21:8;;511:22;;489:45;;;;;-1:-1:-1;;;489:45:8;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;489:45:8;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;489:45:8;;;;237:1;212:26;366:175;:::o;51:20::-;;;-1:-1:-1;;;;;51:20:8;;:::o;77:34::-;;;;:::o;251:109::-;230:5;;-1:-1:-1;;;;;230:5:8;216:10;:19;212:26;;;319:22;:34;251:109::o",
   "source": "pragma solidity 0.5.12;\n\ncontract Migrations {\n    address public owner;\n    uint public lastCompletedMigration;\n\n    constructor() public {\n        owner = msg.sender;\n    }\n\n    modifier restricted() {\n        if (msg.sender == owner) _;\n    }\n\n    function setCompleted(uint completed) external restricted {\n        lastCompletedMigration = completed;\n    }\n\n    function upgrade(address new_address) external restricted {\n        Migrations upgraded = Migrations(new_address);\n        upgraded.setCompleted(lastCompletedMigration);\n    }\n}\n",
-  "sourcePath": "/Users/jerryfireman/Projects/Augur-Balancer-market/augur-balancer-pool/contracts/Migrations.sol",
+  "sourcePath": "/Users/jerryfireman/Projects/augur-balancer-pool/contracts/Migrations.sol",
   "ast": {
-    "absolutePath": "/Users/jerryfireman/Projects/Augur-Balancer-market/augur-balancer-pool/contracts/Migrations.sol",
+    "absolutePath": "/Users/jerryfireman/Projects/augur-balancer-pool/contracts/Migrations.sol",
     "exportedSymbols": {
       "Migrations": [
         4599
@@ -721,7 +721,7 @@
     "src": "0:544:8"
   },
   "legacyAST": {
-    "absolutePath": "/Users/jerryfireman/Projects/Augur-Balancer-market/augur-balancer-pool/contracts/Migrations.sol",
+    "absolutePath": "/Users/jerryfireman/Projects/augur-balancer-pool/contracts/Migrations.sol",
     "exportedSymbols": {
       "Migrations": [
         4599
@@ -1735,10 +1735,22 @@
       "links": {},
       "address": "0xEdCf3c80e938De3D3D407B01Cde1A39369e17023",
       "transactionHash": "0x4e8195950cb53c346937535276d5c3f339ce6bc1c98089a51393b5d73a5c51b4"
+    },
+    "1599783063705": {
+      "events": {},
+      "links": {},
+      "address": "0xAF614a5B06f0c5bbb61FD95E3e63bd29250232CE",
+      "transactionHash": "0x984adfc48856e91d5fc59d90ea6699f32ffbd3f618ffeef8164591be7c351e1b"
+    },
+    "1599839604477": {
+      "events": {},
+      "links": {},
+      "address": "0xaE7099E9890b6c1107DF9EcA3D26c4a435632457",
+      "transactionHash": "0xe4f388b70ec438b45d6d7e0fcbd1c1a26ba57c59a67cd1c462b8cee12b421411"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-09T14:40:29.352Z",
+  "updatedAt": "2020-09-11T17:37:41.126Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
