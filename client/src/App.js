@@ -116,39 +116,40 @@ class App extends Component {
         var { yesContract } = this.state;
         var { daiContract } = this.state;
  
+        // @ mint YES, NO and Dai and send to LP1
+        await yesContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
+        await noContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
+        await daiContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
+
+        this.setState ({ 
+          yesContractAddress: yesContract.options.address,
+          noContractAddress: noContract.options.address,
+          daiContractAddress: daiContract.options.address,
+        });    
+
+        // @ mint Dai and send to Trader1
+        await daiContract.methods.mint(accounts[2], web3.utils.toWei('5000')).send({ from: accounts[0] });
+
+        console.log("Balances of LP1 and Trader1 after minting and before pool creation");
+        var LP1YesBalance = await yesContract.methods.balanceOf(accounts[1]).call();
+        LP1YesBalance = web3.utils.fromWei(LP1YesBalance)
+        console.log("LP1 Yes balance: ", LP1YesBalance)
+        var LP1NoBalance = await noContract.methods.balanceOf(accounts[1]).call();
+        LP1NoBalance = web3.utils.fromWei(LP1NoBalance)
+        console.log("LP1 No balance: ", LP1NoBalance)
+        var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+        trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
+        trader1DaiBalance = Number(trader1DaiBalance);
+        trader1DaiBalance = trader1DaiBalance.toFixed(2);
+        var zero = 0;
+        zero = zero.toFixed(2);
+        var trader1YesBalance = zero;
+        var trader1NoBalance = zero;
+        console.log("Trader1 Dai balance: ", trader1DaiBalance);
+        this.setState({ trader1YesBalance: trader1YesBalance, trader1NoBalance: trader1NoBalance, trader1DaiBalance: trader1DaiBalance });
+
       }
 
-      // @ mint YES, NO and Dai and send to LP1
-      await yesContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
-      await noContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
-      await daiContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
-
-      this.setState ({ 
-        yesContractAddress: yesContract.options.address,
-        noContractAddress: noContract.options.address,
-        daiContractAddress: daiContract.options.address,
-       });    
-
-      // @ mint Dai and send to Trader1
-      await daiContract.methods.mint(accounts[2], web3.utils.toWei('5000')).send({ from: accounts[0] });
-
-      console.log("Balances of LP1 and Trader1 after minting and before pool creation");
-      var LP1YesBalance = await yesContract.methods.balanceOf(accounts[1]).call();
-      LP1YesBalance = web3.utils.fromWei(LP1YesBalance)
-      console.log("LP1 Yes balance: ", LP1YesBalance)
-      var LP1NoBalance = await noContract.methods.balanceOf(accounts[1]).call();
-      LP1NoBalance = web3.utils.fromWei(LP1NoBalance)
-      console.log("LP1 No balance: ", LP1NoBalance)
-      var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
-      trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
-      trader1DaiBalance = Number(trader1DaiBalance);
-      trader1DaiBalance = trader1DaiBalance.toFixed(2);
-      var zero = 0;
-      zero = zero.toFixed(2);
-      var trader1YesBalance = zero;
-      var trader1NoBalance = zero;
-      console.log("Trader1 Dai balance: ", trader1DaiBalance);
-      this.setState({ trader1YesBalance: trader1YesBalance, trader1NoBalance: trader1NoBalance, trader1DaiBalance: trader1DaiBalance });
 
       // create a new balancer pool and save address to state, bind tokens and set public
       const tx = await bfactoryContract.methods.newBPool().send({from: accounts[1], gas: 6000000 });
