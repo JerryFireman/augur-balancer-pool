@@ -69,25 +69,24 @@ class App extends Component {
           YesContract.abi,
           deployedNetwork2 && deployedNetwork2.address,
         );
+        // Get No contract instance
+        const networkId3 = await web3.eth.net.getId();
+        const deployedNetwork3 = NoContract.networks[networkId3];
+        var noInstance = new web3.eth.Contract(
+          NoContract.abi,
+          deployedNetwork3 && deployedNetwork3.address,
+        );
+
+        // Get Dai contract instance
+        const networkId4 = await web3.eth.net.getId();
+        const deployedNetwork4 = DaiContract.networks[networkId4];
+        var daiInstance = new web3.eth.Contract(
+          DaiContract.abi,
+          deployedNetwork4 && deployedNetwork4.address,
+        );
 
 
       }
-
-      // Get No contract instance
-      const networkId3 = await web3.eth.net.getId();
-      const deployedNetwork3 = NoContract.networks[networkId3];
-      const noInstance = new web3.eth.Contract(
-        NoContract.abi,
-        deployedNetwork3 && deployedNetwork3.address,
-      );
-
-      // Get Dai contract instance
-      const networkId4 = await web3.eth.net.getId();
-      const deployedNetwork4 = DaiContract.networks[networkId4];
-      const daiInstance = new web3.eth.Contract(
-        DaiContract.abi,
-        deployedNetwork4 && deployedNetwork4.address,
-      );
 
       // Set web3, accounts, and contracts to the state
       this.setState({
