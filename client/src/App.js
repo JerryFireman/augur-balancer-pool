@@ -10,6 +10,10 @@ import PageHeader from './components/PageHeader.js';
 import MarketHeader from './components/MarketHeader.js';
 import Swap from './components/Swap.js';
 const { abi } = require('./contracts/BPool.json');
+const network = "kovan" // set network as "ganache" or "kovan"
+// if network is ganache, run truffle migrate --develop and disable metamask
+// if network is kovan, enable metamask, set to kovan network and open account with kovan eth
+
 
 //App controls the user interface
 class App extends Component {
