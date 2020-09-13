@@ -14318,12 +14318,12 @@
         }
       },
       "links": {},
-      "address": "0x6CcDBD6b3051fc08e24f0Fd8602248F67dDFe4a6",
-      "transactionHash": "0x709015e4a03da18d9b138c791b7f70636c5c225cb4e8263d9e8774e4843e204a"
+      "address": "0x55BA4eE5c72A811061C023F0A1b01248AEdC4b0C",
+      "transactionHash": "0x93787c2c545afaf01fb9605d1bd115c181b9cbebf5a373fd9cfb2eb011b5c872"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-09-13T18:04:36.214Z",
+  "updatedAt": "2020-09-13T20:08:11.897Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
