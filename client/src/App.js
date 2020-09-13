@@ -85,24 +85,39 @@ class App extends Component {
           deployedNetwork4 && deployedNetwork4.address,
         );
 
+        // Get No contract instance
+        const networkId5 = await web3.eth.net.getId();
+        const deployedNetwork5 = NoContract.networks[networkId5];
+        var noInstance = new web3.eth.Contract(
+          NoContract.abi,
+          deployedNetwork5 && deployedNetwork5.address,
+        );
 
+        // Get Dai contract instance
+        const networkId6 = await web3.eth.net.getId();
+        const deployedNetwork6 = DaiContract.networks[networkId6];
+        var daiInstance = new web3.eth.Contract(
+          DaiContract.abi,
+          deployedNetwork6 && deployedNetwork6.address,
+        );
+
+        // Set web3, accounts, and contracts to the state
+        this.setState({
+          web3,
+          accounts,
+          bfactoryContract: bfactoryInstance,
+          yesContract: yesInstance,
+          noContract: noInstance,
+          daiContract: daiInstance,
+        });
+
+        var { bfactoryContract } = this.state;
+        var { noContract } = this.state;
+        var { yesContract } = this.state;
+        var { daiContract } = this.state;
+ 
       }
 
-      // Set web3, accounts, and contracts to the state
-      this.setState({
-        web3,
-        accounts,
-        bfactoryContract: bfactoryInstance,
-        yesContract: yesInstance,
-        noContract: noInstance,
-        daiContract: daiInstance,
-      });
-
-      const { bfactoryContract } = this.state;
-      const { noContract } = this.state;
-      const { yesContract } = this.state;
-      const { daiContract } = this.state;
- 
       // @ mint YES, NO and Dai and send to LP1
       await yesContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
       await noContract.methods.mint(accounts[1], web3.utils.toWei('5000')).send({ from: accounts[0] });
