@@ -62,16 +62,16 @@ class App extends Component {
           BFactoryContract.abi,
           deployedNetwork && deployedNetwork.address,
         );
+        // Get Yes contract instance
+        const networkId2 = await web3.eth.net.getId();
+        const deployedNetwork2 = YesContract.networks[networkId2];
+        var yesInstance = new web3.eth.Contract(
+          YesContract.abi,
+          deployedNetwork2 && deployedNetwork2.address,
+        );
+
 
       }
-
-      // Get Yes contract instance
-      const networkId2 = await web3.eth.net.getId();
-      const deployedNetwork2 = YesContract.networks[networkId2];
-      const yesInstance = new web3.eth.Contract(
-        YesContract.abi,
-        deployedNetwork2 && deployedNetwork2.address,
-      );
 
       // Get No contract instance
       const networkId3 = await web3.eth.net.getId();
