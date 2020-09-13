@@ -162,47 +162,47 @@ class App extends Component {
         await pool.methods.bind(daiContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('25')).send( {from: accounts[1], gas: 6000000 });
         await pool.methods.setPublicSwap(true).send( {from: accounts[1], gas: 6000000 });
 
+        // print back end parameters to console.log
+        console.log("Parameters of Augur prediction market pool on Balancer")
+
+        var poolYesBalance = await pool.methods.getBalance(yesContract.options.address).call();
+        poolYesBalance = web3.utils.fromWei(poolYesBalance);
+        console.log("poolYesBalance: ", poolYesBalance);
+
+        var poolYesNormWeight = await pool.methods.getNormalizedWeight(yesContract.options.address).call();
+        poolYesNormWeight = web3.utils.fromWei(poolYesNormWeight);
+        console.log("poolYesNormWeight: ", poolYesNormWeight);
+
+        var poolNoBalance = await pool.methods.getBalance(noContract.options.address).call();
+        poolNoBalance = web3.utils.fromWei(poolNoBalance);
+        console.log("poolNoBalance: ", poolNoBalance);
+
+        var poolNoNormWeight = await pool.methods.getNormalizedWeight(noContract.options.address).call();
+        poolNoNormWeight = web3.utils.fromWei(poolNoNormWeight);
+        console.log("poolNoNormWeight: ", poolNoNormWeight);
+
+        var poolDaiBalance = await pool.methods.getBalance(daiContract.options.address).call();
+        poolDaiBalance = web3.utils.fromWei(poolDaiBalance);
+        console.log("poolDaiBalance: ", poolDaiBalance);
+
+        var poolDaiNormWeight = await pool.methods.getNormalizedWeight(daiContract.options.address).call();
+        poolDaiNormWeight = web3.utils.fromWei(poolDaiNormWeight);
+        console.log("poolDaiNormWeight: ", poolDaiNormWeight);
+
+        LP1YesBalance = await yesContract.methods.balanceOf(accounts[1]).call();
+        LP1YesBalance = web3.utils.fromWei(LP1YesBalance)
+
+        LP1NoBalance = await noContract.methods.balanceOf(accounts[1]).call();
+        LP1NoBalance = web3.utils.fromWei(LP1NoBalance)
+
+        var LP1DaiBalance = await daiContract.methods.balanceOf(accounts[1]).call();
+        LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
+
+        trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
+        trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
+
       }
 
-
-      // print back end parameters to console.log
-      console.log("Parameters of Augur prediction market pool on Balancer")
-
-      var poolYesBalance = await pool.methods.getBalance(yesContract.options.address).call();
-      poolYesBalance = web3.utils.fromWei(poolYesBalance);
-      console.log("poolYesBalance: ", poolYesBalance);
-
-      var poolYesNormWeight = await pool.methods.getNormalizedWeight(yesContract.options.address).call();
-      poolYesNormWeight = web3.utils.fromWei(poolYesNormWeight);
-      console.log("poolYesNormWeight: ", poolYesNormWeight);
-
-      var poolNoBalance = await pool.methods.getBalance(noContract.options.address).call();
-      poolNoBalance = web3.utils.fromWei(poolNoBalance);
-      console.log("poolNoBalance: ", poolNoBalance);
-
-      var poolNoNormWeight = await pool.methods.getNormalizedWeight(noContract.options.address).call();
-      poolNoNormWeight = web3.utils.fromWei(poolNoNormWeight);
-      console.log("poolNoNormWeight: ", poolNoNormWeight);
-
-      var poolDaiBalance = await pool.methods.getBalance(daiContract.options.address).call();
-      poolDaiBalance = web3.utils.fromWei(poolDaiBalance);
-      console.log("poolDaiBalance: ", poolDaiBalance);
-
-      var poolDaiNormWeight = await pool.methods.getNormalizedWeight(daiContract.options.address).call();
-      poolDaiNormWeight = web3.utils.fromWei(poolDaiNormWeight);
-      console.log("poolDaiNormWeight: ", poolDaiNormWeight);
-
-      LP1YesBalance = await yesContract.methods.balanceOf(accounts[1]).call();
-      LP1YesBalance = web3.utils.fromWei(LP1YesBalance)
-
-      LP1NoBalance = await noContract.methods.balanceOf(accounts[1]).call();
-      LP1NoBalance = web3.utils.fromWei(LP1NoBalance)
-
-      var LP1DaiBalance = await daiContract.methods.balanceOf(accounts[1]).call();
-      LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
-
-      trader1DaiBalance = await daiContract.methods.balanceOf(accounts[2]).call();
-      trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
 
     // Set starting parameters
     this.setState( {
