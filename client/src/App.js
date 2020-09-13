@@ -104,14 +104,14 @@ class App extends Component {
         // Get Yes contract instance
         const networkId2 = await web3.eth.net.getId();
         const deployedNetwork2 = YesContract.networks[networkId2];
-        var yesInstance = new web3.eth.Contract(
+        yesInstance = new web3.eth.Contract(
           YesContract.abi,
           deployedNetwork2 && deployedNetwork2.address,
         );
         // Get No contract instance
         const networkId3 = await web3.eth.net.getId();
         const deployedNetwork3 = NoContract.networks[networkId3];
-        var noInstance = new web3.eth.Contract(
+        noInstance = new web3.eth.Contract(
           NoContract.abi,
           deployedNetwork3 && deployedNetwork3.address,
         );
@@ -119,25 +119,9 @@ class App extends Component {
         // Get Dai contract instance
         const networkId4 = await web3.eth.net.getId();
         const deployedNetwork4 = DaiContract.networks[networkId4];
-        var daiInstance = new web3.eth.Contract(
+        daiInstance = new web3.eth.Contract(
           DaiContract.abi,
           deployedNetwork4 && deployedNetwork4.address,
-        );
-
-        // Get No contract instance
-        const networkId5 = await web3.eth.net.getId();
-        const deployedNetwork5 = NoContract.networks[networkId5];
-        var noInstance = new web3.eth.Contract(
-          NoContract.abi,
-          deployedNetwork5 && deployedNetwork5.address,
-        );
-
-        // Get Dai contract instance
-        const networkId6 = await web3.eth.net.getId();
-        const deployedNetwork6 = DaiContract.networks[networkId6];
-        var daiInstance = new web3.eth.Contract(
-          DaiContract.abi,
-          deployedNetwork6 && deployedNetwork6.address,
         );
 
         // Set web3, accounts, and contracts to the state
@@ -200,10 +184,15 @@ class App extends Component {
         await daiContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
         await pool.methods.bind(daiContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('25')).send( {from: accounts[1], gas: 6000000 });
         await pool.methods.setPublicSwap(true).send( {from: accounts[1], gas: 6000000 });
+      }
 
         // print back end parameters to console.log
         console.log("Parameters of Augur prediction market pool on Balancer")
 
+        pool = this.state.pool;
+        yesContract = this.state.yesContract;
+        noContract = this.state.noContract;
+        daiContract = this.state.daiContract;
         var poolYesBalance = await pool.methods.getBalance(yesContract.options.address).call();
         poolYesBalance = web3.utils.fromWei(poolYesBalance);
         console.log("poolYesBalance: ", poolYesBalance);
@@ -228,19 +217,14 @@ class App extends Component {
         poolDaiNormWeight = web3.utils.fromWei(poolDaiNormWeight);
         console.log("poolDaiNormWeight: ", poolDaiNormWeight);
 
-        LP1YesBalance = await yesContract.methods.balanceOf(accounts[1]).call();
-        LP1YesBalance = web3.utils.fromWei(LP1YesBalance)
-
-        LP1NoBalance = await noContract.methods.balanceOf(accounts[1]).call();
-        LP1NoBalance = web3.utils.fromWei(LP1NoBalance)
-
-        var LP1DaiBalance = await daiContract.methods.balanceOf(accounts[1]).call();
-        LP1DaiBalance = web3.utils.fromWei(LP1DaiBalance)
-
         trader1DaiBalance = await daiContract.methods.balanceOf(accounts[0]).call();
         trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
 
-      }
+        trader1YesBalance = await yesContract.methods.balanceOf(accounts[0]).call();
+        trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
+
+        trader1NoBalance = await noContract.methods.balanceOf(accounts[0]).call();
+        trader1NoBalance = web3.utils.fromWei(trader1NoBalance)
 
     // Set starting parameters
     this.setState( {
@@ -447,8 +431,12 @@ swapExactAmountOut = async () => {
   const { fromToken } = this.state;
   const { toToken } = this.state;
   const { noContract } = this.state;
+  const { noContractAddress } = this.state;
   const { yesContract } = this.state;
+  const { yesContractAddress } = this.state;
   const { daiContract } = this.state;
+  const { daiContractAddress } = this.state;
+  const { bpoolAddress } = this.state;
   const { accounts } = this.state;
   var { fromAmount } = this.state;
   var { toAmount } = this.state;
@@ -461,18 +449,31 @@ swapExactAmountOut = async () => {
 
   try {
     //approve fromAmount of fromToken for spending by Trader1
-    if (fromToken === noContract.options.address) {
+    console.log("fromToken: ", fromToken);
+    console.log("daiContract.options.address: ", daiContract.options.address);
+    console.log("pool.options.address: ", pool.options.address);
+    console.log("fromAmount: ", fromAmount);
+    console.log("accounts[0]: ", accounts[0]);
+
+    if (fromToken === noContractAddress) {
       await noContract.methods.approve(pool.options.address, fromAmount).send({from: accounts[0], gas: 6000000 });
       var noAllowance = await noContract.methods.allowance(accounts[0], pool.options.address).call();
       console.log("noAllowance: ", noAllowance);
-    } else if (fromToken === yesContract.options.address) {
+    } else if (fromToken === yesContractAddress) {
       await yesContract.methods.approve(pool.options.address, fromAmount).send({from: accounts[0], gas: 6000000 });
       var yesAllowance = await yesContract.methods.allowance(accounts[0], pool.options.address).call();
       console.log("yesAllowance: ", yesAllowance);
-    } else if (fromToken === daiContract.options.address) {
-      await daiContract.methods.approve(pool.options.address, fromAmount).send({from: accounts[0], gas: 6000000 });
-    } var tx = await pool.methods.swapExactAmountOut(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[0], gas: 6000000 });
-      console.log("Successful transaction: ", tx.status)
+    } else if (fromToken === daiContractAddress) {
+      console.log("hit approve dai branch")
+      var tx1 = await daiContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 6000000 });
+      console.log("Successful transaction: ", tx1.status)
+      console.log("tx: ", tx1)
+      var daiAllowance = await daiContract.methods.allowance(accounts[0], pool.options.address).call();
+      console.log("daiAllowance: ", daiAllowance);
+    } 
+      var tx2 = await pool.methods.swapExactAmountOut(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[0], gas: 6000000 });
+      console.log("Successful transaction: ", tx2.status)
+      console.log("tx2: ", tx2)
       console.log("Checking balances after transaction ...")
       var trader1YesBalance = await yesContract.methods.balanceOf(accounts[0]).call();
       trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
@@ -528,7 +529,6 @@ swapExactAmountOut = async () => {
       this.setState({ fromBalance: trader1NoBalance});
     }
     if (fromToken === daiContractAddress) {
-      console.log("accounts within updateBalances: ", accounts )
       var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[0]).call();
       trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance)
       trader1DaiBalance = Number(trader1DaiBalance);
