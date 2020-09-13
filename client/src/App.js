@@ -10,7 +10,7 @@ import PageHeader from './components/PageHeader.js';
 import MarketHeader from './components/MarketHeader.js';
 import Swap from './components/Swap.js';
 const { abi } = require('./contracts/BPool.json');
-const network = "kovan" // set network as "ganache" or "kovan"
+const network = "ganache" // set network as "ganache" or "kovan"
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
 
@@ -54,13 +54,16 @@ class App extends Component {
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
 
-      // Get the BFactory contract instance.
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = BFactoryContract.networks[networkId];
-      const bfactoryInstance = new web3.eth.Contract(
-        BFactoryContract.abi,
-        deployedNetwork && deployedNetwork.address,
-      );
+      if (network === "ganache") {
+        // Get the BFactory contract instance.
+        const networkId = await web3.eth.net.getId();
+        const deployedNetwork = BFactoryContract.networks[networkId];
+        var bfactoryInstance = new web3.eth.Contract(
+          BFactoryContract.abi,
+          deployedNetwork && deployedNetwork.address,
+        );
+
+      }
 
       // Get Yes contract instance
       const networkId2 = await web3.eth.net.getId();
