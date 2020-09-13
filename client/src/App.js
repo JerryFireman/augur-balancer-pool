@@ -148,22 +148,22 @@ class App extends Component {
         console.log("Trader1 Dai balance: ", trader1DaiBalance);
         this.setState({ trader1YesBalance: trader1YesBalance, trader1NoBalance: trader1NoBalance, trader1DaiBalance: trader1DaiBalance });
 
+        // create a new balancer pool and save address to state, bind tokens and set public
+        const tx = await bfactoryContract.methods.newBPool().send({from: accounts[1], gas: 6000000 });
+        var bpoolAddress = tx.events.LOG_NEW_POOL.returnValues[1]
+        this.setState({ bpoolAddress: bpoolAddress });
+        var pool = new web3.eth.Contract(abi, this.state.bpoolAddress);
+        this.setState( {pool: pool} );
+        await yesContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
+        await pool.methods.bind(yesContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('18.75')).send( {from: accounts[1], gas: 6000000 });
+        await noContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
+        await pool.methods.bind(noContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('6.25')).send( {from: accounts[1], gas: 6000000 });
+        await daiContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
+        await pool.methods.bind(daiContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('25')).send( {from: accounts[1], gas: 6000000 });
+        await pool.methods.setPublicSwap(true).send( {from: accounts[1], gas: 6000000 });
+
       }
 
-
-      // create a new balancer pool and save address to state, bind tokens and set public
-      const tx = await bfactoryContract.methods.newBPool().send({from: accounts[1], gas: 6000000 });
-      var bpoolAddress = tx.events.LOG_NEW_POOL.returnValues[1]
-      this.setState({ bpoolAddress: bpoolAddress });
-      var pool = new web3.eth.Contract(abi, this.state.bpoolAddress);
-      this.setState( {pool: pool} );
-      await yesContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
-      await pool.methods.bind(yesContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('18.75')).send( {from: accounts[1], gas: 6000000 });
-      await noContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
-      await pool.methods.bind(noContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('6.25')).send( {from: accounts[1], gas: 6000000 });
-      await daiContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
-      await pool.methods.bind(daiContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('25')).send( {from: accounts[1], gas: 6000000 });
-      await pool.methods.setPublicSwap(true).send( {from: accounts[1], gas: 6000000 });
 
       // print back end parameters to console.log
       console.log("Parameters of Augur prediction market pool on Balancer")
