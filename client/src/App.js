@@ -381,11 +381,23 @@ class App extends Component {
     var { toAmount } = this.state;
   
 
-    var maxPrice = 2 * (this.state.toAmount / this.state.fromAmount);
+    var maxPrice = await pool.methods.getSpotPrice(fromToken, toToken).call();
+    console.log("maxPrice: ", maxPrice);
+    maxPrice = web3.utils.fromWei(maxPrice);
+    maxPrice = Number(maxPrice);
+    console.log("maxPrice: ", maxPrice);
+    maxPrice = 2 * maxPrice
+    maxPrice = web3.utils.toWei(maxPrice.toString());
     toAmount = 0
+    console.log("toAmount: ", toAmount)
     fromAmount = web3.utils.toWei(this.state.fromAmount.toString());
     toAmount = web3.utils.toWei(toAmount.toString());
-    maxPrice = web3.utils.toWei(maxPrice.toString())  
+
+    console.log("fromToken: ", fromToken);
+    console.log("daiContractAddress: ", daiContract.options.address);
+    console.log("bpoolAddress: ", bpoolAddress);
+    console.log("fromAmount: ", fromAmount);
+    console.log("accounts[0]: ", accounts[0]);
 
     try {
       //approve fromAmount of fromToken for spending by Trader1
@@ -398,8 +410,14 @@ class App extends Component {
         var yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
         console.log("yesAllowance: ", yesAllowance);
       } else if (fromToken === daiContractAddress) {
-        await daiContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 6000000 });
-      } var tx = await pool.methods.swapExactAmountIn(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[0], gas: 6000000 });
+        console.log("hit approve dai in SEAI")
+        var tx1 = await daiContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 6000000 });
+        console.log("Successful transaction: ", await tx1.status)
+        console.log("tx1: ", tx1)
+        var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
+        console.log("daiAllowance: ", daiAllowance);
+        } 
+      var tx = await pool.methods.swapExactAmountIn(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[0], gas: 6000000 });
         console.log("Successful transaction: ", tx.status)
         console.log("Checking balances after transaction ...")
         var trader1YesBalance = await yesContract.methods.balanceOf(accounts[0]).call();
@@ -453,11 +471,6 @@ swapExactAmountOut = async () => {
 
   try {
     //approve fromAmount of fromToken for spending by Trader1
-    console.log("fromToken: ", fromToken);
-    console.log("daiContract.options.address: ", daiContract.options.address);
-    console.log("bpoolAddress: ", bpoolAddress);
-    console.log("fromAmount: ", fromAmount);
-    console.log("accounts[0]: ", accounts[0]);
 
     if (fromToken === noContractAddress) {
       await noContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 6000000 });
