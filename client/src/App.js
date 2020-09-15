@@ -15,7 +15,7 @@ const kovanYesAddress = "0x1dbccf29375304c38bd0d162f636baa8dd6cce44"
 const kovanNoAddress = "0xeb69840f09A9235df82d9Ed9D43CafFFea2a1eE9"
 const kovanDaiAddress = "0xb6085abd65e21d205aead0b1b9981b8b221fa14e"
 const kovanPoolAddress = "0xbc6d6f508657c3c84983cd92f3eda6997e877e90"
-const network = "kovan" // set network as "ganache" or "kovan"
+const network = "ganache" // set network as "ganache" or "kovan"
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
 
@@ -275,16 +275,27 @@ class App extends Component {
     const { web3 } = this.state;
     const { fromToken } = this.state;
     const { toToken } = this.state;
+    const { daiContractAddress } = this.state;
 
     try {
+
       var fromTokenBalance = await pool.methods.getBalance(fromToken).call();
-      fromTokenBalance = web3.utils.fromWei(fromTokenBalance);
+      fromTokenBalance = Number(web3.utils.fromWei(fromTokenBalance));
+      if (network === "kovan" && fromToken !== daiContractAddress) {
+        fromTokenBalance = 100 * fromTokenBalance;
+      }
+      console.log("CTGF fromTokenBalance: ", fromTokenBalance);
+
 
       var fromTokenWeight = await pool.methods.getNormalizedWeight(fromToken).call();
       fromTokenWeight = web3.utils.fromWei(fromTokenWeight);
 
       var toTokenBalance = await pool.methods.getBalance(toToken).call();
       toTokenBalance = web3.utils.fromWei(toTokenBalance);
+      if (network === "kovan" && toToken !== daiContractAddress) {
+        toTokenBalance = 100 * toTokenBalance;
+      }
+      console.log("CFGT toTokenBalance: ", toTokenBalance);
 
       var toTokenWeight = await pool.methods.getNormalizedWeight(toToken).call();
       toTokenWeight = web3.utils.fromWei(toTokenWeight);
@@ -316,17 +327,25 @@ class App extends Component {
     const { web3 } = this.state;
     const { fromToken } = this.state;
     const { toToken } = this.state;
+    const { daiContractAddress } = this.state;
 
     try {
       var fromTokenBalance = await pool.methods.getBalance(fromToken).call();
       fromTokenBalance = Number(web3.utils.fromWei(fromTokenBalance));
-      console.log("fromTokenBalance: ", fromTokenBalance)
+      if (network === "kovan" && fromToken !== daiContractAddress) {
+        fromTokenBalance = 100 * fromTokenBalance;
+      }
+      console.log("CFGT fromTokenBalance: ", fromTokenBalance);
 
       var fromTokenWeight = await pool.methods.getNormalizedWeight(fromToken).call();
       fromTokenWeight = web3.utils.fromWei(fromTokenWeight);
 
       var toTokenBalance = await pool.methods.getBalance(toToken).call();
       toTokenBalance = web3.utils.fromWei(toTokenBalance);
+      if (network === "kovan" && toToken !== daiContractAddress) {
+        toTokenBalance = 100 * toTokenBalance;
+      }
+      console.log("CFGT toTokenBalance: ", toTokenBalance);
 
       var toTokenWeight = await pool.methods.getNormalizedWeight(toToken).call();
       toTokenWeight = web3.utils.fromWei(toTokenWeight);
@@ -380,26 +399,23 @@ class App extends Component {
     var { fromAmount } = this.state;
     var { toAmount } = this.state;
   
-
-    var maxPrice = await pool.methods.getSpotPrice(fromToken, toToken).call();
-    console.log("maxPrice: ", maxPrice);
-    maxPrice = web3.utils.fromWei(maxPrice);
-    maxPrice = Number(maxPrice);
-    console.log("maxPrice: ", maxPrice);
-    maxPrice = 2 * maxPrice
-    maxPrice = web3.utils.toWei(maxPrice.toString());
+    console.log("SEAI toAmount: ", toAmount)
+    if (network === "kovan" && fromToken != daiContractAddress) {
+      fromAmount = fromAmount / 100;
+    }
+    console.log("SEAI fromAmount: ", fromAmount)
+    if (network === "kovan" && toToken != daiContractAddress) {
+      toAmount = toAmount / 100;
+    }
+    console.log("SEAI toAmount: ", toAmount)
+    var maxPrice = 2 * (fromAmount / toAmount);
+    console.log("SEAI maxPrice: ", maxPrice)
     toAmount = 0
-    console.log("toAmount: ", toAmount)
-    fromAmount = web3.utils.toWei(this.state.fromAmount.toString());
+    fromAmount = web3.utils.toWei(fromAmount.toString());
     toAmount = web3.utils.toWei(toAmount.toString());
-
-    console.log("fromToken: ", fromToken);
-    console.log("daiContractAddress: ", daiContract.options.address);
-    console.log("bpoolAddress: ", bpoolAddress);
-    console.log("fromAmount: ", fromAmount);
-    console.log("accounts[0]: ", accounts[0]);
-
-    try {
+    maxPrice = web3.utils.toWei(maxPrice.toString())
+  
+      try {
       //approve fromAmount of fromToken for spending by Trader1
       if (fromToken === noContractAddress) {
         await noContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 6000000 });
@@ -463,11 +479,21 @@ swapExactAmountOut = async () => {
   var { fromAmount } = this.state;
   var { toAmount } = this.state;
 
-  fromAmount = 2 * fromAmount
-  var maxPrice = 2 * (this.state.fromAmount / this.state.toAmount);
-  maxPrice = web3.utils.toWei(maxPrice.toString())
-  toAmount = web3.utils.toWei(toAmount.toString());
+  if (network === "kovan" && toToken != daiContractAddress) {
+    toAmount = toAmount / 100;
+  }
+  console.log("SEAO toAmount: ", toAmount)
+  if (network === "kovan" && fromToken != daiContractAddress) {
+    fromAmount = fromAmount / 100;
+  }
+  fromAmount = 2 * fromAmount;
+  console.log("SEAO fromAmount: ", fromAmount)
+
+  var maxPrice = 2 * (fromAmount / toAmount);
+  console.log("SEAO maxPrice: ", maxPrice)
   fromAmount = web3.utils.toWei(fromAmount.toString());
+  toAmount = web3.utils.toWei(toAmount.toString());
+  maxPrice = web3.utils.toWei(maxPrice.toString())
 
   try {
     //approve fromAmount of fromToken for spending by Trader1
@@ -535,6 +561,9 @@ swapExactAmountOut = async () => {
       var trader1YesBalance = await yesContract.methods.balanceOf(accounts[0]).call();
       trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
       trader1YesBalance = Number(trader1YesBalance);
+      if (network === "kovan") {
+        trader1YesBalance = 100 * trader1YesBalance;
+      }
       trader1YesBalance = trader1YesBalance.toFixed(2);
       this.setState({ fromBalance: trader1YesBalance});
     }
@@ -542,6 +571,9 @@ swapExactAmountOut = async () => {
       var trader1NoBalance = await noContract.methods.balanceOf(accounts[0]).call();
       trader1NoBalance = web3.utils.fromWei(trader1NoBalance)
       trader1NoBalance = Number(trader1NoBalance);
+      if (network === "kovan") {
+        trader1NoBalance = 100 * trader1NoBalance;
+      }
       trader1NoBalance = trader1NoBalance.toFixed(2);
       this.setState({ fromBalance: trader1NoBalance});
     }
@@ -556,6 +588,9 @@ swapExactAmountOut = async () => {
       trader1YesBalance = await yesContract.methods.balanceOf(accounts[0]).call();
       trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
       trader1YesBalance = Number(trader1YesBalance);
+      if (network === "kovan") {
+        trader1YesBalance = 100 * trader1YesBalance;
+      }
       trader1YesBalance = trader1YesBalance.toFixed(2);
       this.setState({ toBalance: trader1YesBalance});
     }
@@ -563,6 +598,9 @@ swapExactAmountOut = async () => {
       trader1NoBalance = await noContract.methods.balanceOf(accounts[0]).call();
       trader1NoBalance = web3.utils.fromWei(trader1NoBalance)
       trader1NoBalance = Number(trader1NoBalance);
+      if (network === "kovan") {
+        trader1NoBalance = 100 * trader1NoBalance;
+      }
       trader1NoBalance = trader1NoBalance.toFixed(2);
       this.setState({ toBalance: trader1NoBalance});
     }
@@ -594,8 +632,11 @@ swapExactAmountOut = async () => {
       var spotPrice = await pool.methods.getSpotPrice(fromToken, toToken).call();
       spotPrice = web3.utils.fromWei(spotPrice)
       spotPrice = Number(spotPrice);
+      if (network === "kovan") {
+        spotPrice = spotPrice / 100;
+      }
       spotPrice = spotPrice.toFixed(4)
-      console.log("spotPrice", spotPrice);
+      console.log("CPPS spotPrice", spotPrice);
       var pricePerShare = fromAmount / toAmount;
       pricePerShare = pricePerShare.toFixed(4);
       var maxProfit = 1 - pricePerShare;
@@ -619,7 +660,10 @@ swapExactAmountOut = async () => {
       spotPrice = Number(spotPrice);
       spotPrice = spotPrice.toFixed(4);
       spotPrice = 1 / spotPrice;
-      console.log("spotPrice", spotPrice);
+      if (network === "kovan") {
+        spotPrice = spotPrice * 100;
+      }
+      console.log("CPPS spotPrice", spotPrice);
       pricePerShare = toAmount / fromAmount;
       pricePerShare = pricePerShare.toFixed(4);
       priceImpact = (spotPrice - pricePerShare) * 100
