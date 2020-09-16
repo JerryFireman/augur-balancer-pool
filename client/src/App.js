@@ -15,7 +15,7 @@ const kovanYesAddress = "0x1dbccf29375304c38bd0d162f636baa8dd6cce44"
 const kovanNoAddress = "0xeb69840f09A9235df82d9Ed9D43CafFFea2a1eE9"
 const kovanDaiAddress = "0xb6085abd65e21d205aead0b1b9981b8b221fa14e"
 const kovanPoolAddress = "0xbc6d6f508657c3c84983cd92f3eda6997e877e90"
-const network = "ganache" // set network as "ganache" or "kovan"
+const network = "kovan"; // set network as "ganache" or "kovan"
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
 
@@ -25,7 +25,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-  }
+  };
 
   state = {
     web3: null,
@@ -64,19 +64,19 @@ class App extends Component {
         var yesInstance = new web3.eth.Contract (
           YesContract.abi,
           kovanYesAddress
-        )
+        );
         var noInstance = new web3.eth.Contract (
           NoContract.abi,
           kovanNoAddress
-        )
+        );
         var daiInstance = new web3.eth.Contract (
           DaiContract.abi,
           kovanDaiAddress
-        )
+        );
         var poolInstance = new web3.eth.Contract (
           BPoolContract.abi,
           kovanPoolAddress
-        )
+        );
 
         this.setState({
           web3: web3,
@@ -89,9 +89,8 @@ class App extends Component {
           noContractAddress: kovanNoAddress,
           daiContractAddress: kovanDaiAddress,
           bpoolAddress: kovanPoolAddress,
-        })
-
-      }
+        });
+      };
 
       if (network === "ganache") {
         // Get the BFactory contract instance.
@@ -155,11 +154,10 @@ class App extends Component {
 
         console.log("Balances of LP1 and Trader1 after minting and before pool creation");
         var LP1YesBalance = await yesContract.methods.balanceOf(accounts[1]).call();
-        LP1YesBalance = web3.utils.fromWei(LP1YesBalance)
-        console.log("LP1 Yes balance: ", LP1YesBalance)
+        LP1YesBalance = web3.utils.fromWei(LP1YesBalance);
         var LP1NoBalance = await noContract.methods.balanceOf(accounts[1]).call();
-        LP1NoBalance = web3.utils.fromWei(LP1NoBalance)
-        console.log("LP1 No balance: ", LP1NoBalance)
+        LP1NoBalance = web3.utils.fromWei(LP1NoBalance);
+        console.log("LP1 No balance: ", LP1NoBalance);
         var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[0]).call();
         trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
         trader1DaiBalance = Number(trader1DaiBalance);
@@ -173,7 +171,7 @@ class App extends Component {
 
         // create a new balancer pool and save address to state, bind tokens and set public
         const tx = await bfactoryContract.methods.newBPool().send({from: accounts[1], gas: 6000000 });
-        var bpoolAddress = tx.events.LOG_NEW_POOL.returnValues[1]
+        var bpoolAddress = tx.events.LOG_NEW_POOL.returnValues[1];
         this.setState({ bpoolAddress: bpoolAddress });
         var pool = new web3.eth.Contract(abi, this.state.bpoolAddress);
         this.setState( {pool: pool} );
@@ -184,47 +182,7 @@ class App extends Component {
         await daiContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('5000')).send( {from: accounts[1], gas: 6000000 });
         await pool.methods.bind(daiContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('25')).send( {from: accounts[1], gas: 6000000 });
         await pool.methods.setPublicSwap(true).send( {from: accounts[1], gas: 6000000 });
-      }
-
-        // print back end parameters to console.log
-        console.log("Parameters of Augur prediction market pool on Balancer")
-
-        pool = this.state.pool;
-        yesContract = this.state.yesContract;
-        noContract = this.state.noContract;
-        daiContract = this.state.daiContract;
-        var poolYesBalance = await pool.methods.getBalance(yesContract.options.address).call();
-        poolYesBalance = web3.utils.fromWei(poolYesBalance);
-        console.log("poolYesBalance: ", poolYesBalance);
-
-        var poolYesNormWeight = await pool.methods.getNormalizedWeight(yesContract.options.address).call();
-        poolYesNormWeight = web3.utils.fromWei(poolYesNormWeight);
-        console.log("poolYesNormWeight: ", poolYesNormWeight);
-
-        var poolNoBalance = await pool.methods.getBalance(noContract.options.address).call();
-        poolNoBalance = web3.utils.fromWei(poolNoBalance);
-        console.log("poolNoBalance: ", poolNoBalance);
-
-        var poolNoNormWeight = await pool.methods.getNormalizedWeight(noContract.options.address).call();
-        poolNoNormWeight = web3.utils.fromWei(poolNoNormWeight);
-        console.log("poolNoNormWeight: ", poolNoNormWeight);
-
-        var poolDaiBalance = await pool.methods.getBalance(daiContract.options.address).call();
-        poolDaiBalance = web3.utils.fromWei(poolDaiBalance);
-        console.log("poolDaiBalance: ", poolDaiBalance);
-
-        var poolDaiNormWeight = await pool.methods.getNormalizedWeight(daiContract.options.address).call();
-        poolDaiNormWeight = web3.utils.fromWei(poolDaiNormWeight);
-        console.log("poolDaiNormWeight: ", poolDaiNormWeight);
-
-        trader1DaiBalance = await daiContract.methods.balanceOf(accounts[0]).call();
-        trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
-
-        trader1YesBalance = await yesContract.methods.balanceOf(accounts[0]).call();
-        trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
-
-        trader1NoBalance = await noContract.methods.balanceOf(accounts[0]).call();
-        trader1NoBalance = web3.utils.fromWei(trader1NoBalance)
+      };
 
     // Set starting parameters
     this.setState( {
@@ -400,11 +358,11 @@ class App extends Component {
     var { toAmount } = this.state;
   
     console.log("SEAI toAmount: ", toAmount)
-    if (network === "kovan" && fromToken != daiContractAddress) {
+    if (network === "kovan" && fromToken !== daiContractAddress) {
       fromAmount = fromAmount / 100;
     }
     console.log("SEAI fromAmount: ", fromAmount)
-    if (network === "kovan" && toToken != daiContractAddress) {
+    if (network === "kovan" && toToken !== daiContractAddress) {
       toAmount = toAmount / 100;
     }
     console.log("SEAI toAmount: ", toAmount)
@@ -479,11 +437,11 @@ swapExactAmountOut = async () => {
   var { fromAmount } = this.state;
   var { toAmount } = this.state;
 
-  if (network === "kovan" && toToken != daiContractAddress) {
+  if (network === "kovan" && toToken !== daiContractAddress) {
     toAmount = toAmount / 100;
   }
   console.log("SEAO toAmount: ", toAmount)
-  if (network === "kovan" && fromToken != daiContractAddress) {
+  if (network === "kovan" && fromToken !== daiContractAddress) {
     fromAmount = fromAmount / 100;
   }
   fromAmount = 2 * fromAmount;
