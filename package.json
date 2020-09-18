@@ -1,9 +1,9 @@
 {
     "private": true,
-    "name": "balancer-core",
-    "version": "0.0.7",
+    "name": "catnip",
+    "version": "0",
     "license": "GPL-3.0-only",
-    "description": "Balancer Core Contracts and ABI",
+    "description": "prediction market trading",
     "scripts": {
         "compile": "truffle compile",
         "testrpc": "ganache-cli --deterministic --gasLimit 10000000",
@@ -20,7 +20,6 @@
     "bugs": {
         "url": "https://github.com/balancer-labs/balancer-core/issues"
     },
-    "homepage": "https://github.com/balancer-labs/balancer-core#readme",
     "devDependencies": {
         "chai": "^4.2.0",
         "coveralls": "^3.0.8",
