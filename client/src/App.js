@@ -244,6 +244,7 @@ class App extends Component {
     const { fromToken } = this.state;
     const { toToken } = this.state;
     const { daiContractAddress } = this.state;
+    const { swapFee } = this.state
 
     try {
 
@@ -275,7 +276,8 @@ class App extends Component {
       var intermediate2 =  intermediate1 ** (fromTokenWeight / toTokenWeight)
       console.log ("intermediate2: ", intermediate2)
       var toAmount = Number(toTokenBalance) * ( 1 -  intermediate2  );
-      toAmount = toAmount.toFixed(2)      
+      toAmount = toAmount * ( 1 - swapFee );
+      toAmount = toAmount.toFixed(4)      
       console.log("toAmount: ", toAmount);
       this.setState( { toAmount: toAmount, fromExact: true } );
       await this.calcPriceProfitSlippage();
@@ -607,18 +609,17 @@ swapExactAmountOut = async () => {
       if (network === "kovan") {
         spotPrice = spotPrice / 100;
       };
-      spotPrice = spotPrice - this.state.swapFee;
-      spotPrice = spotPrice.toFixed(4);
+      spotPrice = spotPrice.toFixed(6);
       console.log("CPPS spotPrice", spotPrice);
       var pricePerShare = fromAmount / toAmount;
-      pricePerShare = pricePerShare.toFixed(4);
+      pricePerShare = pricePerShare.toFixed(8);
       var maxProfit = 1 - pricePerShare;
-      var priceImpact = (pricePerShare - spotPrice) / pricePerShare;
+      var priceImpact = (pricePerShare - spotPrice) * 100 / pricePerShare;
       pricePerShare = Number(pricePerShare);
+      console.log("pricePerShare: ", pricePerShare)
       pricePerShare = pricePerShare.toFixed(2);
       maxProfit = maxProfit.toFixed(2);
       priceImpact = priceImpact.toFixed(2);
-      console.log("pricePerShare: ", pricePerShare)
       console.log("maxProfit: ", maxProfit)
       console.log("priceImpact: ", priceImpact)  
       this.setState({ 
