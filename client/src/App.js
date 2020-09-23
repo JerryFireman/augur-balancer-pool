@@ -606,8 +606,9 @@ swapExactAmountOut = async () => {
       spotPrice = Number(spotPrice);
       if (network === "kovan") {
         spotPrice = spotPrice / 100;
-      }
-      spotPrice = spotPrice.toFixed(4)
+      };
+      spotPrice = spotPrice - this.state.swapFee;
+      spotPrice = spotPrice.toFixed(4);
       console.log("CPPS spotPrice", spotPrice);
       var pricePerShare = fromAmount / toAmount;
       pricePerShare = pricePerShare.toFixed(4);
