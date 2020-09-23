@@ -19,7 +19,6 @@ const network = "kovan"; // set network as "ganache" or "kovan"
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
 
-
 //App controls the user interface
 class App extends Component {
   constructor(props) {
@@ -49,6 +48,7 @@ class App extends Component {
     pricePerShare: 0,
     maxProfit: 0,
     priceImpact: 0,
+    swapFee: 0,
   };
 
   componentDidMount = async () => {
@@ -90,6 +90,12 @@ class App extends Component {
           daiContractAddress: kovanDaiAddress,
           bpoolAddress: kovanPoolAddress,
         });
+
+        var swapFee = await this.state.pool.methods.getSwapFee().call();
+        swapFee = web3.utils.fromWei(swapFee);
+        swapFee = Number(swapFee);
+        this.setState({ swapFee: swapFee });
+        console.log("swapFee: ", swapFee);
       };
 
       if (network === "ganache") {
@@ -191,6 +197,10 @@ class App extends Component {
       fromToken: this.state.daiContractAddress,
       toToken: this.state.yesContractAddress,
     });
+
+    
+
+
   
     await this.updateBalances();
     } catch (error) {
@@ -594,7 +604,6 @@ swapExactAmountOut = async () => {
       var spotPrice = await pool.methods.getSpotPrice(fromToken, toToken).call();
       spotPrice = web3.utils.fromWei(spotPrice)
       spotPrice = Number(spotPrice);
-      console.log("spotPrice from pool: ", spotPrice)
       if (network === "kovan") {
         spotPrice = spotPrice / 100;
       }
