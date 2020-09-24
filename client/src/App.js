@@ -8,8 +8,6 @@ import getWeb3 from "./getWeb3";
 import "./App.css";
 import Trading from './components/Trading.js';
 import PageHeader from './components/PageHeader.js';
-import MarketHeader from './components/MarketHeader.js';
-import Swap from './components/Swap.js';
 const { abi } = require('./contracts/BPool.json');
 const kovanYesAddress = "0x1dbccf29375304c38bd0d162f636baa8dd6cce44"
 const kovanNoAddress = "0xeb69840f09A9235df82d9Ed9D43CafFFea2a1eE9"
@@ -675,7 +673,6 @@ swapExactAmountOut = async () => {
     return (
       <div className="App">
       <PageHeader/>
-      {/* <MarketHeader/> */}
       <Trading 
         handleChange={this.handleChange}
         fromAmount={this.state.fromAmount}
@@ -692,9 +689,6 @@ swapExactAmountOut = async () => {
         priceImpact={this.state.priceImpact}
         swapBranch={this.swapBranch}
       />
-      {/* <Swap
-        swapBranch={this.swapBranch}
-      /> */}
       </div>
     );
   };
