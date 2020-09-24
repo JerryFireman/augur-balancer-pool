@@ -13,7 +13,7 @@ const styles = {
     color: 'white',
     height: 45,
     padding: '0 30px',
-    width: 400,
+    width: '100%',
   },
 };
 

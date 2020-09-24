@@ -43,7 +43,6 @@ export default function Status(props) {
                 <TableCell style={{fontSize: 18}} align="right">{row[4]}</TableCell>
                 <TableCell style={{fontSize: 18}} align="right">{row[5]}</TableCell>
                 <TableCell style={{fontSize: 18}} align="right">{row[6]}</TableCell>
-
               </TableRow>
             ))}
           </TableBody>

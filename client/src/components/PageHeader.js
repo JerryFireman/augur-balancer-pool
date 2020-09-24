@@ -9,6 +9,20 @@ import Typography from '@material-ui/core/Typography'
   const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+
+    '& .MuiTypography-h4': {
+      color: '#838383',
+      marginLeft: '-56px',
+      marginTop: '32px',
+
+      '& .simple': {
+        color: '#fd72aa'
+      },
+      
+      '& .liquid': {
+        color: '#51d5f0'
+      }
+    }
   },
   paper: {
     padding: theme.spacing(2),
@@ -30,7 +44,7 @@ export default function PageHeader(props) {
   return (
     <div className={classes.root}>
     <Grid container spacing={0} >
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box textAlign="left">   
             </Box>
@@ -38,18 +52,18 @@ export default function PageHeader(props) {
         </Grid>
         <Grid item xs={2}>
           <Paper className={classes.paper} square={true} elevation={0}>
-            <Box  textAlign="right">
+            <Box  textAlign="left">
               <div>
                 <img src={'https://cdn.discordapp.com/attachments/744571125484224643/752307707708440606/catnip1.png'} alt="catnip" width="100" height="125" />
               </div> 
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box textAlign="left"> 
                 <Typography variant="h4" color="textPrimary" align="left" fontWeight="fontWeightBold" >
-                  simple, liquid, real-world markets
+                  <span className="simple">simple,</span> <span className="liquid">liquid</span> <br/> real-world markets
                 </Typography>
             </Box>
           </Paper>
