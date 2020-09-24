@@ -639,21 +639,21 @@ swapExactAmountOut = async () => {
       spotPrice = web3.utils.fromWei(spotPrice)
       spotPrice = Number(spotPrice);
       console.log("spotPrice from pool: ", spotPrice)
+      spotPrice = spotPrice * ( 1.00 - swapFee)
       spotPrice = 1 / spotPrice;
-      console.log("spotPrice reciprical: ", spotPrice)
+      console.log("spotPrice reciprocal: ", spotPrice)
       if (network === "kovan") {
         spotPrice = spotPrice / 100;
       }
-      spotPrice = spotPrice.toFixed(2);
-      console.log("CPPS spotPrice", spotPrice);
+      console.log("Kovan spotPrice", spotPrice);
+      spotPrice = spotPrice.toFixed(6);
       pricePerShare = toAmount / fromAmount;
-      pricePerShare = pricePerShare.toFixed(4);
-      priceImpact = (spotPrice - pricePerShare) * 100
+      console.log("pricePerShare: ", pricePerShare)
+      priceImpact = (spotPrice - pricePerShare) * 100 / pricePerShare
+      console.log("priceImpact: ", priceImpact)  
       pricePerShare = Number(pricePerShare);
       pricePerShare = pricePerShare.toFixed(2);
       priceImpact = priceImpact.toFixed(2);
-      console.log("pricePerShare: ", pricePerShare)
-      console.log("priceImpact: ", priceImpact)  
       this.setState({ 
         pricePerShare: pricePerShare,
         maxProfit: 0,
