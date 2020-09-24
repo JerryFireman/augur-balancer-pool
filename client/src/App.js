@@ -277,7 +277,7 @@ class App extends Component {
       console.log ("intermediate2: ", intermediate2)
       var toAmount = Number(toTokenBalance) * ( 1 -  intermediate2  );
       toAmount = toAmount * ( 1 - swapFee );
-      toAmount = toAmount.toFixed(4)      
+      toAmount = toAmount.toFixed(6)      
       console.log("toAmount: ", toAmount);
       this.setState( { toAmount: toAmount, fromExact: true } );
       await this.calcPriceProfitSlippage();
@@ -291,13 +291,14 @@ class App extends Component {
     }
   };
 
-  // Calculates number of "from" tokens received for a given number of "to" tokens
+  // Calculates number of "from" tokens spent for a given number of "to" tokens
   calcFromGivenTo = async () => {
     const { pool } = this.state;
     const { web3 } = this.state;
     const { fromToken } = this.state;
     const { toToken } = this.state;
     const { daiContractAddress } = this.state;
+    const { swapFee } = this.state;
 
     try {
       var fromTokenBalance = await pool.methods.getBalance(fromToken).call();
@@ -328,7 +329,10 @@ class App extends Component {
       console.log("exponent: ", exponent);
       console.log("intermediate2: ", intermediate2);
       var fromAmount = fromTokenBalance * ( intermediate2 - 1 );
-      fromAmount =  fromAmount.toFixed(2);
+      console.log("fromAmount before add fee: ", fromAmount);
+      fromAmount = fromAmount * (1.00 + swapFee);
+      console.log("fromAmount after add fee: ", fromAmount);
+      fromAmount =  fromAmount.toFixed(8);
       this.setState( { fromAmount: fromAmount, fromExact: false } );
       console.log("fromAmount: ", fromAmount);
       await this.calcPriceProfitSlippage();
@@ -603,14 +607,16 @@ swapExactAmountOut = async () => {
     const { web3 } = this.state
 
     if ( ( toToken === yesContractAddress || toToken === noContractAddress )  && fromToken === daiContractAddress) {
-      var spotPrice = await pool.methods.getSpotPrice(fromToken, toToken).call();
+      var spotPrice = await pool.methods.getSpotPriceSansFee(fromToken, toToken).call();
       spotPrice = web3.utils.fromWei(spotPrice)
+      console.log("spotPrice from pool: ", spotPrice);
+
       spotPrice = Number(spotPrice);
       if (network === "kovan") {
         spotPrice = spotPrice / 100;
       };
-      spotPrice = spotPrice.toFixed(6);
-      console.log("CPPS spotPrice", spotPrice);
+      spotPrice = spotPrice.toFixed(8);
+      console.log("Kovan spotPrice", spotPrice);
       var pricePerShare = fromAmount / toAmount;
       pricePerShare = pricePerShare.toFixed(8);
       var maxProfit = 1 - pricePerShare;
