@@ -598,8 +598,8 @@ swapExactAmountOut = async () => {
   calcPriceProfitSlippage = async () => {
     const { fromToken } = this.state;
     const { toToken } = this.state;
-    const { fromAmount } = this.state;
-    const { toAmount } = this.state;
+    var { fromAmount } = this.state;
+    var { toAmount } = this.state;
     const { yesContractAddress } = this.state;
     const { noContractAddress } = this.state;
     const { daiContractAddress } = this.state;
@@ -632,9 +632,16 @@ swapExactAmountOut = async () => {
         console.log("pricePerShare: ", pricePerShare)
         pricePerShare = pricePerShare.toFixed(2);
         maxProfit = maxProfit.toFixed(2);
-        priceImpact = priceImpact.toFixed(2);
+        priceImpact = priceImpact.toFixed(2);        
         console.log("maxProfit: ", maxProfit)
-        console.log("priceImpact: ", priceImpact)  
+        if (priceImpact < 1) {
+          this.setState({ priceImpactColor: "green" });
+        } else if (priceImpact >= 1 && priceImpact <= 3) {
+          this.setState({ priceImpactColor: "black" });
+        } else if (priceImpact > 3) {
+          this.setState({ priceImpactColor: "red" });
+        };
+        console.log("this.state.priceImpactColor: ", this.state.priceImpactColor)
         this.setState({ 
           pricePerShare: pricePerShare,
           maxProfit: maxProfit,
@@ -659,9 +666,18 @@ swapExactAmountOut = async () => {
         pricePerShare = pricePerShare.toFixed(3);
         console.log("spotPrice: ", spotPrice)
         priceImpact = (spotPrice - pricePerShare) * 100 / spotPrice
-        console.log("priceImpact: ", priceImpact)  
+       console.log("priceImpact: ", priceImpact)  
+        if (priceImpact < 1) {
+          this.setState({ priceImpactColor: "green" });
+        } else if (priceImpact >= 1 && priceImpact <= 3) {
+          this.setState({ priceImpactColor: "black" });
+        } else if (priceImpact > 3) {
+          this.setState({ priceImpactColor: "red" });
+        };
         pricePerShare = Number(pricePerShare);
-        priceImpact = priceImpact.toFixed(1);
+        priceImpact = priceImpact.toFixed(2);
+        console.log("this.state.priceImpactColor: ", this.state.priceImpactColor)
+        pricePerShare = pricePerShare.toFixed(2);
         this.setState({ 
           pricePerShare: pricePerShare,
           maxProfit: 0,
