@@ -606,65 +606,75 @@ swapExactAmountOut = async () => {
     const { web3 } = this.state
     const { swapFee } = this.state
 
-    if ( ( toToken === yesContractAddress || toToken === noContractAddress )  && fromToken === daiContractAddress) {
-      var spotPrice = await pool.methods.getSpotPriceSansFee(fromToken, toToken).call();
-      spotPrice = web3.utils.fromWei(spotPrice)
-      console.log("spotPrice from pool: ", spotPrice);
+    console.log("toAmount", toAmount);
+    console.log("fromAmount", fromAmount);
 
-      spotPrice = Number(spotPrice);
-      if (network === "kovan") {
-        spotPrice = spotPrice / 100;
-      };
-      spotPrice = spotPrice * ( 1.00 + swapFee)
-      spotPrice = spotPrice.toFixed(2);
-      console.log("Kovan spotPrice", spotPrice);
-      var pricePerShare = fromAmount / toAmount;
-      var maxProfit = 1 - pricePerShare;
-      var priceImpact = (pricePerShare - spotPrice) * 100 / pricePerShare;
-      pricePerShare = Number(pricePerShare);
-      console.log("pricePerShare: ", pricePerShare)
-      pricePerShare = pricePerShare.toFixed(2);
-      maxProfit = maxProfit.toFixed(2);
-      priceImpact = priceImpact.toFixed(2);
-      console.log("maxProfit: ", maxProfit)
-      console.log("priceImpact: ", priceImpact)  
-      this.setState({ 
-        pricePerShare: pricePerShare,
-        maxProfit: maxProfit,
-        priceImpact: priceImpact,
-      });
-
-    } else if  ((fromToken === yesContractAddress || fromToken === noContractAddress ) && toToken === daiContractAddress ) {
-      spotPrice = await pool.methods.getSpotPrice(fromToken, toToken).call();
-      spotPrice = web3.utils.fromWei(spotPrice)
-      spotPrice = Number(spotPrice);
-      console.log("spotPrice from pool: ", spotPrice)
-      spotPrice = spotPrice * ( 1.00 - swapFee)
-      spotPrice = 1 / spotPrice;
-      console.log("spotPrice reciprocal: ", spotPrice)
-      if (network === "kovan") {
-        spotPrice = spotPrice / 100;
-      }
-      console.log("Kovan spotPrice", spotPrice);
-      spotPrice = spotPrice.toFixed(6);
-      pricePerShare = toAmount / fromAmount;
-      console.log("pricePerShare: ", pricePerShare)
-      priceImpact = (spotPrice - pricePerShare) * 100 / spotPrice
-      console.log("priceImpact: ", priceImpact)  
-      pricePerShare = Number(pricePerShare);
-      pricePerShare = pricePerShare.toFixed(2);
-      priceImpact = priceImpact.toFixed(2);
-      this.setState({ 
-        pricePerShare: pricePerShare,
-        maxProfit: 0,
-        priceImpact: priceImpact,
-      });
-    } else {
+    if ( fromAmount === "" || toAmount === "" ) {
       this.setState({ 
         pricePerShare: 0,
         maxProfit: 0,
         priceImpact: 0,
       });
+    } else {
+      if ( ( toToken === yesContractAddress || toToken === noContractAddress )  && fromToken === daiContractAddress) {
+        var spotPrice = await pool.methods.getSpotPriceSansFee(fromToken, toToken).call();
+        spotPrice = web3.utils.fromWei(spotPrice)
+        console.log("spotPrice from pool: ", spotPrice);
+        spotPrice = Number(spotPrice);
+        if (network === "kovan") {
+          spotPrice = spotPrice / 100;
+        };
+        spotPrice = spotPrice * ( 1.00 + swapFee)
+        spotPrice = spotPrice.toFixed(2);
+        console.log("Kovan spotPrice", spotPrice);
+        var pricePerShare = fromAmount / toAmount;
+        var maxProfit = (1 - pricePerShare) * toAmount;
+        var priceImpact = (pricePerShare - spotPrice) * 100 / pricePerShare;
+        pricePerShare = Number(pricePerShare);
+        console.log("pricePerShare: ", pricePerShare)
+        pricePerShare = pricePerShare.toFixed(2);
+        maxProfit = maxProfit.toFixed(2);
+        priceImpact = priceImpact.toFixed(2);
+        console.log("maxProfit: ", maxProfit)
+        console.log("priceImpact: ", priceImpact)  
+        this.setState({ 
+          pricePerShare: pricePerShare,
+          maxProfit: maxProfit,
+          priceImpact: priceImpact,
+        });
+  
+      } else if  ((fromToken === yesContractAddress || fromToken === noContractAddress ) && toToken === daiContractAddress ) {
+        spotPrice = await pool.methods.getSpotPrice(fromToken, toToken).call();
+        spotPrice = web3.utils.fromWei(spotPrice)
+        spotPrice = Number(spotPrice);
+        console.log("spotPrice from pool: ", spotPrice)
+        spotPrice = spotPrice * ( 1.00 - swapFee)
+        spotPrice = 1 / spotPrice;
+        console.log("spotPrice reciprocal: ", spotPrice)
+        if (network === "kovan") {
+          spotPrice = spotPrice / 100;
+        }
+        console.log("Kovan spotPrice", spotPrice);
+        spotPrice = spotPrice.toFixed(6);
+        pricePerShare = toAmount / fromAmount;
+        console.log("pricePerShare: ", pricePerShare)
+        priceImpact = (spotPrice - pricePerShare) * 100 / spotPrice
+        console.log("priceImpact: ", priceImpact)  
+        pricePerShare = Number(pricePerShare);
+        pricePerShare = pricePerShare.toFixed(2);
+        priceImpact = priceImpact.toFixed(2);
+        this.setState({ 
+          pricePerShare: pricePerShare,
+          maxProfit: 0,
+          priceImpact: priceImpact,
+        });
+      } else {
+        this.setState({ 
+          pricePerShare: 0,
+          maxProfit: 0,
+          priceImpact: 0,
+        });
+      }
     }
   };
 
