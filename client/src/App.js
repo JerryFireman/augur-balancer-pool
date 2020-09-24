@@ -649,7 +649,7 @@ swapExactAmountOut = async () => {
       spotPrice = spotPrice.toFixed(6);
       pricePerShare = toAmount / fromAmount;
       console.log("pricePerShare: ", pricePerShare)
-      priceImpact = (spotPrice - pricePerShare) * 100 / pricePerShare
+      priceImpact = (spotPrice - pricePerShare) * 100 / spotPrice
       console.log("priceImpact: ", priceImpact)  
       pricePerShare = Number(pricePerShare);
       pricePerShare = pricePerShare.toFixed(2);
