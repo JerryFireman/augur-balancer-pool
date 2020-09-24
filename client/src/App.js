@@ -159,6 +159,7 @@ class App extends Component {
         console.log("Balances of LP1 and Trader1 after minting and before pool creation");
         var LP1YesBalance = await yesContract.methods.balanceOf(accounts[1]).call();
         LP1YesBalance = web3.utils.fromWei(LP1YesBalance);
+        console.log("LP1 Yes balance: ", LP1YesBalance);
         var LP1NoBalance = await noContract.methods.balanceOf(accounts[1]).call();
         LP1NoBalance = web3.utils.fromWei(LP1NoBalance);
         console.log("LP1 No balance: ", LP1NoBalance);
