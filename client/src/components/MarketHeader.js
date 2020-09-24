@@ -39,7 +39,7 @@ export default function MarketHeader(props) {
         <Grid item xs={4}>
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box fontWeight="fontWeightBold" textAlign="left">   
-            <Typography variant="h6" color="textPrimary"  align="left" fontWeight="fontWeightBold" >
+              <Typography variant="h6" color="textPrimary"  align="left" fontWeight="fontWeightBold" >
                   Will Trump win the 2020 U.S. presidential election?
               </Typography>
             </Box>

@@ -658,7 +658,7 @@ swapExactAmountOut = async () => {
     return (
       <div className="App">
       <PageHeader/>
-      <MarketHeader/>
+      {/* <MarketHeader/> */}
       <Trading 
         handleChange={this.handleChange}
         fromAmount={this.state.fromAmount}
@@ -673,10 +673,11 @@ swapExactAmountOut = async () => {
         pricePerShare={this.state.pricePerShare}
         maxProfit={this.state.maxProfit}
         priceImpact={this.state.priceImpact}
-      />
-      <Swap
         swapBranch={this.swapBranch}
       />
+      {/* <Swap
+        swapBranch={this.swapBranch}
+      /> */}
       </div>
     );
   };
