@@ -7,13 +7,14 @@ import { withStyles } from '@material-ui/core/styles';
 // We can inject some CSS into the DOM.
 const styles = {
   root: {
-    background: '	#87CEEB',
+    background: '#77d4ed',
     borderRadius: 12,
     border: 0,
     color: 'white',
     height: 45,
     padding: '0 30px',
     width: '100%',
+    marginTop: '5px'
   },
 };
 

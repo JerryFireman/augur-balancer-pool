@@ -40,7 +40,7 @@ export default function Swap(props) {
           <Paper className={classes.paper} square={true} elevation={0}>
             <Box textAlign="center">    
                 <form className={classes.root} noValidate autoComplete="off">
-                  <StyledButton variant="contained" onClick={props.swapBranch}>Swap</StyledButton>                
+                  <StyledButton variant="contained" onClick={props.swapBranch}>Swap</StyledButton>
                 </form>
             </Box>
           </Paper>

@@ -21,7 +21,8 @@ import { KeyboardArrowDown } from '@material-ui/icons';
 
     '& .MuiTypography-h6': {
       color: '#6f6f6f',
-      marginBottom: '15px'
+      marginBottom: '15px',
+      lineHeight: '23px'
     },
 
     '& .MuiSelect-root': {
@@ -38,6 +39,10 @@ import { KeyboardArrowDown } from '@material-ui/icons';
         borderRadius: '25px',
         marginRight: '10px'
       }
+    },
+
+    '& hr': {
+      border: '1px solid #f4f4f7'
     }
   },
   main_part: {
@@ -69,6 +74,10 @@ import { KeyboardArrowDown } from '@material-ui/icons';
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: '5px'
+  },
+  width90: {
+    width: '90%',
+    margin: '0 auto'
   },
   no_price_impact: {
     color: '#202020',
@@ -182,20 +191,20 @@ export default function Trading(props) {
                   </Select>
                 </div>
               </div>
+              <div className={`${classes.displayFlex} ${classes.width90}`}>
+                <Typography variant="body2" color="textPrimary" padding="20px">
+                  Price per share:
+                </Typography>
+                <Typography variant="body2" color="textPrimary" padding="20px" className={classes.no_price_impact}>
+                  ${props.pricePerShare}
+                </Typography>                
+              </div>
               <StyledButton variant="contained" onClick={props.swapBranch}>Swap</StyledButton>
             </Paper>
             <Paper square={true} elevation={0}>
               <Box textAlign="right">    
-                <form className={classes.root} noValidate autoComplete="off">
-                  <div className={classes.displayFlex}>
-                    <Typography variant="body2" color="textPrimary" padding="20px">
-                      Price per share:
-                    </Typography>
-                    <Typography variant="body2" color="textPrimary" padding="20px" className={classes.no_price_impact}>
-                      ${props.pricePerShare}
-                    </Typography>                
-                  </div>
-                  <div className={classes.displayFlex}>
+                <form className={classes.root} noValidate autoComplete="off">                  
+                  <div className={`${classes.displayFlex} ${classes.width90}`}>
                     <Typography variant="body2" color="textPrimary" padding="20px">
                       Max profit:
                     </Typography>
@@ -203,7 +212,7 @@ export default function Trading(props) {
                       ${props.maxProfit}
                     </Typography>
                   </div>
-                  <div className={classes.displayFlex}>
+                  <div className={`${classes.displayFlex} ${classes.width90}`}>
                     <Typography variant="body2" color="textPrimary" padding="20px">
                       Price impact:
                     </Typography>
@@ -212,6 +221,7 @@ export default function Trading(props) {
                     </Typography>
                   </div>                
                 </form>
+                <hr/>
               </Box>
             </Paper>
           </Grid>        
