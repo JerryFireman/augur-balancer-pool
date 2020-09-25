@@ -392,22 +392,22 @@ class App extends Component {
       try {
       //approve fromAmount of fromToken for spending by Trader1
       if (fromToken === noContractAddress) {
-        await noContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 6000000 });
+        await noContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
         var noAllowance = await noContract.methods.allowance(accounts[0], bpoolAddress).call();
         console.log("noAllowance: ", noAllowance);
       } else if (fromToken === yesContractAddress) {
-        await yesContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 6000000 });
+        await yesContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
         var yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
         console.log("yesAllowance: ", yesAllowance);
       } else if (fromToken === daiContractAddress) {
         console.log("hit approve dai in SEAI")
-        var tx1 = await daiContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 6000000 });
+        var tx1 = await daiContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
         console.log("Successful transaction: ", await tx1.status)
         console.log("tx1: ", tx1)
         var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
         console.log("daiAllowance: ", daiAllowance);
         } 
-      var tx = await pool.methods.swapExactAmountIn(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[0], gas: 6000000 });
+      var tx = await pool.methods.swapExactAmountIn(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[0], gas: 120000 });
         console.log("Successful transaction: ", tx.status)
         console.log("Checking balances after transaction ...")
         var trader1YesBalance = await yesContract.methods.balanceOf(accounts[0]).call();
@@ -476,23 +476,23 @@ swapExactAmountOut = async () => {
     //approve fromAmount of fromToken for spending by Trader1
 
     if (fromToken === noContractAddress) {
-      await noContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 6000000 });
+      await noContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
       var noAllowance = await noContract.methods.allowance(accounts[0], bpoolAddress).call();
       noAllowance = web3.utils.fromWei(noAllowance);
       console.log("noAllowance: ", noAllowance);
     } else if (fromToken === yesContractAddress) {
-      await yesContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 6000000 });
+      await yesContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
       var yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
       console.log("yesAllowance: ", yesAllowance);
     } else if (fromToken === daiContractAddress) {
       console.log("hit approve dai branch")
-      var tx1 = await daiContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 6000000 });
+      var tx1 = await daiContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
       console.log("Successful transaction: ", tx1.status)
       console.log("tx: ", tx1)
       var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
       console.log("daiAllowance: ", daiAllowance);
     } 
-      var tx2 = await pool.methods.swapExactAmountOut(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[0], gas: 6000000 });
+      var tx2 = await pool.methods.swapExactAmountOut(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[0], gas: 120000 });
       console.log("Successful transaction: ", tx2.status)
       console.log("tx2: ", tx2)
       console.log("Checking balances after transaction ...")
