@@ -75,7 +75,6 @@ import { KeyboardArrowDown } from '@material-ui/icons';
     fontWeight: 'bold'
   },
   price_impact: {
-    color: '#4ebe7a',
     fontWeight: 'bold'
   },
   menu_item: {
@@ -207,7 +206,7 @@ export default function Trading(props) {
                     <Typography variant="body2" color="textPrimary" padding="20px">
                       Price impact:
                     </Typography>
-                    <Typography variant="body2" color="textPrimary" padding="20px" className={classes.price_impact}>
+                    <Typography variant="body2" color="textPrimary" padding="20px" className={[props.priceImpactColor,'bold'].join(' ')}>
                       {props.priceImpact}%
                     </Typography>
                   </div>                
