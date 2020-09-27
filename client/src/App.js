@@ -13,6 +13,10 @@ const kovanYesAddress = "0x1dbccf29375304c38bd0d162f636baa8dd6cce44"
 const kovanNoAddress = "0xeb69840f09A9235df82d9Ed9D43CafFFea2a1eE9"
 const kovanDaiAddress = "0xb6085abd65e21d205aead0b1b9981b8b221fa14e"
 const kovanPoolAddress = "0xbc6d6f508657c3c84983cd92f3eda6997e877e90"
+const BigNumber = require('bignumber.js');
+const unlimitedAllowance = new BigNumber(2).pow(256).minus(1);
+const bigNumberTest = new BigNumber(2).plus(100).toString();
+console.log("bigNumberTest: ", bigNumberTest)
 const network = "kovan"; // set network as "ganache" or "kovan"
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
@@ -486,7 +490,7 @@ swapExactAmountOut = async () => {
       console.log("yesAllowance: ", yesAllowance);
     } else if (fromToken === daiContractAddress) {
       console.log("hit approve dai branch")
-      var tx1 = await daiContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
+      var tx1 = await daiContract.methods.approve(bpoolAddress, unlimitedAllowance).send({from: accounts[0], gas: 50000 });
       console.log("Successful transaction: ", tx1.status)
       console.log("tx: ", tx1)
       var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
