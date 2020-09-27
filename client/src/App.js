@@ -14,9 +14,7 @@ const kovanNoAddress = "0xeb69840f09A9235df82d9Ed9D43CafFFea2a1eE9"
 const kovanDaiAddress = "0xb6085abd65e21d205aead0b1b9981b8b221fa14e"
 const kovanPoolAddress = "0xbc6d6f508657c3c84983cd92f3eda6997e877e90"
 const BigNumber = require('bignumber.js');
-const unlimitedAllowance = new BigNumber(2).pow(256).minus(1);
-const bigNumberTest = new BigNumber(2).plus(100).toString();
-console.log("bigNumberTest: ", bigNumberTest)
+var unlimitedAllowance = new BigNumber(2).pow(256).minus(1);
 const network = "kovan"; // set network as "ganache" or "kovan"
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
@@ -62,6 +60,9 @@ class App extends Component {
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
       console.log("accounts: ", accounts)
+
+    
+
 
       if (network === "kovan") {
         var yesInstance = new web3.eth.Contract (
@@ -202,10 +203,6 @@ class App extends Component {
       toToken: this.state.yesContractAddress,
     });
 
-    
-
-
-  
     await this.updateBalances();
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -456,6 +453,10 @@ swapExactAmountOut = async () => {
   const { bpoolAddress } = this.state;
   var { fromAmount } = this.state;
   var { toAmount } = this.state;
+
+  unlimitedAllowance = web3.utils.toWei(unlimitedAllowance.toFixed())
+  console.log("unlimitedAllowance: ", unlimitedAllowance)
+
 
   var maxPrice = 2 * (toAmount / fromAmount);
 
