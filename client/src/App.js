@@ -95,11 +95,28 @@ class App extends Component {
           bpoolAddress: kovanPoolAddress,
         });
 
+
         var swapFee = await this.state.pool.methods.getSwapFee().call();
         swapFee = web3.utils.fromWei(swapFee);
         swapFee = Number(swapFee);
         this.setState({ swapFee: swapFee });
         console.log("swapFee: ", swapFee);
+
+        await this.state.yesContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('0')).send( {from: accounts[0], gas: 6000000 });
+        var yesAllowance = await this.state.yesContract.methods.allowance(accounts[0], this.state.bpoolAddress).call();
+        yesAllowance = web3.utils.fromWei(yesAllowance);
+        console.log("yesAllowance: ", yesAllowance);
+
+        await this.state.noContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('0')).send( {from: accounts[0], gas: 6000000 });
+        var noAllowance = await this.state.noContract.methods.allowance(accounts[0], this.state.bpoolAddress).call();
+        noAllowance = web3.utils.fromWei(noAllowance);
+        console.log("noAllowance: ", noAllowance);
+
+        await this.state.daiContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('0')).send( {from: accounts[0], gas: 6000000 });
+        var daiAllowance = await this.state.daiContract.methods.allowance(accounts[0], this.state.bpoolAddress).call();
+        daiAllowance = web3.utils.fromWei(daiAllowance);
+        console.log("daiAllowance: ", daiAllowance);
+
       };
 
       if (network === "ganache") {
@@ -386,54 +403,68 @@ class App extends Component {
     var maxPrice = 2 * (fromAmount / toAmount);
     console.log("SEAI maxPrice: ", maxPrice)
     toAmount = 0
-    fromAmount = web3.utils.toWei(fromAmount.toString());
     toAmount = web3.utils.toWei(toAmount.toString());
     maxPrice = web3.utils.toWei(maxPrice.toString())
+    var allowanceLimit = web3.utils.toWei(unlimitedAllowance.toFixed());
   
       try {
       //approve fromAmount of fromToken for spending by Trader1
       if (fromToken === noContractAddress) {
-        await noContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
         var noAllowance = await noContract.methods.allowance(accounts[0], bpoolAddress).call();
-        console.log("noAllowance: ", noAllowance);
+        noAllowance = web3.utils.fromWei(noAllowance);
+        console.log("SEAI noAllowance: ", noAllowance)
+        console.log("SEAI fromAmount: ", fromAmount)
+        if (noAllowance < fromAmount) {
+          await noContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
+          noAllowance = await noContract.methods.allowance(accounts[0], bpoolAddress).call();
+          console.log("SEAI noAllowance after approval: ", noAllowance);
+        }
       } else if (fromToken === yesContractAddress) {
-        await yesContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
         var yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
-        console.log("yesAllowance: ", yesAllowance);
+        yesAllowance = web3.utils.fromWei(yesAllowance);
+        console.log("SEAI yesAllowance: ", yesAllowance)
+        console.log("SEAI fromAmount: ", fromAmount)
+        if (yesAllowance < fromAmount) {
+          yesAllowance = await yesContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
+          var yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
+          console.log("yesAllowance: ", yesAllowance);
+        }
       } else if (fromToken === daiContractAddress) {
-        console.log("hit approve dai in SEAI")
-        var tx1 = await daiContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
-        console.log("Successful transaction: ", await tx1.status)
-        console.log("tx1: ", tx1)
         var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
-        console.log("daiAllowance: ", daiAllowance);
-        } 
+        daiAllowance = web3.utils.fromWei(daiAllowance);
+        if (daiAllowance < fromAmount) {
+          await daiContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
+          var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
+          console.log("daiAllowance: ", daiAllowance);
+        }
+      } 
+      fromAmount = web3.utils.toWei(fromAmount.toString());
       var tx = await pool.methods.swapExactAmountIn(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[0], gas: 120000 });
-        console.log("Successful transaction: ", tx.status)
-        console.log("Checking balances after transaction ...")
-        var trader1YesBalance = await yesContract.methods.balanceOf(accounts[0]).call();
-        trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
-        trader1YesBalance = Number(trader1YesBalance);
-        trader1YesBalance = trader1YesBalance.toFixed(2);
-        console.log("trader1YesBalance: ", trader1YesBalance)
-        var trader1NoBalance = await noContract.methods.balanceOf(accounts[0]).call();
-        trader1NoBalance = web3.utils.fromWei(trader1NoBalance)
-        trader1NoBalance = Number(trader1NoBalance);
-        trader1NoBalance = trader1NoBalance.toFixed(2);
-        console.log("trader1NoBalance: ", trader1NoBalance)
-        var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[0]).call();
-        trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
-        trader1DaiBalance = Number(trader1DaiBalance);
-        trader1DaiBalance = trader1DaiBalance.toFixed(2);
-        console.log("Trader1 Dai balance: ", trader1DaiBalance);
-        this.setState({ trader1YesBalance: trader1YesBalance, trader1NoBalance: trader1NoBalance, trader1DaiBalance: trader1DaiBalance });
-        await this.updateBalances();
+      console.log("Successful transaction: ", tx.status)
+      console.log("Checking balances after transaction ...")
+      var trader1YesBalance = await yesContract.methods.balanceOf(accounts[0]).call();
+      trader1YesBalance = web3.utils.fromWei(trader1YesBalance)
+      trader1YesBalance = Number(trader1YesBalance);
+      trader1YesBalance = trader1YesBalance.toFixed(2);
+      console.log("trader1YesBalance: ", trader1YesBalance)
+      var trader1NoBalance = await noContract.methods.balanceOf(accounts[0]).call();
+      trader1NoBalance = web3.utils.fromWei(trader1NoBalance)
+      trader1NoBalance = Number(trader1NoBalance);
+      trader1NoBalance = trader1NoBalance.toFixed(2);
+      console.log("trader1NoBalance: ", trader1NoBalance)
+      var trader1DaiBalance = await daiContract.methods.balanceOf(accounts[0]).call();
+      trader1DaiBalance = web3.utils.fromWei(trader1DaiBalance);
+      trader1DaiBalance = Number(trader1DaiBalance);
+      trader1DaiBalance = trader1DaiBalance.toFixed(2);
+      console.log("Trader1 Dai balance: ", trader1DaiBalance);
+      this.setState({ trader1YesBalance: trader1YesBalance, trader1NoBalance: trader1NoBalance, trader1DaiBalance: trader1DaiBalance });
+      await this.updateBalances();
 
-      } catch (error) {
-      alert(
-        `Swap with from tokens fixed failed. Check console for details.`,
-      );
-      console.error(error);
+    } catch (error) {
+    alert(
+      `Swap with from tokens fixed failed. Check console for details.`,
+    );
+    console.error(error);
     }
   }; 
   
