@@ -14,7 +14,7 @@ const kovanNoAddress = "0xeb69840f09A9235df82d9Ed9D43CafFFea2a1eE9"
 const kovanDaiAddress = "0xb6085abd65e21d205aead0b1b9981b8b221fa14e"
 const kovanPoolAddress = "0xbc6d6f508657c3c84983cd92f3eda6997e877e90"
 const BigNumber = require('bignumber.js');
-var unlimitedAllowance = new BigNumber(2).pow(256).minus(1);
+const unlimitedAllowance = new BigNumber(2).pow(256).minus(1);
 const network = "kovan"; // set network as "ganache" or "kovan"
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
@@ -464,14 +464,14 @@ swapExactAmountOut = async () => {
   if (network === "kovan" && fromToken !== daiContractAddress) {
     fromAmount = fromAmount / 100;
   }
-  fromAmount = 2 * fromAmount;
+  fromAmount = 1.2 * fromAmount;
   console.log("SEAO toAmount: ", toAmount)
   console.log("SEAO fromAmount: ", fromAmount)
   console.log("SEAO maxPrice: ", maxPrice)
 
   toAmount = web3.utils.toWei(toAmount.toString());
-  maxPrice = web3.utils.toWei(maxPrice.toString())
-  unlimitedAllowance = web3.utils.toWei(unlimitedAllowance.toFixed())
+  maxPrice = web3.utils.toWei(maxPrice.toString());
+  var allowanceLimit = web3.utils.toWei(unlimitedAllowance.toFixed());
 
 
   try {
@@ -479,21 +479,29 @@ swapExactAmountOut = async () => {
 
     if (fromToken === noContractAddress) {
       var noAllowance = await noContract.methods.allowance(accounts[0], bpoolAddress).call();
-      noAllowance = web3.utils.fromWei(noAllowance)
-      await noContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
       noAllowance = web3.utils.fromWei(noAllowance);
-      console.log("noAllowance: ", noAllowance);
+      console.log("SEAO noAllowance: ", noAllowance)
+      console.log("SEAO fromAmount: ", fromAmount)
+      if (noAllowance < fromAmount) {
+        noAllowance = await noContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
+        var noAllowance = await noContract.methods.allowance(accounts[0], bpoolAddress).call();
+        console.log("SEAO noAllowance after approval: ", noAllowance);
+      }
     } else if (fromToken === yesContractAddress) {
-      await yesContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
       var yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
-      console.log("yesAllowance: ", yesAllowance);
+      yesAllowance = web3.utils.fromWei(yesAllowance);
+      console.log("SEAO yesAllowance: ", yesAllowance)
+      console.log("SEAO fromAmount: ", fromAmount)
+      if (yesAllowance < fromAmount) {
+        yesAllowance = await yesContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
+        var yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
+        console.log("yesAllowance: ", yesAllowance);
+      }
     } else if (fromToken === daiContractAddress) {
       var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
       daiAllowance = web3.utils.fromWei(daiAllowance);
       if (daiAllowance < fromAmount) {
-        var tx1 = await daiContract.methods.approve(bpoolAddress, unlimitedAllowance).send({from: accounts[0], gas: 50000 });
-        console.log("Successful transaction: ", tx1.status)
-        console.log("tx: ", tx1)
+        await daiContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
         var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
         console.log("daiAllowance: ", daiAllowance);
       }
