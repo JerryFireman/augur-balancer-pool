@@ -9,20 +9,7 @@ import Typography from '@material-ui/core/Typography'
   const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-
-    '& .MuiTypography-h4': {
-      color: '#838383',
-      marginLeft: '-45px',
-      marginTop: '32px',
-
-      '& .simple': {
-        color: '#fd72aa'
-      },
-      
-      '& .liquid': {
-        color: '#51d5f0'
-      }
-    }
+    marginBottom: '-15px'
   },
   paper: {
     padding: theme.spacing(2),
@@ -60,13 +47,6 @@ export default function PageHeader(props) {
           </Paper>
         </Grid>
         <Grid item xs={3}>
-          <Paper className={classes.paper} square={true} elevation={0}>
-            <Box textAlign="left"> 
-                <Typography variant="h4" color="textPrimary" align="left" fontWeight="fontWeightBold" >
-                  <span className="simple">simple,</span> <span className="liquid">liquid</span> <br/> real-world markets
-                </Typography>
-            </Box>
-          </Paper>
         </Grid>
         <Grid item xs={4}>
           <Paper className={classes.paper} square={true} elevation={0}>

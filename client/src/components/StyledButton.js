@@ -11,10 +11,16 @@ const styles = {
     borderRadius: 12,
     border: 0,
     color: 'white',
+    fontWeight: 'bold',
+    fontSize: '104%',
     height: 45,
     padding: '0 30px',
     width: '100%',
-    marginTop: '5px'
+    marginTop: '16px',
+    letterSpacing: '1px',
+    '&:hover': {
+      background: '#67c4dd',
+    }
   },
 };
 
