@@ -13,6 +13,7 @@ import StyledButton from './StyledButton';
 import TImg from '../assets/images/t.png';
 import NTImg from '../assets/images/nt.png';
 import DImg from '../assets/images/d.png';
+import infoIcon from '../assets/images/info.png'
 import { KeyboardArrowDown } from '@material-ui/icons';
 
   const useStyles = makeStyles(theme => ({
@@ -67,7 +68,8 @@ import { KeyboardArrowDown } from '@material-ui/icons';
     marginBottom: '20px',
     padding: '15px',
     border: '1px solid rgb(247, 248, 250)',
-    borderRadius: '20px'
+    borderRadius: '20px',
+    float: 'left'
   },
   displayFlex: {
     display: 'flex',
@@ -92,6 +94,14 @@ import { KeyboardArrowDown } from '@material-ui/icons';
       marginRight: '15px',
       borderRadius: '20px'
     }
+  },
+  float_left: {
+    float: 'left'
+  },
+  info_icon: {
+    width: '20px',
+    marginTop: '2px',
+    marginLeft: '18px'
   }
 }));
 
@@ -110,23 +120,26 @@ export default function Trading(props) {
           </Grid>
           <Grid item xs={4}>
             <Paper className={classes.main_part} square={true} elevation={0}>
-              <div>
+              <div className={classes.float_left}>
                 <Typography variant="h6" color="textPrimary"  align="left" fontWeight="fontWeightBold" >
                   Will Trump win the 2020 U.S. <br/> presidential election?
                 </Typography>
               </div>
+              <div>
+              <a href="http://www.predictionexplorer.com/market/0x1EBb89156091EB0d59603C18379C03A5c84D7355" target="_blank"> <img className={classes.info_icon} src={infoIcon} alt="info icon"/></a>              </div>
               <div className={classes.inputItem}>
                 <div>
                   <Typography variant="body2" color="textPrimary" align="left" >
                       From
                   </Typography>
                   <InputBase
+                      autoFocus
                       className={classes.margin}
                       name="fromAmount"
                       value={props.fromAmount}
                       type="number" 
                       onChange={props.handleChange}
-                      inputProps={{ style: { fontSize: 24 } }}
+                      inputProps={{ style: { fontSize: 24, paddingRight: 10 } }}
                   />
                 </div>
                 <div>
@@ -163,7 +176,7 @@ export default function Trading(props) {
                     value={props.toAmount}
                     type="number" 
                     onChange={props.handleChange}
-                    inputProps={{ style: { fontSize: 24 } }}
+                    inputProps={{ style: { fontSize: 24, paddingRight: 10 } }}
                   />
                 </div>
                 <div>
