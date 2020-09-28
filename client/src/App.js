@@ -454,10 +454,6 @@ swapExactAmountOut = async () => {
   var { fromAmount } = this.state;
   var { toAmount } = this.state;
 
-  unlimitedAllowance = web3.utils.toWei(unlimitedAllowance.toFixed())
-  console.log("unlimitedAllowance: ", unlimitedAllowance)
-
-
   var maxPrice = 2 * (toAmount / fromAmount);
 
   if (network === "kovan" && toToken !== daiContractAddress) {
@@ -473,16 +469,18 @@ swapExactAmountOut = async () => {
   console.log("SEAO fromAmount: ", fromAmount)
   console.log("SEAO maxPrice: ", maxPrice)
 
-  fromAmount = web3.utils.toWei(fromAmount.toString());
   toAmount = web3.utils.toWei(toAmount.toString());
   maxPrice = web3.utils.toWei(maxPrice.toString())
+  unlimitedAllowance = web3.utils.toWei(unlimitedAllowance.toFixed())
+
 
   try {
     //approve fromAmount of fromToken for spending by Trader1
 
     if (fromToken === noContractAddress) {
-      await noContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
       var noAllowance = await noContract.methods.allowance(accounts[0], bpoolAddress).call();
+      noAllowance = web3.utils.fromWei(noAllowance)
+      await noContract.methods.approve(bpoolAddress, fromAmount).send({from: accounts[0], gas: 50000 });
       noAllowance = web3.utils.fromWei(noAllowance);
       console.log("noAllowance: ", noAllowance);
     } else if (fromToken === yesContractAddress) {
@@ -490,14 +488,18 @@ swapExactAmountOut = async () => {
       var yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
       console.log("yesAllowance: ", yesAllowance);
     } else if (fromToken === daiContractAddress) {
-      console.log("hit approve dai branch")
-      var tx1 = await daiContract.methods.approve(bpoolAddress, unlimitedAllowance).send({from: accounts[0], gas: 50000 });
-      console.log("Successful transaction: ", tx1.status)
-      console.log("tx: ", tx1)
       var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
-      console.log("daiAllowance: ", daiAllowance);
+      daiAllowance = web3.utils.fromWei(daiAllowance);
+      if (daiAllowance < fromAmount) {
+        var tx1 = await daiContract.methods.approve(bpoolAddress, unlimitedAllowance).send({from: accounts[0], gas: 50000 });
+        console.log("Successful transaction: ", tx1.status)
+        console.log("tx: ", tx1)
+        var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
+        console.log("daiAllowance: ", daiAllowance);
+      }
     } 
-      var tx2 = await pool.methods.swapExactAmountOut(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[0], gas: 120000 });
+    fromAmount = web3.utils.toWei(fromAmount.toString());
+    var tx2 = await pool.methods.swapExactAmountOut(fromToken, fromAmount, toToken, toAmount, maxPrice).send({from: accounts[0], gas: 120000 });
       console.log("Successful transaction: ", tx2.status)
       console.log("tx2: ", tx2)
       console.log("Checking balances after transaction ...")
