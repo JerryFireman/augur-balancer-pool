@@ -203,6 +203,7 @@ export default function Trading(props) {
                   </Select>
                 </div>
               </div>
+              {props.fromAmount > 0 && (
               <div className={`${classes.displayFlex} ${classes.width90}`}>
                 <Typography variant="body2" color="textPrimary" padding="20px">
                   Price per share:
@@ -211,8 +212,10 @@ export default function Trading(props) {
                   ${props.pricePerShare}
                 </Typography>                
               </div>
+              )}
               <StyledButton variant="contained" onClick={props.swapBranch}>Swap</StyledButton>
             </Paper>
+            {props.fromAmount > 0 && (
             <Paper square={true} elevation={0}>
               <Box textAlign="right">    
                 <form className={classes.root} noValidate autoComplete="off">                  
@@ -236,6 +239,7 @@ export default function Trading(props) {
                 <hr/>
               </Box>
             </Paper>
+            )}
           </Grid>        
           <Grid item xs={4}>
             <Paper square={true} elevation={0}>
