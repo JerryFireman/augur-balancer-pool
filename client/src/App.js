@@ -352,7 +352,7 @@ class App extends Component {
       console.log("fromAmount before add fee: ", fromAmount);
       fromAmount = fromAmount * (1.00000000 + swapFee);
       console.log("fromAmount after add fee: ", fromAmount);
-      fromAmount =  fromAmount.toFixed(6);
+      fromAmount =  fromAmount.toFixed(2);
       this.setState( { fromAmount: fromAmount, fromExact: false } );
       console.log("fromAmount: ", fromAmount);
       await this.calcPriceProfitSlippage();
