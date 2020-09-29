@@ -102,6 +102,8 @@ class App extends Component {
         this.setState({ swapFee: swapFee });
         console.log("swapFee: ", swapFee);
 
+        // resets all allowances to 0 to test approve function
+        /*
         await this.state.yesContract.methods.approve(this.state.bpoolAddress, web3.utils.toWei('0')).send( {from: accounts[0], gas: 6000000 });
         var yesAllowance = await this.state.yesContract.methods.allowance(accounts[0], this.state.bpoolAddress).call();
         yesAllowance = web3.utils.fromWei(yesAllowance);
@@ -116,7 +118,7 @@ class App extends Component {
         var daiAllowance = await this.state.daiContract.methods.allowance(accounts[0], this.state.bpoolAddress).call();
         daiAllowance = web3.utils.fromWei(daiAllowance);
         console.log("daiAllowance: ", daiAllowance);
-
+        */
       };
 
       if (network === "ganache") {
@@ -412,10 +414,8 @@ class App extends Component {
       if (fromToken === noContractAddress) {
         var noAllowance = await noContract.methods.allowance(accounts[0], bpoolAddress).call();
         noAllowance = web3.utils.fromWei(noAllowance);
-        console.log("SEAI noAllowance: ", noAllowance)
-        console.log("SEAI fromAmount: ", fromAmount)
-        if (noAllowance < fromAmount) {
-          await noContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
+        if (Number(noAllowance) < Number(fromAmount)) {
+          await noContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 46000 });
           noAllowance = await noContract.methods.allowance(accounts[0], bpoolAddress).call();
           console.log("SEAI noAllowance after approval: ", noAllowance);
         }
@@ -424,17 +424,19 @@ class App extends Component {
         yesAllowance = web3.utils.fromWei(yesAllowance);
         console.log("SEAI yesAllowance: ", yesAllowance)
         console.log("SEAI fromAmount: ", fromAmount)
-        if (yesAllowance < fromAmount) {
-          yesAllowance = await yesContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
-          var yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
+        if (Number(yesAllowance) < Number(fromAmount)) {
+          await yesContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 46000 });
+          yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
           console.log("yesAllowance: ", yesAllowance);
         }
       } else if (fromToken === daiContractAddress) {
         var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
         daiAllowance = web3.utils.fromWei(daiAllowance);
-        if (daiAllowance < fromAmount) {
-          await daiContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
-          var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
+
+        if (Number(daiAllowance) < Number(fromAmount)) {
+          console.log("hit dai approve function")
+          await daiContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 46000 });
+          daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
           console.log("daiAllowance: ", daiAllowance);
         }
       } 
@@ -495,7 +497,7 @@ swapExactAmountOut = async () => {
   if (network === "kovan" && fromToken !== daiContractAddress) {
     fromAmount = fromAmount / 100;
   }
-  fromAmount = 1.2 * fromAmount;
+  fromAmount = 2 * fromAmount;
   console.log("SEAO toAmount: ", toAmount)
   console.log("SEAO fromAmount: ", fromAmount)
   console.log("SEAO maxPrice: ", maxPrice)
@@ -513,9 +515,9 @@ swapExactAmountOut = async () => {
       noAllowance = web3.utils.fromWei(noAllowance);
       console.log("SEAO noAllowance: ", noAllowance)
       console.log("SEAO fromAmount: ", fromAmount)
-      if (noAllowance < fromAmount) {
-        noAllowance = await noContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
-        var noAllowance = await noContract.methods.allowance(accounts[0], bpoolAddress).call();
+      if (Number(noAllowance) < Number(fromAmount)) {
+        await noContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 46000 });
+        noAllowance = await noContract.methods.allowance(accounts[0], bpoolAddress).call();
         console.log("SEAO noAllowance after approval: ", noAllowance);
       }
     } else if (fromToken === yesContractAddress) {
@@ -523,17 +525,17 @@ swapExactAmountOut = async () => {
       yesAllowance = web3.utils.fromWei(yesAllowance);
       console.log("SEAO yesAllowance: ", yesAllowance)
       console.log("SEAO fromAmount: ", fromAmount)
-      if (yesAllowance < fromAmount) {
-        yesAllowance = await yesContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
-        var yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
+      if (Number(yesAllowance) < Number(fromAmount)) {
+        await yesContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 46000 });
+        yesAllowance = await yesContract.methods.allowance(accounts[0], bpoolAddress).call();
         console.log("yesAllowance: ", yesAllowance);
       }
     } else if (fromToken === daiContractAddress) {
       var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
       daiAllowance = web3.utils.fromWei(daiAllowance);
-      if (daiAllowance < fromAmount) {
-        await daiContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 48000 });
-        var daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
+      if (Number(daiAllowance) < Number(fromAmount)) {
+        await daiContract.methods.approve(bpoolAddress, allowanceLimit).send({from: accounts[0], gas: 46000 });
+        daiAllowance = await daiContract.methods.allowance(accounts[0], bpoolAddress).call();
         console.log("daiAllowance: ", daiAllowance);
       }
     } 
