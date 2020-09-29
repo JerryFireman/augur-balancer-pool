@@ -297,7 +297,7 @@ class App extends Component {
       console.log ("intermediate2: ", intermediate2)
       var toAmount = Number(toTokenBalance) * ( 1 -  intermediate2  );
       toAmount = toAmount * ( 1.00000000 - swapFee );
-      toAmount = toAmount.toFixed(6)      
+      toAmount = toAmount.toFixed(2)      
       console.log("toAmount: ", toAmount);
       this.setState( { toAmount: toAmount, fromExact: true } );
       await this.calcPriceProfitSlippage();

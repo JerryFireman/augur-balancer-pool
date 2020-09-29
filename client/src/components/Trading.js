@@ -216,29 +216,31 @@ export default function Trading(props) {
               <StyledButton variant="contained" onClick={props.swapBranch}>Swap</StyledButton>
             </Paper>
             {props.fromAmount > 0 && (
-            <Paper square={true} elevation={0}>
-              <Box textAlign="right">    
-                <form className={classes.root} noValidate autoComplete="off">                  
-                  <div className={`${classes.displayFlex} ${classes.width90}`}>
-                    <Typography variant="body2" color="textPrimary" padding="20px">
-                      Max profit:
-                    </Typography>
-                    <Typography variant="body2" color="textPrimary" padding="20px" className={classes.no_price_impact}>
-                      ${props.maxProfit}
-                    </Typography>
-                  </div>
-                  <div className={`${classes.displayFlex} ${classes.width90}`}>
-                    <Typography variant="body2" color="textPrimary" padding="20px">
-                      Price impact:
-                    </Typography>
-                    <Typography variant="body2" color="textPrimary" padding="20px" className={[props.priceImpactColor,'bold'].join(' ')}>
-                      {props.priceImpact}%
-                    </Typography>
-                  </div>                
-                </form>
-                <hr/>
-              </Box>
-            </Paper>
+              <Paper square={true} elevation={0}>
+                <Box textAlign="right">    
+                  <form className={classes.root} noValidate autoComplete="off">   
+                    {props.fromToken === props.daiContractAddress && (               
+                      <div className={`${classes.displayFlex} ${classes.width90}`}>
+                        <Typography variant="body2" color="textPrimary" padding="20px">
+                          Max profit:
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" padding="20px" className={classes.no_price_impact}>
+                          ${props.maxProfit}
+                        </Typography>
+                      </div>
+                    )}
+                    <div className={`${classes.displayFlex} ${classes.width90}`}>
+                      <Typography variant="body2" color="textPrimary" padding="20px">
+                        Price impact:
+                      </Typography>
+                      <Typography variant="body2" color="textPrimary" padding="20px" className={[props.priceImpactColor,'bold'].join(' ')}>
+                        {props.priceImpact}%
+                      </Typography>
+                    </div>                
+                  </form>
+                  <hr/>
+                </Box>
+              </Paper>
             )}
           </Grid>        
           <Grid item xs={4}>
