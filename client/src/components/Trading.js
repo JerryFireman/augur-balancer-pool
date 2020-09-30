@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import 'fontsource-roboto';
 import Container from '@material-ui/core/Container';
 import InputBase from '@material-ui/core/InputBase';
+import { withStyles } from "@material-ui/core/styles";
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from "@material-ui/core/Select";
 import Typography from '@material-ui/core/Typography'
@@ -13,8 +14,10 @@ import StyledButton from './StyledButton';
 import TImg from '../assets/images/t.png';
 import NTImg from '../assets/images/nt.png';
 import DImg from '../assets/images/d.png';
-import { KeyboardArrowDown } from '@material-ui/icons';
-import {useSelector, useDispatch} from 'react-redux'
+import infoIcon from '../assets/images/info.png'
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import classNames from "classnames";
+import {useSelector} from 'react-redux';
 
   const useStyles = makeStyles(theme => ({
   root: {
@@ -29,7 +32,7 @@ import {useSelector, useDispatch} from 'react-redux'
     '& .MuiSelect-root': {
       display: 'flex',
       alignItems: 'center',
-      paddingRight: '0',
+      paddingRight: '50',
 
       '&:focus': {
         backgroundColor: 'transparent'
@@ -81,7 +84,8 @@ import {useSelector, useDispatch} from 'react-redux'
     marginBottom: '20px',
     padding: '15px',
     border: '1px solid rgb(247, 248, 250)',
-    borderRadius: '20px'
+    borderRadius: '20px',
+    float: 'left'
   },
   displayFlex: {
     display: 'flex',
@@ -98,7 +102,6 @@ import {useSelector, useDispatch} from 'react-redux'
     fontWeight: 'bold'
   },
   price_impact: {
-    color: '#4ebe7a',
     fontWeight: 'bold'
   },
   menu_item: {
@@ -107,8 +110,33 @@ import {useSelector, useDispatch} from 'react-redux'
       marginRight: '15px',
       borderRadius: '20px'
     }
+  },
+  float_left: {
+    float: 'left'
+  },
+  info_icon: {
+    width: '20px',
+    marginTop: '2px',
+    marginLeft: '18px'
   }
 }));
+
+const iconStyles = {
+  selectIcon: {
+    color: "black"
+  }
+};
+
+const CustomExpandMore = withStyles(iconStyles)(
+  ({ className, classes, ...rest }) => {
+    return (
+      <ExpandMoreIcon
+        {...rest}
+        className={classNames(className, classes.selectIcon)}
+      />
+    );
+  }
+);
 
 export default function Trading(props) {
   const classes = useStyles();
@@ -126,24 +154,27 @@ export default function Trading(props) {
             </Paper>
           </Grid>
           <Grid item xs={4}>
-            <div className={isContrast ? 'main_part dark' : 'main_part light'}>
-              <div>
-                <Typography variant="h6"  align="left" fontWeight="fontWeightBold" >
+            <Paper className={classes.main_part} square={true} elevation={0}>
+              <div className={classes.float_left}>
+                <Typography variant="h6" color="textPrimary"  align="left" fontWeight="fontWeightBold" >
                   Will Trump win the 2020 U.S. <br/> presidential election?
                 </Typography>
               </div>
+              <div>
+              <a href="http://www.predictionexplorer.com/market/0x1EBb89156091EB0d59603C18379C03A5c84D7355" target="_blank"> <img className={classes.info_icon} src={infoIcon} alt="info icon"/></a>              </div>
               <div className={classes.inputItem}>
                 <div>
                   <Typography variant="body2" align="left" >
                       From
                   </Typography>
                   <InputBase
+                      autoFocus
                       className={classes.margin}
                       name="fromAmount"
                       value={props.fromAmount}
                       type="number" 
                       onChange={props.handleChange}
-                      inputProps={{ style: { fontSize: 24 } }}
+                      inputProps={{ style: { fontSize: 24, paddingRight: 10 } }}
                   />
                 </div>
                 <div>
@@ -158,9 +189,7 @@ export default function Trading(props) {
                     style={{
                       fontSize: 24
                     }}
-                    IconComponent={() => (
-                      <KeyboardArrowDown />
-                    )}
+                    IconComponent={CustomExpandMore}
                   >
                       <MenuItem value=""></MenuItem>
                       <MenuItem value={props.yesContractAddress} className={classes.menu_item}><img src={TImg} alt=""/> <span>YES TRUMP</span></MenuItem>
@@ -180,7 +209,7 @@ export default function Trading(props) {
                     value={props.toAmount}
                     type="number" 
                     onChange={props.handleChange}
-                    inputProps={{ style: { fontSize: 24 } }}
+                    inputProps={{ style: { fontSize: 24, paddingRight: 10 } }}
                   />
                 </div>
                 <div>
@@ -195,9 +224,7 @@ export default function Trading(props) {
                       style={{
                         fontSize: 24
                       }}
-                      IconComponent={() => (
-                        <KeyboardArrowDown />
-                      )}
+                      IconComponent={CustomExpandMore}
                     >
                       <MenuItem value="">
                       </MenuItem>
@@ -207,6 +234,7 @@ export default function Trading(props) {
                   </Select>
                 </div>
               </div>
+              {props.fromAmount > 0 && (
               <div className={`${classes.displayFlex} ${classes.width90}`}>
                 <Typography variant="body2" padding="20px">
                   Price per share:
@@ -215,27 +243,36 @@ export default function Trading(props) {
                   ${props.pricePerShare}
                 </Typography>                
               </div>
+              )}
               <StyledButton variant="contained" onClick={props.swapBranch}>Swap</StyledButton>
-            </div>
-            <Box textAlign="right">    
-              <div className={`${classes.displayFlex} ${classes.width90}`}>
-                <Typography variant="body2" padding="20px">
-                  Max profit:
-                </Typography>
-                <Typography variant="body2" padding="20px" className={classes.no_price_impact}>
-                  ${props.maxProfit}
-                </Typography>
-              </div>
-              <div className={`${classes.displayFlex} ${classes.width90}`}>
-                <Typography variant="body2" padding="20px">
-                  Price impact:
-                </Typography>
-                <Typography variant="body2" padding="20px" className={classes.price_impact}>
-                  {props.priceImpact}%
-                </Typography>
-              </div>
-              <hr/>
-            </Box>
+            </Paper>
+            {props.fromAmount > 0 && (
+              <Paper square={true} elevation={0}>
+                <Box textAlign="right">    
+                  <form className={classes.root} noValidate autoComplete="off">   
+                    {props.fromToken === props.daiContractAddress && (               
+                      <div className={`${classes.displayFlex} ${classes.width90}`}>
+                        <Typography variant="body2" color="textPrimary" padding="20px">
+                          Max profit:
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" padding="20px" className={classes.no_price_impact}>
+                          ${props.maxProfit}
+                        </Typography>
+                      </div>
+                    )}
+                    <div className={`${classes.displayFlex} ${classes.width90}`}>
+                      <Typography variant="body2" color="textPrimary" padding="20px">
+                        Price impact:
+                      </Typography>
+                      <Typography variant="body2" color="textPrimary" padding="20px" className={[props.priceImpactColor,'bold'].join(' ')}>
+                        {props.priceImpact}%
+                      </Typography>
+                    </div>                
+                  </form>
+                  <hr/>
+                </Box>
+              </Paper>
+            )}
           </Grid>        
           <Grid item xs={4}>
             <Box textAlign="left"></Box>

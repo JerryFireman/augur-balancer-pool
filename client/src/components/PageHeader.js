@@ -11,20 +11,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-
-    '& .MuiTypography-h4': {
-      color: '#838383',
-      marginLeft: '-45px',
-      marginTop: '32px',
-
-      '& .simple': {
-        color: '#fd72aa'
-      },
-      
-      '& .liquid': {
-        color: '#51d5f0'
-      }
-    }
+    marginBottom: '-15px'
   },
   formControl: {
     margin: theme.spacing(0),
@@ -116,11 +103,6 @@ export default function PageHeader(props) {
           <Box  textAlign="left"></Box>
         </Grid>
         <Grid item xs={3}>
-          <Box textAlign="left"> 
-            <Typography variant="h4" color="textPrimary" align="left" fontWeight="fontWeightBold" >
-              <span className="simple">simple,</span> <span className="liquid">liquid</span> <br/> real-world markets
-            </Typography>
-          </Box>
         </Grid>
         <Grid item xs={4}>
           <Box fontWeight="fontWeightBold" textAlign="right">
