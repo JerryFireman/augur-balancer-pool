@@ -508,7 +508,7 @@ swapExactAmountOut = async () => {
   if (fromToken !== daiContractAddress) {
     fromAmount = fromAmount / tokenMultiple;
   }
-  fromAmount = 2 * fromAmount;
+  fromAmount = 1.003 * fromAmount;
   console.log("SEAO toAmount: ", toAmount)
   console.log("SEAO fromAmount: ", fromAmount)
   console.log("SEAO maxPrice: ", maxPrice)
