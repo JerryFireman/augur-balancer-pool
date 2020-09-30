@@ -9,13 +9,17 @@ import "./App.css";
 import Trading from './components/Trading.js';
 import PageHeader from './components/PageHeader.js';
 const { abi } = require('./contracts/BPool.json');
-const kovanYesAddress = "0x1dbccf29375304c38bd0d162f636baa8dd6cce44"
-const kovanNoAddress = "0xeb69840f09A9235df82d9Ed9D43CafFFea2a1eE9"
-const kovanDaiAddress = "0xb6085abd65e21d205aead0b1b9981b8b221fa14e"
-const kovanPoolAddress = "0xbc6d6f508657c3c84983cd92f3eda6997e877e90"
+const kovanYesAddress = "0x1dbccf29375304c38bd0d162f636baa8dd6cce44";
+const kovanNoAddress = "0xeb69840f09A9235df82d9Ed9D43CafFFea2a1eE9";
+const kovanDaiAddress = "0xb6085abd65e21d205aead0b1b9981b8b221fa14e";
+const kovanPoolAddress = "0xbc6d6f508657c3c84983cd92f3eda6997e877e90";
+const mainnetYesAddress = "0x3af375d9f77ddd4f16f86a5d51a9386b7b4493fa";
+const mainnetNoAddress = "0x44ea84a85616f8e9cd719fc843de31d852ad7240";
+const mainnetDaiAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
+const mainnetPoolAddress = "0x6b74fb4e4b3b177b8e95ba9fa4c3a3121d22fbfb";
 const BigNumber = require('bignumber.js');
 const unlimitedAllowance = new BigNumber(2).pow(256).minus(1);
-const network = "kovan"; // set network as "ganache" or "kovan"
+const network = "kovan"; // set network as "ganache" or "kovan" or "mainnet"
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
 
@@ -125,6 +129,49 @@ class App extends Component {
         */
       };
 
+      if (network === "mainnet") {
+        var yesInstance = new web3.eth.Contract (
+          YesContract.abi,
+          mainnetYesAddress
+        );
+        var noInstance = new web3.eth.Contract (
+          NoContract.abi,
+          mainnetNoAddress
+        );
+        var daiInstance = new web3.eth.Contract (
+          DaiContract.abi,
+          mainnetDaiAddress
+        );
+        var poolInstance = new web3.eth.Contract (
+          BPoolContract.abi,
+          mainnetPoolAddress
+        );
+
+        this.setState({
+          web3: web3,
+          accounts: accounts,
+          yesContract: yesInstance,
+          noContract: noInstance,
+          daiContract: daiInstance,
+          pool: poolInstance,
+          yesContractAddress: kovanYesAddress,
+          noContractAddress: kovanNoAddress,
+          daiContractAddress: kovanDaiAddress,
+          bpoolAddress: kovanPoolAddress,
+        });
+
+
+        var swapFee = await this.state.pool.methods.getSwapFee().call();
+        swapFee = web3.utils.fromWei(swapFee);
+        swapFee = Number(swapFee);
+        this.setState({ swapFee: swapFee });
+        console.log("swapFee: ", swapFee);
+
+        var tokenMultiple = 1000;
+        this.setState({ tokenMultiple: tokenMultiple})
+
+      };
+
       if (network === "ganache") {
         // Get the BFactory contract instance.
         const networkId = await web3.eth.net.getId();
@@ -221,7 +268,6 @@ class App extends Component {
         this.setState({ tokenMultiple: tokenMultiple})
       };
       this.setState( {
-        fromAmount: 100,
         toAmount: 0,
         fromToken: this.state.daiContractAddress,
         toToken: this.state.yesContractAddress,
@@ -415,6 +461,8 @@ class App extends Component {
     console.log("SEAI toAmount: ", toAmount)
     var maxPrice = 2 * (fromAmount / toAmount);
     console.log("SEAI maxPrice: ", maxPrice)
+    console.log("SEAI typeof maxPrice: ", typeof maxPrice)
+
     toAmount = toAmount * 0.997;
     toAmount = web3.utils.toWei(toAmount.toString());
     maxPrice = web3.utils.toWei(maxPrice.toString())
@@ -511,7 +559,7 @@ swapExactAmountOut = async () => {
   }
   fromAmount = 1.003 * fromAmount;
   console.log("SEAO toAmount: ", toAmount)
-  console.log("SEAO fromAmount: ", fromAmount)
+  console.log("SEAO fromAmount including allowed slippage: ", fromAmount)
   console.log("SEAO maxPrice: ", maxPrice)
 
   toAmount = web3.utils.toWei(toAmount.toString());
@@ -676,7 +724,7 @@ swapExactAmountOut = async () => {
         spotPrice = spotPrice / tokenMultiple;
         spotPrice = spotPrice * ( 1.00 + swapFee)
         spotPrice = spotPrice.toFixed(6);
-        console.log("Kovan spotPrice", spotPrice);
+        console.log("spotPrice", spotPrice);
         var pricePerShare = fromAmount / toAmount;
         var maxProfit = (1 - pricePerShare) * toAmount;
         var priceImpact = (pricePerShare - spotPrice) * 100 / pricePerShare;
@@ -734,11 +782,32 @@ swapExactAmountOut = async () => {
           priceImpact: priceImpact,
         });
       } else {
+        var spotPrice = await pool.methods.getSpotPriceSansFee(fromToken, toToken).call();
+        spotPrice = web3.utils.fromWei(spotPrice)
+        console.log("spotPrice from pool: ", spotPrice);
+        spotPrice = Number(spotPrice);
+        spotPrice = spotPrice * ( 1.00 + swapFee)
+        spotPrice = spotPrice.toFixed(6);
+        console.log("spotPrice", spotPrice);
+        var pricePerShare = fromAmount / toAmount;
+        var priceImpact = (pricePerShare - spotPrice) * 100 / pricePerShare;
+        pricePerShare = Number(pricePerShare);
+        console.log("pricePerShare: ", pricePerShare)
+        pricePerShare = pricePerShare.toFixed(2);
+        priceImpact = priceImpact.toFixed(2);        
+        if (priceImpact < 1) {
+          this.setState({ priceImpactColor: "green" });
+        } else if (priceImpact >= 1 && priceImpact <= 3) {
+          this.setState({ priceImpactColor: "black" });
+        } else if (priceImpact > 3) {
+          this.setState({ priceImpactColor: "red" });
+        };
         this.setState({ 
-          pricePerShare: 0,
+          pricePerShare: pricePerShare,
           maxProfit: 0,
-          priceImpact: 0,
+          priceImpact: priceImpact,
         });
+  
       }
     }
   };
