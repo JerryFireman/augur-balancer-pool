@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import 'fontsource-roboto';
 import Container from '@material-ui/core/Container';
 import InputBase from '@material-ui/core/InputBase';
+import { withStyles } from "@material-ui/core/styles";
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from "@material-ui/core/Select";
 import Typography from '@material-ui/core/Typography'
@@ -14,7 +15,8 @@ import TImg from '../assets/images/t.png';
 import NTImg from '../assets/images/nt.png';
 import DImg from '../assets/images/d.png';
 import infoIcon from '../assets/images/info.png'
-import { KeyboardArrowDown } from '@material-ui/icons';
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import classNames from "classnames";
 
   const useStyles = makeStyles(theme => ({
   root: {
@@ -29,7 +31,7 @@ import { KeyboardArrowDown } from '@material-ui/icons';
     '& .MuiSelect-root': {
       display: 'flex',
       alignItems: 'center',
-      paddingRight: '0',
+      paddingRight: '50',
 
       '&:focus': {
         backgroundColor: 'transparent'
@@ -105,6 +107,23 @@ import { KeyboardArrowDown } from '@material-ui/icons';
   }
 }));
 
+const iconStyles = {
+  selectIcon: {
+    color: "black"
+  }
+};
+
+const CustomExpandMore = withStyles(iconStyles)(
+  ({ className, classes, ...rest }) => {
+    return (
+      <ExpandMoreIcon
+        {...rest}
+        className={classNames(className, classes.selectIcon)}
+      />
+    );
+  }
+);
+
 export default function Trading(props) {
   const classes = useStyles();
 
@@ -154,9 +173,7 @@ export default function Trading(props) {
                     style={{
                       fontSize: 24
                     }}
-                    IconComponent={() => (
-                      <KeyboardArrowDown />
-                    )}
+                    IconComponent={CustomExpandMore}
                   >
                       <MenuItem value=""></MenuItem>
                       <MenuItem value={props.yesContractAddress} className={classes.menu_item}><img src={TImg} alt=""/> <span>YES TRUMP</span></MenuItem>
@@ -191,9 +208,7 @@ export default function Trading(props) {
                       style={{
                         fontSize: 24
                       }}
-                      IconComponent={() => (
-                        <KeyboardArrowDown />
-                      )}
+                      IconComponent={CustomExpandMore}
                     >
                       <MenuItem value="">
                       </MenuItem>
