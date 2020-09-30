@@ -10,6 +10,7 @@ import Trading from './components/Trading.js';
 import PageHeader from './components/PageHeader.js';
 import MarketHeader from './components/MarketHeader.js';
 import Swap from './components/Swap.js';
+import {connect} from 'react-redux';
 const { abi } = require('./contracts/BPool.json');
 const kovanYesAddress = "0x1dbccf29375304c38bd0d162f636baa8dd6cce44"
 const kovanNoAddress = "0xeb69840f09A9235df82d9Ed9D43CafFFea2a1eE9"
@@ -49,6 +50,7 @@ class App extends Component {
     pricePerShare: 0,
     maxProfit: 0,
     priceImpact: 0,
+    isContrast: null
   };
 
   componentDidMount = async () => {
@@ -652,35 +654,40 @@ swapExactAmountOut = async () => {
   };
 
   render() {
+
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
-      <div className="App">
-      <PageHeader/>
-      {/* <MarketHeader/> */}
-      <Trading 
-        handleChange={this.handleChange}
-        fromAmount={this.state.fromAmount}
-        fromToken={this.state.fromToken}
-        toAmount={this.state.toAmount}
-        toToken={this.state.toToken}
-        fromBalance={this.state.fromBalance}  
-        toBalance={this.state.toBalance}        
-        yesContractAddress={this.state.yesContractAddress}
-        noContractAddress={this.state.noContractAddress}
-        daiContractAddress={this.state.daiContractAddress}
-        pricePerShare={this.state.pricePerShare}
-        maxProfit={this.state.maxProfit}
-        priceImpact={this.state.priceImpact}
-        swapBranch={this.swapBranch}
-      />
-      {/* <Swap
-        swapBranch={this.swapBranch}
-      /> */}
+      <div className={`App ${this.props.isContrast ? "dark" : "light"}`}>
+        <PageHeader/>
+        {/* <MarketHeader/> */}
+        <Trading 
+          handleChange={this.handleChange}
+          fromAmount={this.state.fromAmount}
+          fromToken={this.state.fromToken}
+          toAmount={this.state.toAmount}
+          toToken={this.state.toToken}
+          fromBalance={this.state.fromBalance}  
+          toBalance={this.state.toBalance}        
+          yesContractAddress={this.state.yesContractAddress}
+          noContractAddress={this.state.noContractAddress}
+          daiContractAddress={this.state.daiContractAddress}
+          pricePerShare={this.state.pricePerShare}
+          maxProfit={this.state.maxProfit}
+          priceImpact={this.state.priceImpact}
+          swapBranch={this.swapBranch}
+        />
+        {/* <Swap
+          swapBranch={this.swapBranch}
+        /> */}
       </div>
     );
   };
 };
 
-export default App;
+function mapStateToProps(state) {
+  return { isContrast: state.settings.isContrast };
+}
+
+export default connect(mapStateToProps)(App);

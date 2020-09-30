@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  height: 100vh;
+}
+
+.App.dark {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgb(44, 47, 54) !important;
 }
 
 .App-logo {

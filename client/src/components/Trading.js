@@ -14,6 +14,7 @@ import TImg from '../assets/images/t.png';
 import NTImg from '../assets/images/nt.png';
 import DImg from '../assets/images/d.png';
 import { KeyboardArrowDown } from '@material-ui/icons';
+import {useSelector, useDispatch} from 'react-redux'
 
   const useStyles = makeStyles(theme => ({
   root: {
@@ -43,15 +44,28 @@ import { KeyboardArrowDown } from '@material-ui/icons';
 
     '& hr': {
       border: '1px solid #f4f4f7'
+    },
+
+    '& .main_part': {
+      padding: '30px 16px 20px',
+      textAlign: 'center',
+      marginBottom: '30px',      
+      borderRadius: '30px',
+
+      '&.light': {
+        color: theme.palette.text.secondary,
+        boxShadow: 'rgba(0, 0, 0, 0.01) 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 4px 8px, rgba(0, 0, 0, 0.04) 0px 16px 24px, rgba(0, 0, 0, 0.01) 0px 24px 32px',
+      },
+
+      '&.dark': {
+        backgroundColor: 'rgb(33, 36, 41)',
+        color: 'white !important',
+
+        '& .MuiInputBase-root': {
+          color: 'white !important'
+        }
+      }
     }
-  },
-  main_part: {
-    padding: '30px 16px 20px',
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    marginBottom: '30px',
-    boxShadow: 'rgba(0, 0, 0, 0.01) 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 4px 8px, rgba(0, 0, 0, 0.04) 0px 16px 24px, rgba(0, 0, 0, 0.01) 0px 24px 32px',
-    borderRadius: '30px'
   },
   formControl: {
     margin: theme.spacing(0),
@@ -99,6 +113,8 @@ import { KeyboardArrowDown } from '@material-ui/icons';
 export default function Trading(props) {
   const classes = useStyles();
 
+  const isContrast = useSelector(state => state.settings.isContrast);
+
   return (
     <div className={classes.root}>
       <Container>
@@ -110,15 +126,15 @@ export default function Trading(props) {
             </Paper>
           </Grid>
           <Grid item xs={4}>
-            <Paper className={classes.main_part} square={true} elevation={0}>
+            <div className={isContrast ? 'main_part dark' : 'main_part light'}>
               <div>
-                <Typography variant="h6" color="textPrimary"  align="left" fontWeight="fontWeightBold" >
+                <Typography variant="h6"  align="left" fontWeight="fontWeightBold" >
                   Will Trump win the 2020 U.S. <br/> presidential election?
                 </Typography>
               </div>
               <div className={classes.inputItem}>
                 <div>
-                  <Typography variant="body2" color="textPrimary" align="left" >
+                  <Typography variant="body2" align="left" >
                       From
                   </Typography>
                   <InputBase
@@ -131,7 +147,7 @@ export default function Trading(props) {
                   />
                 </div>
                 <div>
-                  <Typography variant="body2" color="textPrimary" align="right" padding="20px">
+                  <Typography variant="body2" align="right" padding="20px">
                     Balance: {props.fromBalance}
                   </Typography>
                   <Select
@@ -155,7 +171,7 @@ export default function Trading(props) {
               </div>
               <div className={classes.inputItem}>
                 <div>
-                  <Typography variant="body2" color="textPrimary" align="left" >
+                  <Typography variant="body2" align="left" >
                     To
                   </Typography>
                   <InputBase
@@ -168,7 +184,7 @@ export default function Trading(props) {
                   />
                 </div>
                 <div>
-                  <Typography variant="body2" color="textPrimary" align="right" padding="20px">
+                  <Typography variant="body2" align="right" padding="20px">
                     Balance: {props.toBalance}
                   </Typography>
                   <Select
@@ -192,44 +208,37 @@ export default function Trading(props) {
                 </div>
               </div>
               <div className={`${classes.displayFlex} ${classes.width90}`}>
-                <Typography variant="body2" color="textPrimary" padding="20px">
+                <Typography variant="body2" padding="20px">
                   Price per share:
                 </Typography>
-                <Typography variant="body2" color="textPrimary" padding="20px" className={classes.no_price_impact}>
+                <Typography variant="body2" padding="20px" className={classes.no_price_impact}>
                   ${props.pricePerShare}
                 </Typography>                
               </div>
               <StyledButton variant="contained" onClick={props.swapBranch}>Swap</StyledButton>
-            </Paper>
-            <Paper square={true} elevation={0}>
-              <Box textAlign="right">    
-                <form className={classes.root} noValidate autoComplete="off">                  
-                  <div className={`${classes.displayFlex} ${classes.width90}`}>
-                    <Typography variant="body2" color="textPrimary" padding="20px">
-                      Max profit:
-                    </Typography>
-                    <Typography variant="body2" color="textPrimary" padding="20px" className={classes.no_price_impact}>
-                      ${props.maxProfit}
-                    </Typography>
-                  </div>
-                  <div className={`${classes.displayFlex} ${classes.width90}`}>
-                    <Typography variant="body2" color="textPrimary" padding="20px">
-                      Price impact:
-                    </Typography>
-                    <Typography variant="body2" color="textPrimary" padding="20px" className={classes.price_impact}>
-                      {props.priceImpact}%
-                    </Typography>
-                  </div>                
-                </form>
-                <hr/>
-              </Box>
-            </Paper>
+            </div>
+            <Box textAlign="right">    
+              <div className={`${classes.displayFlex} ${classes.width90}`}>
+                <Typography variant="body2" padding="20px">
+                  Max profit:
+                </Typography>
+                <Typography variant="body2" padding="20px" className={classes.no_price_impact}>
+                  ${props.maxProfit}
+                </Typography>
+              </div>
+              <div className={`${classes.displayFlex} ${classes.width90}`}>
+                <Typography variant="body2" padding="20px">
+                  Price impact:
+                </Typography>
+                <Typography variant="body2" padding="20px" className={classes.price_impact}>
+                  {props.priceImpact}%
+                </Typography>
+              </div>
+              <hr/>
+            </Box>
           </Grid>        
           <Grid item xs={4}>
-            <Paper square={true} elevation={0}>
-              <Box textAlign="left">    
-              </Box>
-            </Paper>
+            <Box textAlign="left"></Box>
           </Grid>
         </Grid>
       </Container>
