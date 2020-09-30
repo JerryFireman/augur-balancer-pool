@@ -220,15 +220,16 @@ class App extends Component {
         var tokenMultiple = 1;
         this.setState({ tokenMultiple: tokenMultiple})
       };
-      await this.updateBalances();
+      this.setState( {
+        fromAmount: 100,
+        toAmount: 0,
+        fromToken: this.state.daiContractAddress,
+        toToken: this.state.yesContractAddress,
+      });
+        await this.updateBalances();
+        this.setState({ fromAmount: 100 })
     // Set starting parameters
-    this.setState( {
-      fromAmount: 100,
-      toAmount: 0,
-      fromToken: this.state.daiContractAddress,
-      toToken: this.state.yesContractAddress,
-    });
-    this.calcToGivenFrom()
+    await this.calcToGivenFrom()
 
     } catch (error) {
       // Catch any errors for any of the above operations.
