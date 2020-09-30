@@ -19,7 +19,7 @@ const mainnetDaiAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 const mainnetPoolAddress = "0x6b74fb4e4b3b177b8e95ba9fa4c3a3121d22fbfb";
 const BigNumber = require('bignumber.js');
 const unlimitedAllowance = new BigNumber(2).pow(256).minus(1);
-const network = "kovan"; // set network as "ganache" or "kovan" or "mainnet"
+const network = "mainnet"; // set network as "ganache" or "kovan" or "mainnet"
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
 
@@ -154,10 +154,10 @@ class App extends Component {
           noContract: noInstance,
           daiContract: daiInstance,
           pool: poolInstance,
-          yesContractAddress: kovanYesAddress,
-          noContractAddress: kovanNoAddress,
-          daiContractAddress: kovanDaiAddress,
-          bpoolAddress: kovanPoolAddress,
+          yesContractAddress: mainnetYesAddress,
+          noContractAddress: mainnetNoAddress,
+          daiContractAddress: mainnetDaiAddress,
+          bpoolAddress: mainnetPoolAddress,
         });
 
 
