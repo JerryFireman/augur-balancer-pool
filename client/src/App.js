@@ -414,7 +414,7 @@ class App extends Component {
     console.log("SEAI toAmount: ", toAmount)
     var maxPrice = 2 * (fromAmount / toAmount);
     console.log("SEAI maxPrice: ", maxPrice)
-    toAmount = 0
+    toAmount = toAmount * 0.997;
     toAmount = web3.utils.toWei(toAmount.toString());
     maxPrice = web3.utils.toWei(maxPrice.toString())
     var allowanceLimit = web3.utils.toWei(unlimitedAllowance.toFixed());
