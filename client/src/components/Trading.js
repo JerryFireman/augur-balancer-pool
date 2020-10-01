@@ -254,7 +254,10 @@ export default function Trading(props) {
                         Price impact:
                       </Typography>
                       <Typography variant="body2" color="textPrimary" padding="20px" className={[props.priceImpactColor,'bold'].join(' ')}>
-                        {props.priceImpact}%
+                        { (props.priceImpact >= .03) ? 
+                          props.priceImpact + '%' 
+                          : '<0.03%'
+                        }
                       </Typography>
                     </div>                
                   </form>

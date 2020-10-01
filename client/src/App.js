@@ -309,7 +309,7 @@ class App extends Component {
       console.log ("intermediate2: ", intermediate2)
       var toAmount = Number(toTokenBalance) * ( 1 -  intermediate2  );
       toAmount = toAmount * ( 1.00000000 - swapFee );
-      toAmount = toAmount.toFixed(2)      
+      toAmount = toAmount.toFixed(3)      
       console.log("toAmount: ", toAmount);
       this.setState( { toAmount: toAmount, fromExact: true } );
       await this.calcPriceProfitSlippage();
@@ -365,7 +365,7 @@ class App extends Component {
       console.log("fromAmount before add fee: ", fromAmount);
       fromAmount = fromAmount * (1.00000000 + swapFee);
       console.log("fromAmount after add fee: ", fromAmount);
-      fromAmount =  fromAmount.toFixed(2);
+      fromAmount =  fromAmount.toFixed(3);
       this.setState( { fromAmount: fromAmount, fromExact: false } );
       console.log("fromAmount: ", fromAmount);
       await this.calcPriceProfitSlippage();
