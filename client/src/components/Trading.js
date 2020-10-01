@@ -90,6 +90,11 @@ import classNames from "classnames";
   price_impact: {
     fontWeight: 'bold'
   },
+  price_display: {
+    fontWeight: 'bold',
+    color: '#de4aa3',
+    fontSize: '96%'
+  },
   menu_item: {
     '& img': {
       width: '25px',
@@ -223,7 +228,7 @@ export default function Trading(props) {
                 <Typography variant="body2" color="textPrimary" padding="20px">
                   Price per share:
                 </Typography>
-                <Typography variant="body2" color="textPrimary" padding="20px" className={classes.no_price_impact}>
+                <Typography variant="body2" color="textPrimary" padding="20px" className={classes.price_display}>
                   ${props.pricePerShare}
                 </Typography>                
               </div>
