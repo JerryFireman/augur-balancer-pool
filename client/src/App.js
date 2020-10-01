@@ -19,7 +19,7 @@ const mainnetDaiAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 const mainnetPoolAddress = "0x6b74fb4e4b3b177b8e95ba9fa4c3a3121d22fbfb";
 const BigNumber = require('bignumber.js');
 const unlimitedAllowance = new BigNumber(2).pow(256).minus(1);
-const network = "mainnet"; // set network as "ganache" or "kovan" or "mainnet"
+const network = "kovan"; // set network as "ganache" or "kovan" or "mainnet"
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
 
@@ -130,19 +130,19 @@ class App extends Component {
       };
 
       if (network === "mainnet") {
-        var yesInstance = new web3.eth.Contract (
+        yesInstance = new web3.eth.Contract (
           YesContract.abi,
           mainnetYesAddress
         );
-        var noInstance = new web3.eth.Contract (
+        noInstance = new web3.eth.Contract (
           NoContract.abi,
           mainnetNoAddress
         );
-        var daiInstance = new web3.eth.Contract (
+        daiInstance = new web3.eth.Contract (
           DaiContract.abi,
           mainnetDaiAddress
         );
-        var poolInstance = new web3.eth.Contract (
+        poolInstance = new web3.eth.Contract (
           BPoolContract.abi,
           mainnetPoolAddress
         );
@@ -161,13 +161,13 @@ class App extends Component {
         });
 
 
-        var swapFee = await this.state.pool.methods.getSwapFee().call();
+        swapFee = await this.state.pool.methods.getSwapFee().call();
         swapFee = web3.utils.fromWei(swapFee);
         swapFee = Number(swapFee);
         this.setState({ swapFee: swapFee });
         console.log("swapFee: ", swapFee);
 
-        var tokenMultiple = 1000;
+        tokenMultiple = 1000;
         this.setState({ tokenMultiple: tokenMultiple})
 
       };
@@ -264,7 +264,7 @@ class App extends Component {
         await pool.methods.bind(daiContract.options.address, web3.utils.toWei('5000'), web3.utils.toWei('25')).send( {from: accounts[1], gas: 6000000 });
         await pool.methods.setPublicSwap(true).send( {from: accounts[1], gas: 6000000 });
 
-        var tokenMultiple = 1;
+        tokenMultiple = 1;
         this.setState({ tokenMultiple: tokenMultiple})
       };
       this.setState( {
@@ -722,6 +722,7 @@ swapExactAmountOut = async () => {
         console.log("spotPrice from pool: ", spotPrice);
         spotPrice = Number(spotPrice);
         spotPrice = spotPrice / tokenMultiple;
+        console.log("spotPrice", spotPrice);
         spotPrice = spotPrice * ( 1.00 + swapFee)
         spotPrice = spotPrice.toFixed(6);
         console.log("spotPrice", spotPrice);
@@ -782,15 +783,15 @@ swapExactAmountOut = async () => {
           priceImpact: priceImpact,
         });
       } else {
-        var spotPrice = await pool.methods.getSpotPriceSansFee(fromToken, toToken).call();
+        spotPrice = await pool.methods.getSpotPriceSansFee(fromToken, toToken).call();
         spotPrice = web3.utils.fromWei(spotPrice)
         console.log("spotPrice from pool: ", spotPrice);
         spotPrice = Number(spotPrice);
         spotPrice = spotPrice * ( 1.00 + swapFee)
         spotPrice = spotPrice.toFixed(6);
         console.log("spotPrice", spotPrice);
-        var pricePerShare = fromAmount / toAmount;
-        var priceImpact = (pricePerShare - spotPrice) * 100 / pricePerShare;
+        pricePerShare = fromAmount / toAmount;
+        priceImpact = (pricePerShare - spotPrice) * 100 / pricePerShare;
         pricePerShare = Number(pricePerShare);
         console.log("pricePerShare: ", pricePerShare)
         pricePerShare = pricePerShare.toFixed(2);

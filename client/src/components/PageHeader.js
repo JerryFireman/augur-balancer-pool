@@ -4,7 +4,6 @@ import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import 'fontsource-roboto';
-import Typography from '@material-ui/core/Typography'
 
   const useStyles = makeStyles(theme => ({
   root: {
