@@ -11,7 +11,7 @@ import PageHeader from './components/PageHeader.js';
 const { abi } = require('./contracts/BPool.json');
 const BigNumber = require('bignumber.js');
 const unlimitedAllowance = new BigNumber(2).pow(256).minus(1);
-const network = "kovan"; // set network as "ganache" or "kovan" or "mainnet"
+const network = "mainnet"; // set network as "ganache" or "kovan" or "mainnet"
 const tokenMultiple = (network === "kovan") ? 100 : 1000;
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
