@@ -9,19 +9,32 @@ import "./App.css";
 import Trading from './components/Trading.js';
 import PageHeader from './components/PageHeader.js';
 const { abi } = require('./contracts/BPool.json');
-const kovanYesAddress = "0x1dbccf29375304c38bd0d162f636baa8dd6cce44";
-const kovanNoAddress = "0xeb69840f09A9235df82d9Ed9D43CafFFea2a1eE9";
-const kovanDaiAddress = "0xb6085abd65e21d205aead0b1b9981b8b221fa14e";
-const kovanPoolAddress = "0xbc6d6f508657c3c84983cd92f3eda6997e877e90";
-const mainnetYesAddress = "0x3af375d9f77ddd4f16f86a5d51a9386b7b4493fa";
-const mainnetNoAddress = "0x44ea84a85616f8e9cd719fc843de31d852ad7240";
-const mainnetDaiAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
-const mainnetPoolAddress = "0x6b74fb4e4b3b177b8e95ba9fa4c3a3121d22fbfb";
 const BigNumber = require('bignumber.js');
 const unlimitedAllowance = new BigNumber(2).pow(256).minus(1);
+<<<<<<< HEAD
 const network = "kovan"; // set network as "ganache" or "kovan" or "mainnet"
+=======
+const network = "mainnet"; // set network as "ganache" or "kovan" or "mainnet"
+const tokenMultiple = (network === "kovan") ? 100 : 1000;
+>>>>>>> c4ca19e14822639d58f7ed96833a4b108e24f3d9
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
+
+const mainnetContracts = {
+  yes: "0x3af375d9f77ddd4f16f86a5d51a9386b7b4493fa",
+  no: "0x44ea84a85616f8e9cd719fc843de31d852ad7240",
+  dai: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+  pool: "0x6b74fb4e4b3b177b8e95ba9fa4c3a3121d22fbfb"
+}
+
+const kovanContracts = {
+  yes: "0x1dbccf29375304c38bd0d162f636baa8dd6cce44",
+  no: "0xeb69840f09A9235df82d9Ed9D43CafFFea2a1eE9",
+  dai: "0xb6085abd65e21d205aead0b1b9981b8b221fa14e",
+  pool: "0xbc6d6f508657c3c84983cd92f3eda6997e877e90"
+}
+
+const contracts = (network === "mainnet") ? mainnetContracts : kovanContracts;
 
 //App controls the user interface
 class App extends Component {
@@ -53,7 +66,7 @@ class App extends Component {
     maxProfit: 0,
     priceImpact: 0,
     swapFee: 0,
-    tokenMultiple: 1000,
+    tokenMultiple: tokenMultiple,
     priceImpactColor: "black",
   };
 
@@ -66,25 +79,21 @@ class App extends Component {
       const accounts = await web3.eth.getAccounts();
       console.log("accounts: ", accounts)
 
-    
-
-
-      if (network === "kovan") {
         var yesInstance = new web3.eth.Contract (
           YesContract.abi,
-          kovanYesAddress
+          contracts.yes
         );
         var noInstance = new web3.eth.Contract (
           NoContract.abi,
-          kovanNoAddress
+          contracts.no
         );
         var daiInstance = new web3.eth.Contract (
           DaiContract.abi,
-          kovanDaiAddress
+          contracts.dai
         );
         var poolInstance = new web3.eth.Contract (
           BPoolContract.abi,
-          kovanPoolAddress
+          contracts.pool
         );
 
         this.setState({
@@ -94,21 +103,17 @@ class App extends Component {
           noContract: noInstance,
           daiContract: daiInstance,
           pool: poolInstance,
-          yesContractAddress: kovanYesAddress,
-          noContractAddress: kovanNoAddress,
-          daiContractAddress: kovanDaiAddress,
-          bpoolAddress: kovanPoolAddress,
+          yesContractAddress: contracts.yes,
+          noContractAddress: contracts.no,
+          daiContractAddress: contracts.dai,
+          bpoolAddress: contracts.pool
         });
-
 
         var swapFee = await this.state.pool.methods.getSwapFee().call();
         swapFee = web3.utils.fromWei(swapFee);
         swapFee = Number(swapFee);
         this.setState({ swapFee: swapFee });
         console.log("swapFee: ", swapFee);
-
-        var tokenMultiple = 100;
-        this.setState({ tokenMultiple: tokenMultiple})
 
         // resets all allowances to 0 to test approve function
         /*
@@ -127,6 +132,7 @@ class App extends Component {
         daiAllowance = web3.utils.fromWei(daiAllowance);
         console.log("daiAllowance: ", daiAllowance);
         */
+<<<<<<< HEAD
       };
 
       if (network === "mainnet") {
@@ -171,6 +177,8 @@ class App extends Component {
         this.setState({ tokenMultiple: tokenMultiple})
 
       };
+=======
+>>>>>>> c4ca19e14822639d58f7ed96833a4b108e24f3d9
 
       if (network === "ganache") {
         // Get the BFactory contract instance.
@@ -352,7 +360,7 @@ class App extends Component {
       console.log ("intermediate2: ", intermediate2)
       var toAmount = Number(toTokenBalance) * ( 1 -  intermediate2  );
       toAmount = toAmount * ( 1.00000000 - swapFee );
-      toAmount = toAmount.toFixed(2)      
+      toAmount = toAmount.toFixed(3)      
       console.log("toAmount: ", toAmount);
       this.setState( { toAmount: toAmount, fromExact: true } );
       await this.calcPriceProfitSlippage();
@@ -408,7 +416,7 @@ class App extends Component {
       console.log("fromAmount before add fee: ", fromAmount);
       fromAmount = fromAmount * (1.00000000 + swapFee);
       console.log("fromAmount after add fee: ", fromAmount);
-      fromAmount =  fromAmount.toFixed(2);
+      fromAmount =  fromAmount.toFixed(3);
       this.setState( { fromAmount: fromAmount, fromExact: false } );
       console.log("fromAmount: ", fromAmount);
       await this.calcPriceProfitSlippage();
