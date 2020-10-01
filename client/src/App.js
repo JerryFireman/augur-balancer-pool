@@ -11,12 +11,8 @@ import PageHeader from './components/PageHeader.js';
 const { abi } = require('./contracts/BPool.json');
 const BigNumber = require('bignumber.js');
 const unlimitedAllowance = new BigNumber(2).pow(256).minus(1);
-<<<<<<< HEAD
-const network = "kovan"; // set network as "ganache" or "kovan" or "mainnet"
-=======
 const network = "mainnet"; // set network as "ganache" or "kovan" or "mainnet"
 const tokenMultiple = (network === "kovan") ? 100 : 1000;
->>>>>>> c4ca19e14822639d58f7ed96833a4b108e24f3d9
 // if network is ganache, run truffle migrate --develop and disable metamask
 // if network is kovan, enable metamask, set to kovan network and open account with kovan eth
 
@@ -132,53 +128,6 @@ class App extends Component {
         daiAllowance = web3.utils.fromWei(daiAllowance);
         console.log("daiAllowance: ", daiAllowance);
         */
-<<<<<<< HEAD
-      };
-
-      if (network === "mainnet") {
-        yesInstance = new web3.eth.Contract (
-          YesContract.abi,
-          mainnetYesAddress
-        );
-        noInstance = new web3.eth.Contract (
-          NoContract.abi,
-          mainnetNoAddress
-        );
-        daiInstance = new web3.eth.Contract (
-          DaiContract.abi,
-          mainnetDaiAddress
-        );
-        poolInstance = new web3.eth.Contract (
-          BPoolContract.abi,
-          mainnetPoolAddress
-        );
-
-        this.setState({
-          web3: web3,
-          accounts: accounts,
-          yesContract: yesInstance,
-          noContract: noInstance,
-          daiContract: daiInstance,
-          pool: poolInstance,
-          yesContractAddress: mainnetYesAddress,
-          noContractAddress: mainnetNoAddress,
-          daiContractAddress: mainnetDaiAddress,
-          bpoolAddress: mainnetPoolAddress,
-        });
-
-
-        swapFee = await this.state.pool.methods.getSwapFee().call();
-        swapFee = web3.utils.fromWei(swapFee);
-        swapFee = Number(swapFee);
-        this.setState({ swapFee: swapFee });
-        console.log("swapFee: ", swapFee);
-
-        tokenMultiple = 1000;
-        this.setState({ tokenMultiple: tokenMultiple})
-
-      };
-=======
->>>>>>> c4ca19e14822639d58f7ed96833a4b108e24f3d9
 
       if (network === "ganache") {
         // Get the BFactory contract instance.
