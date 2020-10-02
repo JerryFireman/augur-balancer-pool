@@ -245,11 +245,7 @@ export default function Trading(props) {
                 <Typography variant="body2" padding="20px">
                   Price per share:
                 </Typography>
-<<<<<<< HEAD
-                <Typography variant="body2" padding="20px" className={classes.no_price_impact}>
-=======
                 <Typography variant="body2" color="textPrimary" padding="20px" className={classes.price_display}>
->>>>>>> 11e242ecbb9117ef38568340631074862bf8c5a6
                   ${props.pricePerShare}
                 </Typography>                
               </div>
