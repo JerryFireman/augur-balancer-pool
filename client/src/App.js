@@ -777,25 +777,25 @@ swapExactAmountOut = async () => {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
-      <div className="App">
-      <PageHeader/>
-      <Trading 
-        handleChange={this.handleChange}
-        fromAmount={this.state.fromAmount}
-        fromToken={this.state.fromToken}
-        toAmount={this.state.toAmount}
-        toToken={this.state.toToken}
-        fromBalance={this.state.fromBalance}  
-        toBalance={this.state.toBalance}        
-        yesContractAddress={this.state.yesContractAddress}
-        noContractAddress={this.state.noContractAddress}
-        daiContractAddress={this.state.daiContractAddress}
-        pricePerShare={this.state.pricePerShare}
-        maxProfit={this.state.maxProfit}
-        priceImpact={this.state.priceImpact}
-        priceImpactColor={this.state.priceImpactColor}
-        swapBranch={this.swapBranch}
-      />
+      <div className={`App ${this.props.isContrast ? "dark" : "light"}`}>
+        <PageHeader/>
+        <Trading 
+          handleChange={this.handleChange}
+          fromAmount={this.state.fromAmount}
+          fromToken={this.state.fromToken}
+          toAmount={this.state.toAmount}
+          toToken={this.state.toToken}
+          fromBalance={this.state.fromBalance}  
+          toBalance={this.state.toBalance}        
+          yesContractAddress={this.state.yesContractAddress}
+          noContractAddress={this.state.noContractAddress}
+          daiContractAddress={this.state.daiContractAddress}
+          pricePerShare={this.state.pricePerShare}
+          maxProfit={this.state.maxProfit}
+          priceImpact={this.state.priceImpact}
+          priceImpactColor={this.state.priceImpactColor}
+          swapBranch={this.swapBranch}
+        />
       </div>
     );
   };

@@ -7,11 +7,17 @@ import 'fontsource-roboto';
 import Typography from '@material-ui/core/Typography'
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import DarkLogo from '../assets/images/dark_logo.png';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    marginBottom: '-15px'
+    marginBottom: '-15px',
+
+    '& .MuiSwitch-track': {
+      border: 'none',
+      backgroundColor: 'black'
+    }
   },
   formControl: {
     margin: theme.spacing(0),
@@ -95,7 +101,11 @@ export default function PageHeader(props) {
         <Grid item xs={3}>
           <Box textAlign="left"> 
               <div>
-                <img src={'https://cdn.discordapp.com/attachments/744571125484224643/752307707708440606/catnip1.png'} alt="catnip" width="100"/>
+                {
+                  isContrast ? 
+                    <img src={DarkLogo} width="100"/> : 
+                    <img src={'https://cdn.discordapp.com/attachments/744571125484224643/752307707708440606/catnip1.png'} alt="catnip" width="100"/>
+                }                
               </div>   
             </Box>
         </Grid>
@@ -108,7 +118,7 @@ export default function PageHeader(props) {
           <Box fontWeight="fontWeightBold" textAlign="right">
             <FormControlLabel
               control={<IOSSwitch checked={isContrast} onChange={handleChange} />}
-              label="iOS style"
+              label="Toggle Dark Mode"
             />
           </Box>
         </Grid>

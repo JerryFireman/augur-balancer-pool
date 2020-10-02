@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -18,8 +18,9 @@ import infoIcon from '../assets/images/info.png'
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import classNames from "classnames";
 import {useSelector} from 'react-redux';
+import { InfoOutlined } from '@material-ui/icons';
 
-  const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
 
@@ -66,6 +67,50 @@ import {useSelector} from 'react-redux';
 
         '& .MuiInputBase-root': {
           color: 'white !important'
+        },
+
+        '& .MuiTypography-h6': {
+          color: 'white'
+        }
+      }
+    },
+
+    '& .info_logo': {
+      '&.dark': {
+        '& .MuiSvgIcon-root': {
+          color: 'white'
+        }
+      },
+      '&.light': {
+        '& .MuiSvgIcon-root': {
+          color: 'black'
+        }
+      }
+    },
+
+    '& .dark': {
+      '& .MuiSvgIcon-root': {
+        color: 'white'
+      }
+    },
+
+    '& .light': {
+      '& .MuiSvgIcon-root': {
+        color: 'black'
+      }
+    },
+
+    '& .main_footer': {
+      '&.dark': {
+        backgroundColor: 'black !important',
+        '& .MuiTypography-body2:not(.green)': {
+          color: 'white !important'
+        }
+      },
+
+      '& .MuiTypography-body2': {
+        '&.green': {
+          color: '#25b525 !important'
         }
       }
     }
@@ -148,6 +193,25 @@ export default function Trading(props) {
   const classes = useStyles();
 
   const isContrast = useSelector(state => state.settings.isContrast);
+  
+  console.log('isContrast', isContrast);
+
+  const Theme = {
+    overrides: {
+      MuiPaper: {
+        root: {
+          backgroundColor: 'rgb(33, 36, 41)'
+        }
+      },
+      MuiButtonBase: {
+        root: {
+          color: 'white'
+        }
+      }
+    }
+  }
+
+  const theme = createMuiTheme(Theme);
 
   return (
     <div className={classes.root}>
@@ -155,19 +219,24 @@ export default function Trading(props) {
         <Grid container spacing={0} >
           <Grid item xs={4}>
             <Paper square={true} elevation={0}>
-              <Box fontWeight="fontWeightBold" textAlign="left">    
-              </Box>
+              <Box fontWeight="fontWeightBold" textAlign="left"></Box>
             </Paper>
           </Grid>
           <Grid item xs={4}>
-            <Paper className={classes.main_part} square={true} elevation={0}>
+            <Paper className={`main_part ${isContrast ? "dark" : "light"}`} square={true} elevation={0}>
               <div className={classes.float_left}>
                 <Typography variant="h6" color="textPrimary"  align="left" fontWeight="fontWeightBold" >
                   Will Trump win the 2020 U.S. <br/> presidential election?
                 </Typography>
               </div>
               <div>
-              <a href="http://www.predictionexplorer.com/market/0x1EBb89156091EB0d59603C18379C03A5c84D7355" target="_blank"> <img className={classes.info_icon} src={infoIcon} alt="info icon"/></a>              </div>
+                <a href="http://www.predictionexplorer.com/market/0x1EBb89156091EB0d59603C18379C03A5c84D7355" target="_blank"> 
+                  {/* <img className={classes.info_icon} src={infoIcon} alt="info icon"/> */}
+                  <div className={`info_logo ${isContrast ? "dark" : "light"}`}>
+                    <InfoOutlined />
+                  </div>                  
+                </a> 
+              </div>
               <div className={classes.inputItem}>
                 <div>
                   <Typography variant="body2" align="left" >
@@ -187,21 +256,41 @@ export default function Trading(props) {
                   <Typography variant="body2" align="right" padding="20px">
                     Balance: {props.fromBalance}
                   </Typography>
-                  <Select
-                    disableUnderline
-                    name="fromToken"
-                    value={props.fromToken}
-                    onChange={props.handleChange}
-                    style={{
-                      fontSize: 24
-                    }}
-                    IconComponent={CustomExpandMore}
-                  >
-                      <MenuItem value=""></MenuItem>
-                      <MenuItem value={props.yesContractAddress} className={classes.menu_item}><img src={TImg} alt=""/> <span>YES TRUMP</span></MenuItem>
-                      <MenuItem value={props.noContractAddress} className={classes.menu_item}><img src={NTImg} alt=""/> <span>NO TRUMP</span></MenuItem>
-                      <MenuItem value={props.daiContractAddress} className={classes.menu_item}><img src={DImg} alt=""/> <span>DAI</span></MenuItem>
-                  </Select>
+                  {
+                    isContrast ? 
+                    <ThemeProvider theme={theme}>
+                      <Select
+                        disableUnderline
+                        name="fromToken"
+                        value={props.fromToken}
+                        onChange={props.handleChange}
+                        style={{
+                          fontSize: 24
+                        }}
+                        IconComponent={CustomExpandMore}
+                      >
+                          <MenuItem value=""></MenuItem>
+                          <MenuItem value={props.yesContractAddress} className={classes.menu_item}><img src={TImg} alt=""/> <span>YES TRUMP</span></MenuItem>
+                          <MenuItem value={props.noContractAddress} className={classes.menu_item}><img src={NTImg} alt=""/> <span>NO TRUMP</span></MenuItem>
+                          <MenuItem value={props.daiContractAddress} className={classes.menu_item}><img src={DImg} alt=""/> <span>DAI</span></MenuItem>
+                      </Select>
+                    </ThemeProvider>: 
+                    <Select
+                      disableUnderline
+                      name="fromToken"
+                      value={props.fromToken}
+                      onChange={props.handleChange}
+                      style={{
+                        fontSize: 24
+                      }}
+                      IconComponent={CustomExpandMore}
+                    >
+                        <MenuItem value=""></MenuItem>
+                        <MenuItem value={props.yesContractAddress} className={classes.menu_item}><img src={TImg} alt=""/> <span>YES TRUMP</span></MenuItem>
+                        <MenuItem value={props.noContractAddress} className={classes.menu_item}><img src={NTImg} alt=""/> <span>NO TRUMP</span></MenuItem>
+                        <MenuItem value={props.daiContractAddress} className={classes.menu_item}><img src={DImg} alt=""/> <span>DAI</span></MenuItem>
+                    </Select>
+                  }                  
                 </div>
               </div>
               <div className={classes.inputItem}>
@@ -222,7 +311,27 @@ export default function Trading(props) {
                   <Typography variant="body2" align="right" padding="20px">
                     Balance: {props.toBalance}
                   </Typography>
-                  <Select
+                  {
+                    isContrast ? 
+                    <ThemeProvider theme={theme}>
+                      <Select
+                          disableUnderline
+                          name="toToken"
+                          value={props.toToken}
+                          onChange={props.handleChange}
+                          style={{
+                            fontSize: 24
+                          }}
+                          IconComponent={CustomExpandMore}
+                        >
+                          <MenuItem value="">
+                          </MenuItem>
+                          <MenuItem value={props.yesContractAddress} className={classes.menu_item}><img src={TImg} alt=""/> <span>YES TRUMP</span></MenuItem>
+                          <MenuItem value={props.noContractAddress} className={classes.menu_item}><img src={NTImg} alt=""/> <span>NO TRUMP</span></MenuItem>
+                          <MenuItem value={props.daiContractAddress} className={classes.menu_item}><img src={DImg} alt=""/> <span>DAI</span></MenuItem>
+                      </Select>
+                    </ThemeProvider>: 
+                    <Select
                       disableUnderline
                       name="toToken"
                       value={props.toToken}
@@ -238,6 +347,7 @@ export default function Trading(props) {
                       <MenuItem value={props.noContractAddress} className={classes.menu_item}><img src={NTImg} alt=""/> <span>NO TRUMP</span></MenuItem>
                       <MenuItem value={props.daiContractAddress} className={classes.menu_item}><img src={DImg} alt=""/> <span>DAI</span></MenuItem>
                   </Select>
+                  }
                 </div>
               </div>
               {props.fromAmount > 0 && (
@@ -253,7 +363,7 @@ export default function Trading(props) {
               <StyledButton variant="contained" onClick={props.swapBranch}>Swap</StyledButton>
             </Paper>
             {props.fromAmount > 0 && (
-              <Paper square={true} elevation={0}>
+              <Paper square={true} elevation={0} className={`main_footer ${isContrast ? "dark" : "light"}`}>
                 <Box textAlign="right">    
                   <form className={classes.root} noValidate autoComplete="off">   
                     {props.fromToken === props.daiContractAddress && (               
