@@ -139,6 +139,7 @@ const CustomExpandMore = withStyles(iconStyles)(
 );
 
 export default function Trading(props) {
+  console.log('props', props);
   const classes = useStyles();
 
   const isContrast = useSelector(state => state.settings.isContrast);
